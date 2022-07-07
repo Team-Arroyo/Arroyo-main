@@ -20,12 +20,15 @@ const getBucketObjects = async(bucketName) => {
   }
 }
 
-const getObjectContents = async({Bucket, Key}) => {
+const getObjectContents = async(Key) => {
   try {
-    const data = s3Client.send(new GetObjectCommand({Bucket, Key}))
+    const data = await s3Client.send(new GetObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key
+    }))
     return data
   } catch(err) {
-    return err
+    throw err
   }
 }
 
