@@ -1,7 +1,7 @@
 const express = require("express");
-const { basicResponse } = require("../controller/testController");
+const { getS3Objects } = require("../controller/s3ObjectController")
 const router = express.Router();
 
-router.get('/objects', basicResponse);
+router.get('/s3objects', getS3Objects);
 
 module.exports = router
