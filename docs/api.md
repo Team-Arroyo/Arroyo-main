@@ -42,7 +42,7 @@ This route is used to start the rehydrate process of an AWS S3 object. Sends a 2
 ## 1.2.2 Example Response
 ```json
 {
-  "message": "Rehydrate on logs2.txt in progress",
+  "message": "Rehydrate on logs1.txt in progress",
   "sampleLog": "31.11.188.151 - - [07/Jul/2022:12:55:34 -0500] \"GET /totam/exercitationem/quidem.css HTTP/1.0\" 200 5004 \"https://www.foster.org/search/\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/5341 (KHTML, like Gecko) Chrome/13.0.821.0 Safari/5341\""
 }
 ```
