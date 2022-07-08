@@ -1,30 +1,29 @@
 import React from "react";
-import Dropdown from "./Dropdown";
+import Dropdown from "./Dropdown.js";
 import { useEffect, useState } from "react";
-
+import apiClient from "../libs/apiclient.js";
 
 const SelectionContainer = () => {
   const [choices, setChoices] = useState([])
   const [choice, setChoice] = useState('')
 
   useEffect(()=>{
-    console.log('an effect')
+    apiClient.getKeys().then(
+      keys => setChoices(keys)
+    )
   }, [])
 
-  console.log("choices", choices)
-  
-  if (!choice.length) {
+
+    console.log("Chose dropdown path")
     return (
-      <p>Loading Logs ...</p>
-    )
-  }
-  return (
     <>
       <Dropdown choices={choices} />
       <p></p>
       <button>Get Log</button>
     </>
   )
+  
+  
 }
 
 export default SelectionContainer

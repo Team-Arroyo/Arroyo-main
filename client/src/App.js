@@ -1,5 +1,5 @@
 import React from "react"
-import SelectionContainer from "./components/SelectionContainer";
+import SelectionContainer from "./components/SelectionContainer.js";
 
 function App() {
   return (
