@@ -1,12 +1,12 @@
-import React from "react"
-import SelectionContainer from "./components/SelectionContainer.js";
+import React from 'react';
+import SelectionContainer from './components/SelectionContainer.jsx';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
         <p>Select a log: </p>
-        <SelectionContainer/>
+        <SelectionContainer />
       </header>
     </div>
   );
