@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import axios from 'axios';
 import { GET_KEYS_URL, HYDRATE_LOG_URL } from '../constants/ApiRoutes.js';
 
