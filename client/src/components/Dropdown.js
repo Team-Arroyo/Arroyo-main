@@ -6,9 +6,9 @@ const Dropdown = ({choices}) => {
   return (
     <select>
       <option>Select A Log</option>
-      { choices.map(c => {
+      { choices.map((c, i) => {
         return (
-          <option>{c}</option>
+          <option key={i}>{c}</option>
         )
       })}
     </select>
