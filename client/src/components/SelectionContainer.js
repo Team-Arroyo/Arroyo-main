@@ -13,13 +13,26 @@ const SelectionContainer = () => {
     )
   }, [])
 
+  const handleSelection = (e) => {
+    setChoice(e.target.value)
+  }
 
-    console.log("Chose dropdown path")
+  const handleClick = (e) => {
+    if (choice === "Select A Log") {
+      console.log("not sending anything ty")
+      return;
+    }
+    apiClient.getObject(choice)
+      .then(
+        r => console.log(r)
+      )
+  }
+
     return (
     <>
-      <Dropdown choices={choices} />
+      <Dropdown choices={choices} onSelection={handleSelection}/>
       <p></p>
-      <button>Get Log</button>
+      <button onClick={handleClick}>Get Log</button>
     </>
   )
   

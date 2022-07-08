@@ -12,8 +12,20 @@ const getKeys = async() => {
   }
 }
 
+const getObject = async(key) => {
+  try {
+    const { data } = await axios.post("http://localhost:5001/api/s3object/rehydrate", {
+      "objectKey": key
+    });
+    return data.message;
+  } catch (error) {
+    return error
+  }
+}
+
 const apiClient = {
   getKeys,
+  getObject,
 }
 
 export default apiClient
