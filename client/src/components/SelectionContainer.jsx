@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
+import { EuiButton } from '@elastic/eui';
 import Dropdown from './Dropdown';
-
 import apiClient from '../libs/apiclient';
 
 function SelectionContainer() {
@@ -11,7 +11,9 @@ function SelectionContainer() {
   useEffect(() => {
     apiClient.getKeys().then(
       (keys) => setChoices(keys),
-    );
+    ).catch((e) => {
+      console.log(e);
+    });
   }, []);
 
   const handleSelection = (e) => {
@@ -33,7 +35,8 @@ function SelectionContainer() {
     <>
       <Dropdown choices={choices} onSelection={handleSelection} />
       <p />
-      <button type="button" onClick={handleClick}>Get Log</button>
+      <EuiButton onClick={handleClick}>Ingest Log</EuiButton>
+      {/* <button type="button" onClick={handleClick}>Get Log</button> */}
     </>
   );
 }
