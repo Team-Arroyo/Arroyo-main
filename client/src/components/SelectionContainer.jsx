@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { EuiButton } from '@elastic/eui';
 import Dropdown from './Dropdown';
 import apiClient from '../libs/apiclient';
+import DatePicker from './DatePicker';
 
 function SelectionContainer() {
   const [choices, setChoices] = useState([]);
@@ -33,6 +34,7 @@ function SelectionContainer() {
 
   return (
     <div>
+      <DatePicker />
       <Dropdown choices={choices} onSelection={handleSelection} />
       <p />
       <EuiButton onClick={handleClick}>Ingest Log</EuiButton>
