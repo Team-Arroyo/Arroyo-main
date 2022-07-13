@@ -22,7 +22,7 @@ function SelectionContainer() {
 
   const handleClick = () => {
     if (choice === 'Select A Log') {
-      console.log('not sending anything ty');
+      console.log('Nothing was selected');
       return;
     }
     apiClient.getObject(choice)
@@ -32,12 +32,11 @@ function SelectionContainer() {
   };
 
   return (
-    <>
+    <div>
       <Dropdown choices={choices} onSelection={handleSelection} />
       <p />
       <EuiButton onClick={handleClick}>Ingest Log</EuiButton>
-      {/* <button type="button" onClick={handleClick}>Get Log</button> */}
-    </>
+    </div>
   );
 }
 
