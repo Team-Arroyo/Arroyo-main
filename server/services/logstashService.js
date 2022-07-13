@@ -2,15 +2,9 @@ const axios = require('axios');
 
 const host = process.env.LOGSTASH_HOST
 
-const config = {
-  headers: {
-    'Content-Type': 'text/plain'
-  }
-}
-
-const postToLogstash = async(contents) => {
+const postToLogstash = async(jsonArray) => {
   try {
-    const { data } = await axios.post(`http://${host}`, contents, config)
+    const { data } = await axios.post(`http://${host}`, jsonArray)
     console.log("succeussfully ingested file")
   } catch(err) {
     console.log("Error in logstash service", err)
