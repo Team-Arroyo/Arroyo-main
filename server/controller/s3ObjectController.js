@@ -1,6 +1,7 @@
 const  { getBucketObjects, getObjectContents } = require("../lib/s3Client");
 const { streamToString } = require("../utils/streamToString");
-const { postToLogstash } = require("../services/logstashService")
+const { logStringToJson } = require("../utils/logStringToJson");
+const { postToLogstash } = require("../services/logstashService");
 
 const getS3Objects = async(req, res, next) => {
   try {
@@ -22,8 +23,9 @@ const rehydrateS3Object = async(req, res, next) => {
   try {
     const { objectKey } = req.body
     const data = await getObjectContents(objectKey)
-    const bodyContents = await streamToString(data.Body);
-    postToLogstash(bodyContents)
+    const rawLogString = await streamToString(data.Body);
+    const logsJson = logStringToJson(rawLogString);
+    await postToLogstash(logsJson)
     res.status(202).json({
       message: `Rehydrate on ${objectKey} in progress`,
     })
