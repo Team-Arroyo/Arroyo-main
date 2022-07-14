@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
-import { EuiButton } from '@elastic/eui';
+import { EuiButton, EuiSpacer, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 import moment from 'moment';
 import Dropdown from './Dropdown';
 import apiClient from '../libs/apiclient';
@@ -45,11 +45,28 @@ function SelectionContainer() {
 
   return (
     <div>
-      <DatePicker dateType="start date" dateStatus={startDate} handleChange={handleStartDateChange} />
-      <DatePicker dateType="end date" dateStatus={endDate} handleChange={handleEndDateChange} />
-      <Dropdown choices={choices} onSelection={handleSelection} />
-      <p />
-      <EuiButton onClick={handleClick}>Ingest Log</EuiButton>
+      <EuiFlexGroup>
+        <EuiFlexItem>
+          <DatePicker dateType="start date" dateStatus={startDate} handleChange={handleStartDateChange} />
+        </EuiFlexItem>
+        <EuiFlexItem>
+          <DatePicker dateType="end date" dateStatus={endDate} handleChange={handleEndDateChange} />
+        </EuiFlexItem>
+        <EuiFlexItem>
+          <EuiButton onClick={() => console.log(`posting ${startDate} and ${endDate} to backend API`)}>
+            Search S3
+          </EuiButton>
+        </EuiFlexItem>
+      </EuiFlexGroup>
+      <EuiSpacer size="xl" />
+      <EuiFlexGroup>
+        <EuiFlexItem>
+          <Dropdown choices={choices} onSelection={handleSelection} />
+        </EuiFlexItem>
+        <EuiFlexItem>
+          <EuiButton onClick={handleClick}>Ingest Log</EuiButton>
+        </EuiFlexItem>
+      </EuiFlexGroup>
     </div>
   );
 }
