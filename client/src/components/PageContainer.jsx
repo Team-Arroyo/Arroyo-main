@@ -7,7 +7,6 @@ import {
   EuiPageBody,
 } from '@elastic/eui';
 import PropTypes from 'prop-types';
-import SelectionContainer from './SelectionContainer';
 
 function PageContainer({ content }) {
   return (
@@ -26,7 +25,6 @@ function PageContainer({ content }) {
           borderRadius="none"
         >
           <EuiPageContentBody restrictWidth>{content}</EuiPageContentBody>
-          <SelectionContainer />
         </EuiPageContent>
       </EuiPageBody>
     </EuiPage>
