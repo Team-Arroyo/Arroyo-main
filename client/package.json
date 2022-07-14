@@ -6,10 +6,7 @@
   "dependencies": {
     "@elastic/datemath": "^5.0.3",
     "@elastic/eui": "^60.3.0",
-<<<<<<< HEAD
-=======
     "@emotion/cache": "^11.7.1",
->>>>>>> 1851920e7e5e5f537c6b052522517bbaf16dc8bd
     "@emotion/react": "^11.9.3",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
