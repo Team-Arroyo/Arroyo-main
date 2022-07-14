@@ -1,6 +1,11 @@
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
-import { EuiButton, EuiSpacer, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
+import {
+  EuiButton,
+  EuiSpacer,
+  EuiFlexGroup,
+  EuiFlexItem,
+} from '@elastic/eui';
 import moment from 'moment';
 import Dropdown from './Dropdown';
 import apiClient from '../libs/apiclient';
