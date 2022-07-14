@@ -1,41 +1,96 @@
+/* eslint-disable arrow-body-style */
 import React, { useState } from 'react';
-import { EuiDatePicker, EuiDatePickerRange } from '@elastic/eui';
-import moment from 'moment';
-// @ts-ignore Importing from JS
-import { DisplayToggles } from '../libs/display_toggles';
+import {
+  EuiSuperDatePicker,
+  EuiSpacer,
+  EuiFormControlLayoutDelimited,
+  EuiFormLabel,
+  EuiPanel,
+  EuiText,
+  // OnRefreshProps,
+  // OnTimeChangeProps,
+} from '@elastic/eui';
 
 function DatePicker() {
-  const [startDate, setStartDate] = useState(moment());
-  const [endDate, setEndDate] = useState(moment().add(11, 'd'));
+  const [isLoading, setIsLoading] = useState(false);
+  const [start, setStart] = useState('now-30m');
+  const [end, setEnd] = useState('now');
+  const stopLoading = () => {
+    setIsLoading(false);
+  };
+  const startLoading = () => {
+    setTimeout(stopLoading, 1000);
+  };
+
+  const onTimeChange = ({ start, end }) => {
+    setStart(start);
+    setEnd(end);
+    setIsLoading(true);
+    startLoading();
+  };
+
+  const onRefresh = ({ start, end, refreshInterval }) => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, 100);
+    }).then(() => {
+      console.log(start, end, refreshInterval);
+    });
+  };
+
+  const onStartInputChange = (e) => {
+    setStart(e.target.value);
+  };
+
+  const onEndInputChange = (e) => {
+    setEnd(e.target.value);
+  };
+
+  const renderTimeRange = () => {
+    return (
+      <EuiPanel color="subdued" paddingSize="m">
+        <EuiText size="s">
+          EuiSuperDatePicker should be resilient to invalid date values. You can
+          try to break it with unexpected values here.
+        </EuiText>
+        <EuiSpacer />
+        <EuiFormControlLayoutDelimited
+          prepend={<EuiFormLabel>Dates</EuiFormLabel>}
+          startControl={
+            <input
+              onChange={onStartInputChange}
+              type="text"
+              value={start}
+              placeholder="start"
+              className="euiFieldText"
+            />
+          }
+          endControl={
+            <input
+              onChange={onEndInputChange}
+              type="text"
+              placeholder="end"
+              value={end}
+              className="euiFieldText"
+            />
+          }
+        />
+      </EuiPanel>
+    );
+  };
 
   return (
-    /* DisplayToggles wrapper for Docs only */
-    <DisplayToggles canCompressed={false} canLoading={false}>
-      <EuiDatePickerRange
-        isInvalid={startDate > endDate}
-        startDateControl={(
-          <EuiDatePicker
-            selected={startDate}
-            onChange={(date) => date && setStartDate(date)}
-            startDate={startDate}
-            endDate={endDate}
-            aria-label="Start date"
-            showTimeSelect
-          />
-        )}
-        endDateControl={(
-          <EuiDatePicker
-            selected={endDate}
-            onChange={(date) => date && setEndDate(date)}
-            startDate={startDate}
-            endDate={endDate}
-            aria-label="End date"
-            showTimeSelect
-          />
-        )}
+    <>
+      {renderTimeRange()}
+      <EuiSpacer />
+      <EuiSuperDatePicker
+        isLoading={isLoading}
+        start={start}
+        end={end}
+        onTimeChange={onTimeChange}
+        onRefresh={onRefresh}
       />
-    </DisplayToggles>
+    </>
   );
-}
+};
 
 export default DatePicker;
