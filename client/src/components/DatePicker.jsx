@@ -1,30 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { EuiDatePicker, EuiFormRow } from '@elastic/eui';
-import PropTypes from 'prop-types';
+import moment from 'moment';
 
-function DatePicker({ dateType, dateStatus, handleChange }) {
+function DatePicker() {
+  const [startDate, setStartDate] = useState(moment());
+
+  const handleChange = (date) => {
+    setStartDate(date);
+  };
+
   return (
-    <EuiFormRow label={dateType}>
-      <EuiDatePicker
-        selected={dateStatus}
-        onChange={handleChange}
-        onClear={() => handleChange(null)}
-      />
+    <EuiFormRow label="Select a date">
+      <EuiDatePicker selected={startDate} onChange={handleChange} />
     </EuiFormRow>
   );
 }
-
-DatePicker.defaultProps = {
-  dateType: 'Enter A Date',
-  dateStatus: null,
-  handleChange: null,
-
-};
-
-DatePicker.propTypes = {
-  dateType: PropTypes.string,
-  dateStatus: PropTypes.string,
-  handleChange: PropTypes.func,
-};
 
 export default DatePicker;
