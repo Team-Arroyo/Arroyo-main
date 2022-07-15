@@ -1,12 +1,14 @@
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
-import { EuiButton, EuiSpacer, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
+import {
+  EuiButton, EuiSpacer, EuiFlexGroup, EuiFlexItem,
+} from '@elastic/eui';
 import moment from 'moment';
 import Dropdown from './Dropdown';
 import apiClient from '../libs/apiclient';
 import DatePicker from './DatePicker';
 
-function SelectionContainer() {
+function PickFilters() {
   const [choices, setChoices] = useState([]);
   const [choice, setChoice] = useState('');
   const [startDate, setStartDate] = useState(moment());
@@ -71,4 +73,4 @@ function SelectionContainer() {
   );
 }
 
-export default SelectionContainer;
+export default PickFilters;
