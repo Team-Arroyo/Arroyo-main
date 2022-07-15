@@ -7,6 +7,7 @@ import {
   EuiPageBody,
 } from '@elastic/eui';
 import PropTypes from 'prop-types';
+import SelectablePlay from './SelectablePlay';
 
 function PageContainer({ content, moreContent }) {
   return (
@@ -26,6 +27,7 @@ function PageContainer({ content, moreContent }) {
         >
           <EuiPageContentBody restrictWidth>{content}</EuiPageContentBody>
           <EuiPageContentBody restrictWidth>{moreContent}</EuiPageContentBody>
+          <SelectablePlay />
         </EuiPageContent>
       </EuiPageBody>
     </EuiPage>
