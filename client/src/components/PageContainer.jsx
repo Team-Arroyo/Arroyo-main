@@ -20,7 +20,7 @@ function PageContainer({ content }) {
         <EuiPageContent
           hasBorder={false}
           hasShadow={false}
-          paddingSize="none"
+          paddingSize="s"
           color="transparent"
           borderRadius="none"
         >
