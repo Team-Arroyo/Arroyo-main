@@ -8,7 +8,7 @@ import {
 } from '@elastic/eui';
 import PropTypes from 'prop-types';
 
-function PageContainer({ content }) {
+function PageContainer({ content, moreContent }) {
   return (
     <EuiPage paddingSize="none">
       <EuiPageBody panelled>
@@ -25,6 +25,7 @@ function PageContainer({ content }) {
           borderRadius="none"
         >
           <EuiPageContentBody restrictWidth>{content}</EuiPageContentBody>
+          <EuiPageContentBody restrictWidth>{moreContent}</EuiPageContentBody>
         </EuiPageContent>
       </EuiPageBody>
     </EuiPage>
@@ -33,10 +34,12 @@ function PageContainer({ content }) {
 
 PageContainer.defaultProps = {
   content: {},
+  moreContent: {},
 };
 
 PageContainer.propTypes = {
   content: PropTypes.element,
+  moreContent: PropTypes.element,
 };
 
 export default PageContainer;

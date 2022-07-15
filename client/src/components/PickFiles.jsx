@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  EuiButton, EuiSpacer, EuiFlexGroup, EuiFlexItem,
+  EuiButton, EuiFlexGroup, EuiFlexItem,
 } from '@elastic/eui';
 import apiClient from '../libs/apiclient';
 import Dropdown from './Dropdown';
