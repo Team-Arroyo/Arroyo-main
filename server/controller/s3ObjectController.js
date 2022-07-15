@@ -9,6 +9,7 @@ const getS3Objects = async(req, res, next) => {
   const endDate = req.endDate;
   if(dateError) {
     res.status(400).send({dateError})
+    return;
   }
 
   try {
