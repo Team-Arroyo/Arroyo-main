@@ -4,6 +4,7 @@ import React from 'react';
 import '@elastic/eui/dist/eui_theme_light.css';
 import { EuiProvider, EuiThemeProvider, EuiThemeAmsterdam } from '@elastic/eui';
 import { appendIconComponentCache } from '@elastic/eui/es/components/icon/icon.js';
+import { icon as EuiIconLogoElastic } from '@elastic/eui/es/components/icon/assets/logo_elastic.js';
 import { icon as EuiIconCalendar } from '@elastic/eui/es/components/icon/assets/calendar.js';
 import { icon as EuiIconSortRight } from '@elastic/eui/es/components/icon/assets/sortRight.js';
 import createCache from '@emotion/cache';
@@ -15,6 +16,7 @@ import SelectionContainer from './components/SelectionContainer.jsx';
 appendIconComponentCache({
   calendar: EuiIconCalendar,
   sortRight: EuiIconSortRight,
+  logoElastic: EuiIconLogoElastic,
 });
 
 function App() {
