@@ -1,31 +1,54 @@
 # 1. API Documentation
 
-## 1.1 GET /api/s3objects
-This route is used to fetch all object keys (file names) that exist
+## 1.1 GET /api/s3objects[?startDate=mm-dd-yyyy&endDate=mm-dd-yyyy]
+This route is used to fetch object keys (file names) that exist
 within an AWS S3 bucket. Sends a 200 response.
 
 ## 1.1.1 Expected Parameters
-None
+If no query params are supplied, the enpoint will return the first 1000
+objects contained in an S3 bucket.
 
-## 1.1.2 Example Response
+Should a user want to filter S3 objects based on a timeframe they will
+need to provide a startDate and endDate query param. It is possible to recieve an empty objectKeys payload should no files match the timeframe.
+
+```
+/api/s3objects?startDate=mm-dd-yyyy&endDate=mm-dd-yyyy
+```
+
+## 1.1.2 Example Responses
 ```json
 {
-  "objectKeys": ["log1.txt", "log2.txt"]
+  "objectKeys": ["log1.log", "log2.log"]
+}
+
+{
+  "objectKeys": []
 }
 ```
 
-## 1.1.3 Error Response
-If AWS credentials are incorrect the API will format and forward
-a brief AWS error message in the body with relevant information
+## 1.1.3 Error Responses
+During development the API will return status 500 errors and a JSON body when there are issues with AWS credeintials/requests.
+
+It will return status 400 errors and a JSON body if the query params supplied do not meet expected configuration.
 
 
-## 1.1.4 Example Error Response
+## 1.1.4 Example Server Error Response
+```json
+{"message":"Fetching object from S3 failed, see error message for more details","error":{
+  "name":"NoSuchBucket","$fault":"client","$metadata":{"httpStatusCode":404,"extendedRequestId":"yHFI2ocjskfT8gs7Vh8aUz1JcBf4Ju4Ugt+ya7VLEbPIwQK8B+LhB/Lsb9VvzBeo9kAaKCs8W+BqMTK6GBRfmA==","attempts":1,"totalRetryDelay":0},"Code":"NoSuchBucket","BucketName":"ls-capstone-deepstor","RequestId":"KDNA5DTMK5A4PJ01","HostId":"yHFI2ocjskfT8gs7Vh8aUz1JcBf4Ju4Ugt+ya7VLEbPIwQK8B+LhB/Lsb9VvzBeo9kAaKCs8W+BqMTK6GBRfmA==","message":"The specified bucket does not exist"
+  }
+}
+```
+
+## 1.1.5 Sample User Error Response
 ```json
 {
-    "fault": "client",
-    "status": 403,
-    "type": "SignatureDoesNotMatch",
-    "message": "The request signature we calculated does not match the signature you provided. Check your key and signing method."
+    "dateError": {
+        "status": 400,
+        "description": "Bad Request",
+        "message": "Malformed date parameter",
+        "expectedFormat": "mm-dd-yyyy"
+    }
 }
 ```
 
