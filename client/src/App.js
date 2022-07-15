@@ -5,7 +5,8 @@ import createCache from '@emotion/cache';
 import '@elastic/eui/dist/eui_theme_light.css';
 import { EuiProvider } from '@elastic/eui';
 import PageContainer from './components/PageContainer.jsx';
-import SelectionContainer from './components/SelectionContainer.jsx';
+import PickFilters from './components/PickFilters.jsx';
+import PickFiles from './components/PickFiles.jsx';
 
 function App() {
   const cache = createCache({
@@ -16,7 +17,7 @@ function App() {
 
   return (
     <EuiProvider cache={cache} colorMode="light">
-      <PageContainer content={SelectionContainer()} />
+      <PageContainer content={PickFilters()} moreContent={PickFiles()} />
     </EuiProvider>
   );
 }
