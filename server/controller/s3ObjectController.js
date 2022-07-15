@@ -1,12 +1,30 @@
-const  { getBucketObjects, getObjectContents } = require("../lib/s3Client");
+const  { getAllBucketObjects, getObjectContents, getBucketObjectsWithinDates } = require("../lib/s3Client");
 const { streamToString } = require("../utils/streamToString");
 const { logStringToJson } = require("../utils/logStringToJson");
 const { postToLogstash } = require("../services/logstashService");
 
 const getS3Objects = async(req, res, next) => {
+  const dateError = req.dateError;
+  const startDate = req.startDate;
+  const endDate = req.endDate;
+  if(dateError) {
+    res.status(400).send({dateError})
+  }
+
   try {
-    const response  = await getBucketObjects();
-    const objectKeys = response.Contents?.map(({Key}) => Key);
+    let objectKeys;
+
+    switch(!!startDate && !!endDate) {
+      case true:
+        console.log("date supplied");
+        objectKeys = await getBucketObjectsWithinDates(startDate, endDate);
+        break;
+      case false:
+        console.log("No date supplied");
+        objectKeys = await getAllBucketObjects();
+        break;
+    }
+
     res.send({objectKeys});
   } catch (error) {
     console.log("Error: ", error);

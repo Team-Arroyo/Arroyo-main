@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
+// eslint-disable-next-line object-curly-newline
 import { EuiButton, EuiSpacer, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 import moment from 'moment';
 import Dropdown from './Dropdown';
