@@ -4,8 +4,8 @@ import { EuiSelectable } from '@elastic/eui';
 function SelectablePlay() {
   const starting = [
     { label: 'testOne' },
-    { label: 'testOne' },
-    { label: 'testOne' },
+    { label: 'testtwo' },
+    { label: 'testthree' },
   ];
   const [options, setOptions] = useState(starting);
 
