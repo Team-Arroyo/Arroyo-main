@@ -11,10 +11,12 @@ const s3Client = new S3Client({
   }
 })
 
-const getBucketObjects = async(bucketName) => {
+const getAllBucketObjects = async() => {
   try {
     const response = await s3Client.send( new ListObjectsCommand({Bucket: process.env.AWS_BUCKET_NAME}))
-    return response;
+    console.log("all obj", response);
+    const objectKeys = response.Contents?.map(({Key}) => Key);
+    return objectKeys;
   } catch(err) {
     throw err
   }
@@ -32,4 +34,27 @@ const getObjectContents = async(Key) => {
   }
 }
 
-module.exports = { getBucketObjects, getObjectContents }
+const getBucketObjectsWithinDates = async(startDate, endDate) => {
+  const startMs = Date.parse(startDate);
+  const endMs = Date.parse(endDate);
+
+  try {
+    const response = await s3Client.send( new ListObjectsCommand({Bucket: process.env.AWS_BUCKET_NAME}))
+
+    const filteredContents = response.Contents.filter(({Key, LastModified }) => {
+      const objInputDateMs = Date.parse(new Date(LastModified).toDateString());
+      return (startMs <= objInputDateMs) && (objInputDateMs <= endMs)
+    })
+
+    const objectKeys = filteredContents.map(({Key}) => Key)
+    return objectKeys;
+  } catch(err) {
+    throw err
+  }
+}
+
+module.exports = { 
+  getAllBucketObjects, 
+  getObjectContents,
+  getBucketObjectsWithinDates
+ }
