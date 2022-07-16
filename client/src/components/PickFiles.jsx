@@ -1,47 +1,73 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import {
-  EuiButton, EuiFlexGroup, EuiFlexItem,
+  EuiSelectable, EuiButton, EuiSpacer, EuiFlexGroup, EuiFlexItem,
 } from '@elastic/eui';
-import apiClient from '../libs/apiclient';
-import Dropdown from './Dropdown';
+import PropTypes from 'prop-types';
+import convert from '../libs/utils';
 
-function PickFiles() {
-  const [choices, setChoices] = useState([]);
-  const [choice, setChoice] = useState('');
-
+function PickFiles({ choices }) {
+  const starting = convert.toOptions(choices);
+  const [options, setOptions] = useState([]);
+  const handleIngest = () => {
+    const selected = convert.toKeys(options);
+    // eslint-disable-next-line
+    console.log(selected);
+  };
+  const handleSelectAll = () => {
+    const allSelected = options.map((o) => ({ ...o, checked: 'on' }));
+    setOptions(allSelected);
+  };
+  const handleClearAll = () => {
+    const allCleared = options.map((o) => ({ ...o, checked: null }));
+    setOptions(allCleared);
+  };
   useEffect(() => {
-    apiClient.getKeys().then(
-      (keys) => setChoices(keys),
-    ).catch((e) => {
-      console.log(e);
-    });
-  }, []);
-
-  const handleSelection = (e) => {
-    setChoice(e.target.value);
-  };
-
-  const handleClick = () => {
-    if (choice === 'Select A Log') {
-      console.log('Nothing was selected');
-      return;
-    }
-    apiClient.getObject(choice)
-      .then(
-        (r) => console.log(r),
-      );
-  };
+    setOptions(starting);
+  }, [choices]);
 
   return (
-    <EuiFlexGroup>
-      <EuiFlexItem>
-        <Dropdown choices={choices} onSelection={handleSelection} />
-      </EuiFlexItem>
-      <EuiFlexItem>
-        <EuiButton onClick={handleClick}>Ingest Log</EuiButton>
-      </EuiFlexItem>
-    </EuiFlexGroup>
+    <>
+      <EuiSelectable
+        aria-label="Basic example"
+        searchable
+        options={options}
+        listProps={{ bordered: true }}
+        onChange={(newOptions) => setOptions(newOptions)}
+      >
+        {(list, search) => (
+          <Fragment key="searchable">
+            {search}
+            {list}
+          </Fragment>
+        )}
+      </EuiSelectable>
+      <EuiSpacer size="l" />
+      <EuiFlexGroup>
+        <EuiFlexItem>
+          <EuiButton onClick={handleSelectAll}>
+            Select All
+          </EuiButton>
+        </EuiFlexItem>
+        <EuiFlexItem>
+          <EuiButton onClick={handleClearAll}>
+            Clear All
+          </EuiButton>
+        </EuiFlexItem>
+      </EuiFlexGroup>
+      <EuiSpacer size="l" />
+      <EuiButton onClick={handleIngest}>
+        Ingest Logs
+      </EuiButton>
+    </>
   );
 }
+
+PickFiles.defaultProps = {
+  choices: [],
+};
+
+PickFiles.propTypes = {
+  choices: PropTypes.arrayOf(PropTypes.string),
+};
 
 export default PickFiles;
