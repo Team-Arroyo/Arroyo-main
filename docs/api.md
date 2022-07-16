@@ -66,21 +66,123 @@ This route is used to start the rehydrate process of an AWS S3 object. Sends a 2
 ```json
 {
   "message": "Rehydrate on logs1.txt in progress",
-  "sampleLog": "31.11.188.151 - - [07/Jul/2022:12:55:34 -0500] \"GET /totam/exercitationem/quidem.css HTTP/1.0\" 200 5004 \"https://www.foster.org/search/\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/5341 (KHTML, like Gecko) Chrome/13.0.821.0 Safari/5341\""
 }
 ```
 
 ## 1.2.3 Error Response
-If the objectKey is not found within the AWS S3 bucket, the backnd
-will format and forward a brief AWS error message in the body with relevant information
+If the objectKey is not found within the AWS S3 bucket, the backend
+will format and forward an error message in the body with status 500
 
 ## 1.2.4 Example Error Response
 ```json
 {
-    "fault": "client",
-    "status": 404,
-    "type": "NoSuchKey",
-    "message": "The specified key does not exist."
+    "message": "Log rehydration failed, see error message for more details",
+    "error": {
+        "name": "NoSuchKey",
+        "$fault": "client",
+        "$metadata": {
+            "httpStatusCode": 404,
+            "extendedRequestId": "ZK1vBmD3JFSkgXASC8fwh7w6NnpbaqREdQF9d4NMOb5DKLTVbaFBRKNHc94ta0N6I18/bRji8tM=",
+            "attempts": 1,
+            "totalRetryDelay": 0
+        },
+        "Code": "NoSuchKey",
+        "Key": "log.txt",
+        "RequestId": "5FTSW3DZF2W8HPMW",
+        "HostId": "ZK1vBmD3JFSkgXASC8fwh7w6NnpbaqREdQF9d4NMOb5DKLTVbaFBRKNHc94ta0N6I18/bRji8tM=",
+        "message": "The specified key does not exist."
+    }
+}
+```
+
+## 1.3 POST /api/s3objects
+This the NEW route is used to start the rehydrate process of a batchs of AWS S3 objects. Sends a 200 resposne for now. Will change as architecture changes.
+
+## 1.3.1 Expected Parameters
+```json
+{
+  "objectKeys": ["file1.log", "file2.log"]
+}
+```
+
+## 1.3.2 Example Response
+```json
+{
+    "batchStatus": [
+        {
+            "objectKey": "kibana-access.log",
+            "status": "complete"
+        },
+        {
+            "objectKey": "nginx-access.log",
+            "status": "complete"
+        }
+    ]
+}
+```
+
+## 1.3.3 Partial Partial Success Response
+If some files fail on reingestion -- the batch status will include an error object associated with the failing file. The response status returns 200
+regardless of a partial batch failure.  Will change as architecture and log volume changes.
+
+## 1.3.4 Example Partial Success Response
+```json
+{
+    "batchStatus": [
+        {
+            "objectKey": "kibana-acces.log",
+            "status": "fail",
+            "error": {
+                "name": "NoSuchKey",
+                "$fault": "client",
+                "$metadata": {
+                    "httpStatusCode": 404,
+                    "extendedRequestId": "sBO34NTmqgh+8b7OsIwJCryu0ArTnuNn1LTicaBOKJk+OsA/R08jB4AI+aXAVB7lfqbzniCAFCQ=",
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                },
+                "Code": "NoSuchKey",
+                "Key": "kibana-acces.log",
+                "RequestId": "3YKYAPEB7NN26Z69",
+                "HostId": "sBO34NTmqgh+8b7OsIwJCryu0ArTnuNn1LTicaBOKJk+OsA/R08jB4AI+aXAVB7lfqbzniCAFCQ=",
+                "message": "The specified key does not exist."
+            }
+        },
+        {
+            "objectKey": "nginx-access.log",
+            "status": "complete"
+        }
+    ]
+}
+```
+
+## 1.3.4 Complete Job Failure
+If all files fail on reingestion -- the batch status will include all error messages associated with each file. The response returns a 400 status. Will change as architecture and log volume changes.
+
+## 1.3.5 Example Complete Failure
+```json
+{
+    "batchStatus": [
+        {
+            "objectKey": "kibana-access.log",
+            "status": "fail",
+            "error": {
+                "name": "NoSuchBucket",
+                "$fault": "client",
+                "$metadata": {
+                    "httpStatusCode": 404,
+                    "extendedRequestId": "Guxk3LERKIwXxHjAtP5Lt4Ng36pnVcPyQqleeiug9s2V8h4DKtMRIM5224QcGDUD4ZoKIIRBlX8=",
+                    "attempts": 1,
+                    "totalRetryDelay": 0
+                },
+                "Code": "NoSuchBucket",
+                "BucketName": "ls-capstone-deepstor",
+                "RequestId": "H3TKZHMQBPXS1RW1",
+                "HostId": "Guxk3LERKIwXxHjAtP5Lt4Ng36pnVcPyQqleeiug9s2V8h4DKtMRIM5224QcGDUD4ZoKIIRBlX8=",
+                "message": "The specified bucket does not exist"
+            }
+        }
+    ]
 }
 ```
 
