@@ -21,6 +21,7 @@ function PickFilters({ setChoices }) {
   };
 
   const handleClick = () => {
+    console.log(`fake submitting ${startDate} and ${endDate}`);
     apiClient
       .getKeys()
       .then(
