@@ -4,9 +4,11 @@ import {
   EuiButton, EuiSpacer, EuiFlexGroup, EuiFlexItem,
 } from '@elastic/eui';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import DatePicker from './DatePicker';
+import apiClient from '../libs/apiclient';
 
-function PickFilters() {
+function PickFilters({ setChoices }) {
   const [startDate, setStartDate] = useState(moment());
   const [endDate, setEndDate] = useState(moment());
 
@@ -16,6 +18,15 @@ function PickFilters() {
 
   const handleEndDateChange = (date) => {
     setEndDate(date);
+  };
+
+  const handleClick = () => {
+    apiClient
+      .getKeys()
+      .then(
+        (keys) => setChoices(keys),
+      )
+      .catch((e) => console.log(e));
   };
 
   return (
@@ -28,7 +39,7 @@ function PickFilters() {
           <DatePicker dateType="end date" dateStatus={endDate} handleChange={handleEndDateChange} />
         </EuiFlexItem>
         <EuiFlexItem>
-          <EuiButton onClick={() => console.log(`posting ${startDate} and ${endDate} to backend API`)}>
+          <EuiButton onClick={handleClick}>
             Search S3
           </EuiButton>
         </EuiFlexItem>
@@ -37,5 +48,13 @@ function PickFilters() {
     </div>
   );
 }
+
+PickFilters.defaultProps = {
+  setChoices: null,
+};
+
+PickFilters.propTypes = {
+  setChoices: PropTypes.func,
+};
 
 export default PickFilters;
