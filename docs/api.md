@@ -52,28 +52,29 @@ It will return status 400 errors and a JSON body if the query params supplied do
 }
 ```
 
-## 1.2 POST /api/s3object/rehydrate
-This route is used to start the rehydrate process of an AWS S3 object. Sends a 202 resposne
+## 1.2 POST /api/s3object/rehydrate -- DEPRECIATED
+See Heading 1.3 for the new API route. This section will be removed
+once confirmed that front end is using new API described in 1.3
 
-## 1.2.1 Expected Parameters
+## 1.2.1 Expected Parameters -- DEPRECIATED
 ```json
 {
   "objectKey": "log1.txt"
 }
 ```
 
-## 1.2.2 Example Response
+## 1.2.2 Example Response -- DEPRECIATED
 ```json
 {
   "message": "Rehydrate on logs1.txt in progress",
 }
 ```
 
-## 1.2.3 Error Response
+## 1.2.3 Error Response -- DEPRECIATED
 If the objectKey is not found within the AWS S3 bucket, the backend
 will format and forward an error message in the body with status 500
 
-## 1.2.4 Example Error Response
+## 1.2.4 Example Error Response -- DEPRECIATED
 ```json
 {
     "message": "Log rehydration failed, see error message for more details",
@@ -96,12 +97,12 @@ will format and forward an error message in the body with status 500
 ```
 
 ## 1.3 POST /api/s3objects
-This the NEW route is used to start the rehydrate process of a batchs of AWS S3 objects. Sends a 200 resposne for now. Will change as architecture changes.
+This the NEW route is used to start the rehydrate process of a batchs of AWS S3 objects. Sends a 200 resposne upon success. Will change as architecture changes.
 
 ## 1.3.1 Expected Parameters
 ```json
 {
-  "objectKeys": ["file1.log", "file2.log"]
+  "objectKeys": ["kibana-access.log", "nginx-access.log"]
 }
 ```
 
@@ -130,7 +131,7 @@ regardless of a partial batch failure.  Will change as architecture and log volu
 {
     "batchStatus": [
         {
-            "objectKey": "kibana-acces.log",
+            "objectKey": "badfile-access.log",
             "status": "fail",
             "error": {
                 "name": "NoSuchKey",
@@ -142,7 +143,7 @@ regardless of a partial batch failure.  Will change as architecture and log volu
                     "totalRetryDelay": 0
                 },
                 "Code": "NoSuchKey",
-                "Key": "kibana-acces.log",
+                "Key": "badfile-access.log",
                 "RequestId": "3YKYAPEB7NN26Z69",
                 "HostId": "sBO34NTmqgh+8b7OsIwJCryu0ArTnuNn1LTicaBOKJk+OsA/R08jB4AI+aXAVB7lfqbzniCAFCQ=",
                 "message": "The specified key does not exist."
@@ -156,10 +157,24 @@ regardless of a partial batch failure.  Will change as architecture and log volu
 }
 ```
 
-## 1.3.4 Complete Job Failure
-If all files fail on reingestion -- the batch status will include all error messages associated with each file. The response returns a 400 status. Will change as architecture and log volume changes.
+## 1.3.4 User Error
+If the req. body is missing an objectKeys field, or the supplied array is empty the API will return status 400 with a JSON object describing the error
 
-## 1.3.5 Example Complete Failure
+## 1.3.5 Ecample User Error Response
+```json
+{
+    "status": 400,
+    "description": "Bad Request",
+    "message": "Missing field objectKeys in req. body",
+    "expectedFormat": "{objectKeys: [file1.log, file2.log]}"
+}
+```
+
+
+## 1.3.6 Complete Job Failure
+If all files fail on reingestion -- during development the batch status will include all error messages associated with each file. The response returns a 400 status. Will change as architecture and log volume changes.
+
+## 1.3.7 Example Complete Failure Response
 ```json
 {
     "batchStatus": [
@@ -176,7 +191,7 @@ If all files fail on reingestion -- the batch status will include all error mess
                     "totalRetryDelay": 0
                 },
                 "Code": "NoSuchBucket",
-                "BucketName": "ls-capstone-deepstor",
+                "BucketName": "non-existing-bucket",
                 "RequestId": "H3TKZHMQBPXS1RW1",
                 "HostId": "Guxk3LERKIwXxHjAtP5Lt4Ng36pnVcPyQqleeiug9s2V8h4DKtMRIM5224QcGDUD4ZoKIIRBlX8=",
                 "message": "The specified bucket does not exist"
