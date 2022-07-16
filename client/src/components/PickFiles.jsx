@@ -1,11 +1,15 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import { EuiSelectable } from '@elastic/eui';
 import PropTypes from 'prop-types';
 import convert from '../libs/utils';
 
 function PickFiles({ choices }) {
   const starting = convert.toOptions(choices);
-  const [options, setOptions] = useState(starting);
+  const [options, setOptions] = useState([]);
+
+  useEffect(() => {
+    setOptions(starting);
+  }, [choices]);
 
   return (
     <EuiSelectable
