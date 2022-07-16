@@ -1,16 +1,26 @@
 import React, { useState, Fragment, useEffect } from 'react';
-import { EuiSelectable, EuiButton, EuiSpacer } from '@elastic/eui';
+import {
+  EuiSelectable, EuiButton, EuiSpacer, EuiFlexGroup, EuiFlexItem,
+} from '@elastic/eui';
 import PropTypes from 'prop-types';
 import convert from '../libs/utils';
 
 function PickFiles({ choices }) {
   const starting = convert.toOptions(choices);
   const [options, setOptions] = useState([]);
-  const handleClick = () => {
+  const handleIngest = () => {
     const selected = convert.toKeys(options);
+    // eslint-disable-next-line
     console.log(selected);
   };
-
+  const handleSelectAll = () => {
+    const allSelected = options.map((o) => ({ ...o, checked: 'on' }));
+    setOptions(allSelected);
+  };
+  const handleClearAll = () => {
+    const allCleared = options.map((o) => ({ ...o, checked: null }));
+    setOptions(allCleared);
+  };
   useEffect(() => {
     setOptions(starting);
   }, [choices]);
@@ -32,7 +42,20 @@ function PickFiles({ choices }) {
         )}
       </EuiSelectable>
       <EuiSpacer size="l" />
-      <EuiButton onClick={handleClick}>
+      <EuiFlexGroup>
+        <EuiFlexItem>
+          <EuiButton onClick={handleSelectAll}>
+            Select All
+          </EuiButton>
+        </EuiFlexItem>
+        <EuiFlexItem>
+          <EuiButton onClick={handleClearAll}>
+            Clear All
+          </EuiButton>
+        </EuiFlexItem>
+      </EuiFlexGroup>
+      <EuiSpacer size="l" />
+      <EuiButton onClick={handleIngest}>
         Ingest Logs
       </EuiButton>
     </>
