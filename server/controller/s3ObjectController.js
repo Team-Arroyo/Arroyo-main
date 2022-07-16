@@ -67,25 +67,6 @@ const rehydrateS3Objects = async(objectKey) => {
   })
 }
 
-/*
-  try {
-    const data = await getObjectContents(objectKey)
-    const bodyContents = await streamToString(data.Body);
-    const logsJson = logStringToJson(bodyContents)
-    await postToLogstash(logsJson)
-    sendStatus({ objectKey, status: 'complete'})
-  } catch(err) {
-    console.log("Error", err)
-    sendStatus({ objectKey, status: 'fail', reason: err.message})
-    // res.status(err.$metadata.httpStatusCode).send({
-    //   fault: err.$fault, 
-    //   status: err.$metadata.httpStatusCode,
-    //   type: err.name,
-    //   message: err.message,
-    // })
-  }
-*/
-
 module.exports = {
   getS3Objects,
   rehydrateS3Object,
