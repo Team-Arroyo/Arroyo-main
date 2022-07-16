@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { EuiSelectable } from '@elastic/eui';
 
 function SelectablePlay() {
@@ -12,11 +12,17 @@ function SelectablePlay() {
   return (
     <EuiSelectable
       aria-label="Basic example"
+      searchable
       options={options}
       listProps={{ bordered: true }}
       onChange={(newOptions) => setOptions(newOptions)}
     >
-      {(list) => list}
+      {(list, search) => (
+        <Fragment key="searchable">
+          {search}
+          {list}
+        </Fragment>
+      )}
     </EuiSelectable>
   );
 }
