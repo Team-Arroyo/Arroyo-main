@@ -7,6 +7,7 @@ const getS3Objects = async(req, res, next) => {
   const dateError = req.dateError;
   const startDate = req.startDate;
   const endDate = req.endDate;
+
   if(dateError) {
     res.status(400).send({dateError})
     return;
@@ -15,15 +16,12 @@ const getS3Objects = async(req, res, next) => {
   try {
     let objectKeys;
 
-    switch(!!startDate && !!endDate) {
-      case true:
+    if(!!startDate && !!endDate) {
         console.log("date supplied");
         objectKeys = await getBucketObjectsWithinDates(startDate, endDate);
-        break;
-      case false:
+    } else {
         console.log("No date supplied");
         objectKeys = await getAllBucketObjects();
-        break;
     }
 
     res.send({objectKeys});
@@ -55,7 +53,22 @@ const rehydrateS3Object = async(req, res, next) => {
   }
 }
 
+const rehydrateS3Objects = async(objectKey) => {
+  return new Promise(async(resolve, reject) => {
+    try {
+      const data = await getObjectContents(objectKey);
+      const rawLogString = await streamToString(data.Body);
+      const logsJson = logStringToJson(rawLogString);
+      await postToLogstash(logsJson);
+      resolve({objectKey, status: 'complete'})
+    } catch(err) {
+      reject({objectKey, status: 'fail', error: err})
+    }
+  })
+}
+
 module.exports = {
   getS3Objects,
-  rehydrateS3Object
+  rehydrateS3Object,
+  rehydrateS3Objects
 }

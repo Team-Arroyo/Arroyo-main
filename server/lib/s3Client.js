@@ -14,7 +14,6 @@ const s3Client = new S3Client({
 const getAllBucketObjects = async() => {
   try {
     const response = await s3Client.send( new ListObjectsCommand({Bucket: process.env.AWS_BUCKET_NAME}))
-    console.log("all obj", response);
     const objectKeys = response.Contents?.map(({Key}) => Key);
     return objectKeys;
   } catch(err) {
