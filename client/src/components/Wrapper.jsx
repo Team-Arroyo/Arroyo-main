@@ -8,7 +8,7 @@ function Wrapper() {
   return (
     <>
       <PickFilters setChoices={setChoices} />
-      <PickFiles startingChoices={choices} />
+      <PickFiles choices={choices} />
     </>
   );
 }

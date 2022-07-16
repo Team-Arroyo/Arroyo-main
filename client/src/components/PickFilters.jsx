@@ -50,7 +50,7 @@ function PickFilters({ setChoices }) {
 }
 
 PickFilters.defaultProps = {
-  setChoices: null,
+  setChoices: () => console.log('the real function wasn not passed down'),
 };
 
 PickFilters.propTypes = {

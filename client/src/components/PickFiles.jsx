@@ -1,47 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import {
-  EuiButton, EuiFlexGroup, EuiFlexItem,
-} from '@elastic/eui';
-import apiClient from '../libs/apiclient';
-import Dropdown from './Dropdown';
+import React, { useState, Fragment } from 'react';
+import { EuiSelectable } from '@elastic/eui';
+import PropTypes from 'prop-types';
+import convert from '../libs/utils';
 
-function PickFiles() {
-  const [choices, setChoices] = useState([]);
-  const [choice, setChoice] = useState('');
-
-  useEffect(() => {
-    apiClient.getKeys().then(
-      (keys) => setChoices(keys),
-    ).catch((e) => {
-      console.log(e);
-    });
-  }, []);
-
-  const handleSelection = (e) => {
-    setChoice(e.target.value);
-  };
-
-  const handleClick = () => {
-    if (choice === 'Select A Log') {
-      console.log('Nothing was selected');
-      return;
-    }
-    apiClient.getObject(choice)
-      .then(
-        (r) => console.log(r),
-      );
-  };
+function PickFiles({ choices }) {
+  const starting = convert.toOptions(choices);
+  const [options, setOptions] = useState(starting);
 
   return (
-    <EuiFlexGroup>
-      <EuiFlexItem>
-        <Dropdown choices={choices} onSelection={handleSelection} />
-      </EuiFlexItem>
-      <EuiFlexItem>
-        <EuiButton onClick={handleClick}>Ingest Log</EuiButton>
-      </EuiFlexItem>
-    </EuiFlexGroup>
+    <EuiSelectable
+      aria-label="Basic example"
+      searchable
+      options={options}
+      listProps={{ bordered: true }}
+      onChange={(newOptions) => setOptions(newOptions)}
+    >
+      {(list, search) => (
+        <Fragment key="searchable">
+          {search}
+          {list}
+        </Fragment>
+      )}
+    </EuiSelectable>
   );
 }
+
+PickFiles.defaultProps = {
+  choices: [],
+};
+
+PickFiles.propTypes = {
+  choices: PropTypes.arrayOf(PropTypes.string),
+};
 
 export default PickFiles;
