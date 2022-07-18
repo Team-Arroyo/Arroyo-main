@@ -20,13 +20,14 @@ function PickFilters({ setChoices }) {
     setEndDate(date);
   };
 
-  const formatDate = (dateObj) => moment(dateObj).format('MM-DD-YYYY');
+  const formatDate = (dateObj) => {
+    if (!dateObj) return null;
+    return moment(dateObj).format('MM-DD-YYYY');
+  };
 
   const handleClick = () => {
-    formatDate(startDate);
-    console.log(`fake submitting ${startDate} and ${endDate}`);
     apiClient
-      .getKeys()
+      .getKeys(formatDate(startDate), formatDate(endDate))
       .then(
         (keys) => setChoices(keys),
       )
