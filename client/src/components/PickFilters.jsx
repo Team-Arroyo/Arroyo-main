@@ -6,16 +6,12 @@ import {
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import DatePicker from './DatePicker';
+import { formatDate } from '../libs/utils';
 import apiClient from '../libs/apiclient';
 
 function PickFilters({ setChoices }) {
   const [startDate, setStartDate] = useState(moment());
   const [endDate, setEndDate] = useState(moment());
-
-  const formatDate = (dateObj) => {
-    if (!dateObj) return null;
-    return moment(dateObj).format('MM-DD-YYYY');
-  };
 
   const isValidDateRange = (!formatDate(startDate) && !formatDate(endDate))
   || (startDate !== null && endDate !== null && startDate <= endDate);
