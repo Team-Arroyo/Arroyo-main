@@ -59,7 +59,10 @@ function PickFiles({ choices }) {
         </EuiFlexItem>
       </EuiFlexGroup>
       <EuiSpacer size="l" />
-      <EuiButton onClick={handleIngest}>
+      <EuiButton
+        onClick={handleIngest}
+        isDisabled={!(convert.toKeys(options)).length}
+      >
         Ingest Logs
       </EuiButton>
     </>
