@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React, { useState } from 'react';
 import {
-  EuiButton, EuiSpacer, EuiFlexGroup, EuiFlexItem,
+  EuiButton, EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiTitle, EuiText,
 } from '@elastic/eui';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -20,7 +20,10 @@ function PickFilters({ setChoices }) {
     setEndDate(date);
   };
 
+  const formatDate = (dateObj) => moment(dateObj).format('MM-DD-YYYY');
+
   const handleClick = () => {
+    formatDate(startDate);
     console.log(`fake submitting ${startDate} and ${endDate}`);
     apiClient
       .getKeys()
@@ -32,6 +35,10 @@ function PickFilters({ setChoices }) {
 
   return (
     <div>
+      <EuiTitle size="s"><h2>Filter</h2></EuiTitle>
+      <EuiSpacer size="m" />
+      <EuiText><p>Select a Date Range</p></EuiText>
+      <EuiSpacer size="s" />
       <EuiFlexGroup>
         <EuiFlexItem>
           <DatePicker dateType="start date" dateStatus={startDate} handleChange={handleStartDateChange} />
