@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const toOptions = (s3Keys) => s3Keys.map((key) => ({
   label: key,
 }));
@@ -9,6 +11,11 @@ const toKeys = (options) => options
 const convert = {
   toOptions,
   toKeys,
+};
+
+export const formatDate = (dateObj) => {
+  if (!dateObj) return null;
+  return moment(dateObj).format('MM-DD-YYYY');
 };
 
 export default convert;
