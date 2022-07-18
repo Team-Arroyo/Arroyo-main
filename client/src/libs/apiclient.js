@@ -34,9 +34,23 @@ const getObject = async (key) => {
   }
 };
 
+const getObjects = async (keys) => {
+  const requestBody = {
+    objectKeys: keys,
+  };
+  let response;
+  try {
+    response = await axios.post(GET_KEYS_URL, requestBody);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 const apiClient = {
   getKeys,
   getObject,
+  getObjects,
 };
 
 export default apiClient;

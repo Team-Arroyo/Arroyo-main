@@ -4,14 +4,15 @@ import {
 } from '@elastic/eui';
 import PropTypes from 'prop-types';
 import convert from '../libs/utils';
+import apiClient from '../libs/apiclient';
 
 function PickFiles({ choices }) {
   const starting = convert.toOptions(choices);
   const [options, setOptions] = useState([]);
   const handleIngest = () => {
-    const selected = convert.toKeys(options);
-    // eslint-disable-next-line
-    console.log(selected);
+    const selectedKeys = convert.toKeys(options);
+    // eslint-disable-next-line no-console
+    apiClient.getObjects(selectedKeys).then((r) => console.log(r));
   };
   const handleSelectAll = () => {
     const allSelected = options.map((o) => ({ ...o, checked: 'on' }));
