@@ -11,14 +11,13 @@ const getKeys = async (startDate, endDate) => {
     queryParams = `?startDate=${startDate}&endDate=${endDate}`;
   }
   try {
-    let data;
+    let response;
     if (queryParams) {
-      data = await axios.get(GET_KEYS_URL + queryParams);
+      response = await axios.get(GET_KEYS_URL + queryParams);
     } else {
-      data = await axios.get(GET_KEYS_URL);
+      response = await axios.get(GET_KEYS_URL);
     }
-    console.log('data', data.data.objectKeys);
-    return data.data.objectKeys;
+    return response.data.objectKeys;
   } catch (error) {
     return error;
   }
