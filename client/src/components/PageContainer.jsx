@@ -5,6 +5,9 @@ import {
   EuiPageContentBody,
   EuiPageHeader,
   EuiPageBody,
+  EuiTitle,
+  EuiSpacer,
+  EuiText,
 } from '@elastic/eui';
 import PropTypes from 'prop-types';
 
@@ -24,7 +27,14 @@ function PageContainer({ content, moreContent }) {
           color="transparent"
           borderRadius="none"
         >
+          <EuiTitle size="s"><h2>Filter</h2></EuiTitle>
+          <EuiSpacer size="m" />
+          <EuiText><p>Select a Date Range</p></EuiText>
+          <EuiSpacer size="s" />
           <EuiPageContentBody restrictWidth>{content}</EuiPageContentBody>
+
+          <EuiTitle size="s"><h2>Select</h2></EuiTitle>
+          <EuiSpacer size="m" />
           <EuiPageContentBody restrictWidth>{moreContent}</EuiPageContentBody>
         </EuiPageContent>
       </EuiPageBody>

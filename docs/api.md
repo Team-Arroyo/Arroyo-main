@@ -1,13 +1,16 @@
 # 1. API Documentation
 
 ## 1.1 GET /api/s3objects
+
 This route is used to fetch all object keys (file names) that exist
 within an AWS S3 bucket. Sends a 200 response.
 
 ## 1.1.1 Expected Parameters
+
 None
 
 ## 1.1.2 Example Response
+
 ```json
 {
   "objectKeys": ["log1.txt", "log2.txt"]
@@ -15,11 +18,12 @@ None
 ```
 
 ## 1.1.3 Error Response
+
 If AWS credentials are incorrect the API will format and forward
 a brief AWS error message in the body with relevant information
 
-
 ## 1.1.4 Example Error Response
+
 ```json
 {
     "fault": "client",
@@ -30,9 +34,11 @@ a brief AWS error message in the body with relevant information
 ```
 
 ## 1.2 POST /api/s3object/rehydrate
+
 This route is used to start the rehydrate process of an AWS S3 object. Sends a 202 resposne
 
 ## 1.2.1 Expected Parameters
+
 ```json
 {
   "objectKey": "log1.txt"
@@ -40,6 +46,7 @@ This route is used to start the rehydrate process of an AWS S3 object. Sends a 2
 ```
 
 ## 1.2.2 Example Response
+
 ```json
 {
   "message": "Rehydrate on logs1.txt in progress",
@@ -48,10 +55,12 @@ This route is used to start the rehydrate process of an AWS S3 object. Sends a 2
 ```
 
 ## 1.2.3 Error Response
+
 If the objectKey is not found within the AWS S3 bucket, the backnd
 will format and forward a brief AWS error message in the body with relevant information
 
 ## 1.2.4 Example Error Response
+
 ```json
 {
     "fault": "client",
@@ -60,4 +69,3 @@ will format and forward a brief AWS error message in the body with relevant info
     "message": "The specified key does not exist."
 }
 ```
-
