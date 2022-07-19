@@ -7,6 +7,7 @@ import PickFiles from '../components/PickFiles'
 describe('Pick Files', () => {
   test('pick files renders', () => {
     render(<PickFiles choices={['one', 'two', 'trees']} />)
+    expect(screen.getByText('Select')).toBeInTheDocument();
   });
   xtest('empty choice list when no choices are passed down', () => {
 
