@@ -6,11 +6,13 @@ import PickFiles from '../components/PickFiles'
 
 describe('Pick Files', () => {
   test('pick files renders', () => {
-    render(<PickFiles choices={['one', 'two', 'trees']} />)
+    render(<PickFiles />)
     expect(screen.getByText('Select')).toBeInTheDocument();
   });
-  xtest('empty choice list when no choices are passed down', () => {
-
+  test('empty choice list when no choices are passed down', () => {
+    render(<PickFiles />)
+    const para = screen.getAllByText((content, element) => element.tagName.toLowerCase() === 'p' && element.innerHTML === 'No options available') 
+    expect(para.length).toBeGreaterThan(1);
   });
   xtest('choices render when choices are passed down', () => {
 
