@@ -24,7 +24,7 @@ to run:
 
 - `node index.mjs`
 
-Once you ran the script ones, and if you decide to run it again make sure to either:
+Once you ran the script once, and if you decide to run it again make sure to either:
 1. set new names for both `SQS` and `Lambda` (in `.env`)
 or
 2. delete both resources (from the aws dashbord) and wait 1 minute before running the script
