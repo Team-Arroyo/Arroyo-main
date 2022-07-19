@@ -29,12 +29,7 @@ describe('Pick Filters', () => {
   test('invalid date input disables searchS3 button', async () => {
     const clearDateButtons = screen.getAllByRole('button', {name: /Clear input/});
     const searchS3 = screen.getByRole('button', {name: /Search S3/i});
-    screen.debug(searchS3)
     await userEvent.click(clearDateButtons[0]);
     expect(searchS3).toBeDisabled();
-  })
-
-  xtest('clicking searchS3 button calls fakeSetChoices', () => {
-
   })
 })
