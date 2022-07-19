@@ -1,7 +1,7 @@
 import React from "react";
 import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event';
-import {render, screen, fireEvent} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import PickFilters from "../components/PickFilters";
 
 describe('Pick Filters', () => {
@@ -20,14 +20,18 @@ describe('Pick Filters', () => {
 
   test('invalid date input makes a warning', async () => {
     const clearDateButtons = screen.getAllByRole('button', {name: /Clear input/});
-    await userEvent.click(clearDateButtons[0])
+    await userEvent.click(clearDateButtons[0]);
     expect(
       screen.getByText(/Enter start and end date/i)
     ).toBeInTheDocument();
   });
 
-  xtest('invalid date input disables searchS3 button', () => {
-
+  test('invalid date input disables searchS3 button', async () => {
+    const clearDateButtons = screen.getAllByRole('button', {name: /Clear input/});
+    const searchS3 = screen.getByRole('button', {name: /Search S3/i});
+    screen.debug(searchS3)
+    await userEvent.click(clearDateButtons[0]);
+    expect(searchS3).toBeDisabled();
   })
 
   xtest('clicking searchS3 button calls fakeSetChoices', () => {
