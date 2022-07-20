@@ -2,13 +2,35 @@ const SUPPORTED_QUERY_NUM = 2;
 
 const isInvalidFormat = (queryObj) => {
   const [key, value] = Object.entries(queryObj).pop()
-  return (key === "") || (value == "");
+  return (key === "" || typeof key !== 'string') || (value == "" || typeof value !== 'string');
+}
+
+const createSqlExpression = (queries) => {
+  const expressionTemplate = "SELECT * FROM s3object s WHERE"
+  const keyValuePairs = queries.map((queryObj) => {
+    const [ key, value ] = Object.entries(queryObj).pop();
+    return `s.${key} = '${value}'`;
+  });
+
+  const queryString = keyValuePairs.join(" AND ");
+  return `${expressionTemplate} ${queryString}`;
 }
 
 const detectQueryErrors = (queries) => {
   let error;
   
-  if(queries.length > SUPPORTED_QUERY_NUM) {
+  if(!queries || !Array.isArray(queries)) {
+    error = {
+      status: 400,
+      description: 'Bad Request',
+      message: 'Queries property is either missing ot not an array',
+      expectedFormat: {
+        startDate: "mm-dd-yyyy",
+        endDate: "mm-dd-yyyy",
+        queries: [{logProperty: "logValue"}]
+      }
+    }
+  } else if(queries.length > SUPPORTED_QUERY_NUM) {
     error = {
       status: 400,
       description: 'Bad Request',
@@ -32,25 +54,19 @@ const detectQueryErrors = (queries) => {
   return error;
 }
 
-const createSqlExpression = (queries) => {
-  const expressionTemplate = "SELECT * FROM s3object s WHERE"
-  const keyValuePairs = queries.map((queryObj) => {
-    const [ key, value ] = Object.entries(queryObj).pop();
-    return `s.${key} = '${value}'`;
-  });
-
-  const queryString = keyValuePairs.join(" AND ");
-  return `${expressionTemplate} ${queryString}`;
-}
-
-const validateQueries = (req, _, next) => {
+const validateQueries = (req, res, next) => {
   const { queries } = req.body;
-  if(queries) {
-    req.queryError = detectQueryErrors(queries);
-    req.sqlExpression = createSqlExpression(queries);
-  } 
+  
+  const error = detectQueryErrors(queries);
 
-  next();
+  if(error) {
+    res.status(400).json(error);
+    res.connection.destroy();
+  } else {
+    req.sqlExpression = createSqlExpression(queries);
+    next();
+  }
+
 }
 
 module.exports = validateQueries;

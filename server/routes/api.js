@@ -16,6 +16,6 @@ router.post('/s3object/rehydrate', rehydrateS3Object);
 
 router.post('/s3objects', validateObjectKeys, initializeRehydrateJob);
 
-router.post('/query-ingest', validateBodyDateParams, initializeQueryRehydrate);
+router.post('/query-ingest', validateBodyDateParams, validateQueries, initializeQueryRehydrate);
 
 module.exports = router

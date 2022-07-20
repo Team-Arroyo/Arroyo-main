@@ -45,9 +45,11 @@ const initializeRehydrateJob = (req, res) => {
 const initializeQueryRehydrate = (req, res) => {
   const startDate = req.startDate;
   const endDate = req.endDate;
+  const sqlExpression = req.sqlExpression;
 
   console.log("startDate", startDate);
   console.log("endDate", endDate);
+  console.log("expression", sqlExpression);
   
   res.status(200).json({message: 'no problems with req'});
 }
