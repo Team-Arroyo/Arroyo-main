@@ -47,10 +47,21 @@ const getObjects = async (keys) => {
   }
 };
 
+/*
+const postQueryIngest = async (payload) => {
+  try {
+
+  } catch (error) {
+    return error;
+  }
+}
+*/
+
 const apiClient = {
   getKeys,
   getObject,
   getObjects,
+  // postQueryIngest,
 };
 
 export default apiClient;

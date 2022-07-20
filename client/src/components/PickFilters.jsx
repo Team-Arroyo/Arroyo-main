@@ -1,10 +1,24 @@
 /* eslint-disable no-console */
 import React, { useState } from 'react';
 import {
-  EuiButton, EuiSpacer, EuiTitle, EuiText, EuiForm, EuiFormRow, EuiFlexGroup, EuiFlexItem,
+  EuiButton,
+  EuiSpacer,
+  EuiTitle,
+  EuiText,
+  EuiForm,
+  EuiFormRow,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiFieldText,
+  EuiAccordion,
+  EuiPanel,
+  EuiButtonIcon,
 } from '@elastic/eui';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import { icon as searchIcon } from '@elastic/eui/es/components/icon/assets/search';
+import { icon as plusIcon } from '@elastic/eui/es/components/icon/assets/plus';
+// import { icon as trashIcon } from '@elastic/eui/es/components/icon/assets/trash';
 import DatePicker from './DatePicker';
 import { formatDate } from '../libs/utils';
 import apiClient from '../libs/apiclient';
@@ -12,6 +26,9 @@ import apiClient from '../libs/apiclient';
 function PickFilters({ setChoices }) {
   const [startDate, setStartDate] = useState(moment());
   const [endDate, setEndDate] = useState(moment());
+  const [column, setColumn] = useState('');
+  const [columnValue, setColumnValue] = useState('');
+  const [queries, setQueries] = useState([]);
 
   const isValidDateRange = (!formatDate(startDate) && !formatDate(endDate))
   || (startDate !== null && endDate !== null && startDate <= endDate);
@@ -22,6 +39,15 @@ function PickFilters({ setChoices }) {
 
   const handleEndDateChange = (date) => {
     setEndDate(date);
+  };
+
+  const handleChangeColumn = (c) => setColumn(c.target.value);
+  const handleChangeColumnValue = (cv) => setColumnValue(cv.target.value);
+  const handleAddQueryClick = () => {
+    setQueries([...queries, { column: columnValue }]);
+    console.log(queries);
+    setColumn('');
+    setColumnValue('');
   };
 
   const handleClick = () => {
@@ -44,7 +70,7 @@ function PickFilters({ setChoices }) {
       <EuiTitle size="s"><h2>Filter</h2></EuiTitle>
       <EuiSpacer size="m" />
       <EuiText><p>Select a Date Range</p></EuiText>
-      <EuiSpacer size="m" />
+      <EuiSpacer size="s" />
       <EuiForm>
         <EuiFormRow
           isInvalid={!isValidDateRange}
@@ -67,16 +93,69 @@ function PickFilters({ setChoices }) {
             </EuiFlexItem>
           </EuiFlexGroup>
         </EuiFormRow>
+
+        {/* PILL BOX HERE */}
+
+        <EuiSpacer size="xl" />
+        <EuiAccordion buttonContent="Add Search Query">
+          <EuiPanel color="primary">
+            <EuiFlexGroup style={{ maxWidth: 600 }} gutterSize="l" alignItems="flexEnd" justifyContent="flexEnd">
+              <EuiFlexItem>
+                <EuiFormRow label="Log Attribute" component="form">
+                  <EuiFieldText
+                    placeholder="ex. HTTP Method"
+                    value={column}
+                    onChange={handleChangeColumn}
+                    icon={searchIcon}
+                  />
+                </EuiFormRow>
+              </EuiFlexItem>
+              <EuiFlexItem>
+                <EuiFormRow label="Attribute Value" component="form">
+                  <EuiFieldText
+                    placeholder="ex. GET"
+                    value={columnValue}
+                    onChange={handleChangeColumnValue}
+                    icon={searchIcon}
+                  />
+                </EuiFormRow>
+              </EuiFlexItem>
+              <EuiFlexItem>
+                <EuiFormRow>
+                  <EuiButtonIcon
+                    iconType={plusIcon}
+                    size="m"
+                    display="base"
+                    onClick={handleAddQueryClick}
+                    aria-label="add query search term"
+                    aria-labelledby="add query search term"
+                  />
+                </EuiFormRow>
+              </EuiFlexItem>
+            </EuiFlexGroup>
+          </EuiPanel>
+        </EuiAccordion>
+        <EuiSpacer size="xl" />
         <EuiFormRow>
-          <EuiButton
-            onClick={handleClick}
-            isDisabled={!isValidDateRange}
-          >
-            Search S3
-          </EuiButton>
+          <EuiFlexGroup>
+            <EuiFlexItem>
+              <EuiButton
+                onClick={handleClick}
+                isDisabled={!isValidDateRange}
+              >
+                Search S3
+              </EuiButton>
+            </EuiFlexItem>
+            <EuiFlexItem>
+
+              <EuiButton>
+                Ingest
+              </EuiButton>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+
         </EuiFormRow>
       </EuiForm>
-      <EuiSpacer size="xl" />
     </div>
   );
 }

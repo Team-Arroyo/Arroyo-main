@@ -1,6 +1,11 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import {
-  EuiSelectable, EuiButton, EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiTitle,
+  EuiSelectable,
+  EuiButton,
+  EuiSpacer,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiTitle,
 } from '@elastic/eui';
 import PropTypes from 'prop-types';
 import convert from '../libs/utils';
@@ -28,7 +33,6 @@ function PickFiles({ choices }) {
 
   return (
     <>
-      <EuiSpacer size="m" />
       <EuiTitle size="s"><h2>Select</h2></EuiTitle>
       <EuiSpacer size="m" />
       <EuiSelectable

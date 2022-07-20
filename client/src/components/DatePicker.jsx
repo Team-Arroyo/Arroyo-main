@@ -8,7 +8,6 @@ function DatePicker({ dateType, dateStatus, handleChange }) {
       <EuiDatePicker
         selected={dateStatus}
         onChange={handleChange}
-        onClear={() => handleChange(null)}
       />
     </EuiFormRow>
   );
