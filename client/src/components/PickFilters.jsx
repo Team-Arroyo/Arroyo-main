@@ -6,6 +6,8 @@ import {
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import DatePicker from './DatePicker';
+import FilterSearchValue from './FilterSearchValue';
+import FilterSelectKey from './FilterSelectKey';
 import { formatDate } from '../libs/utils';
 import apiClient from '../libs/apiclient';
 
@@ -44,7 +46,7 @@ function PickFilters({ setChoices }) {
       <EuiTitle size="s"><h2>Filter</h2></EuiTitle>
       <EuiSpacer size="m" />
       <EuiText><p>Select a Date Range</p></EuiText>
-      <EuiSpacer size="m" />
+      <EuiSpacer size="s" />
       <EuiForm>
         <EuiFormRow
           isInvalid={!isValidDateRange}
@@ -66,7 +68,23 @@ function PickFilters({ setChoices }) {
               />
             </EuiFlexItem>
           </EuiFlexGroup>
+
         </EuiFormRow>
+        <EuiSpacer size="xl" />
+        <EuiText><p>Enter search query</p></EuiText>
+        <EuiSpacer size="s" />
+        <EuiFormRow>
+          <EuiFlexGroup>
+            <EuiFlexItem>
+              <FilterSelectKey />
+            </EuiFlexItem>
+            <EuiFlexItem>
+              <FilterSearchValue />
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </EuiFormRow>
+        <EuiSpacer size="l" />
+
         <EuiFormRow>
           <EuiButton
             onClick={handleClick}
@@ -77,6 +95,7 @@ function PickFilters({ setChoices }) {
         </EuiFormRow>
       </EuiForm>
       <EuiSpacer size="xl" />
+      <EuiSpacer size="m" />
     </div>
   );
 }
