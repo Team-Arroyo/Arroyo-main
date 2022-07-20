@@ -42,4 +42,17 @@ const initializeRehydrateJob = (req, res) => {
   // res.status(500).json({message: 'in dev'});
 }
 
-module.exports = initializeRehydrateJob;
+const initializeQueryRehydrate = (req, res) => {
+  const startDate = req.startDate;
+  const endDate = req.endDate;
+
+  console.log("startDate", startDate);
+  console.log("endDate", endDate);
+  
+  res.status(200).json({message: 'no problems with req'});
+}
+
+module.exports = {
+  initializeRehydrateJob,
+  initializeQueryRehydrate
+}

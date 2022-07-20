@@ -3,7 +3,7 @@ const isValidDateFormat = (dateString) => {
   return validDatePattern.test(dateString);
 }
 
-const validateDateParams = (req, _, next) => {
+const validateUrlDateParams = (req, _, next) => {
   const { startDate, endDate } = req.query
 
   if((startDate && !endDate) || (!startDate && endDate)) {
@@ -30,4 +30,4 @@ const validateDateParams = (req, _, next) => {
   next();
 }
 
-module.exports = validateDateParams;
+module.exports = validateUrlDateParams;
