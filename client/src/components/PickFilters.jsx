@@ -10,6 +10,8 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiFieldText,
+  EuiAccordion,
+  EuiPanel,
 } from '@elastic/eui';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -84,39 +86,51 @@ function PickFilters({ setChoices }) {
 
         </EuiFormRow>
         <EuiSpacer size="xl" />
-        <EuiText><p>Enter search query</p></EuiText>
-        <EuiSpacer size="s" />
-        <EuiFlexGroup style={{ maxWidth: 600 }} gutterSize="l">
-          <EuiFlexItem>
-            <EuiFormRow label="Log Attribute" component="form">
-              <EuiFieldText
-                placeholder="ex. HTTP Method"
-                value={column}
-                onChange={handleChangeColumn}
-                icon={searchIcon}
-              />
-            </EuiFormRow>
-          </EuiFlexItem>
-          <EuiFlexItem>
-            <EuiFormRow label="Attribute Value" component="form">
-              <EuiFieldText
-                placeholder="ex. GET"
-                value={columnValue}
-                onChange={handleChangeColumnValue}
-                icon={searchIcon}
-              />
-            </EuiFormRow>
-          </EuiFlexItem>
-        </EuiFlexGroup>
-        <EuiSpacer size="l" />
-
+        <EuiAccordion buttonContent="Add Search Query">
+          <EuiPanel color="subdued">
+            <EuiFlexGroup style={{ maxWidth: 600 }} gutterSize="l">
+              <EuiFlexItem>
+                <EuiFormRow label="Log Attribute" component="form">
+                  <EuiFieldText
+                    placeholder="ex. HTTP Method"
+                    value={column}
+                    onChange={handleChangeColumn}
+                    icon={searchIcon}
+                  />
+                </EuiFormRow>
+              </EuiFlexItem>
+              <EuiFlexItem>
+                <EuiFormRow label="Attribute Value" component="form">
+                  <EuiFieldText
+                    placeholder="ex. GET"
+                    value={columnValue}
+                    onChange={handleChangeColumnValue}
+                    icon={searchIcon}
+                  />
+                </EuiFormRow>
+              </EuiFlexItem>
+            </EuiFlexGroup>
+          </EuiPanel>
+        </EuiAccordion>
+        <EuiSpacer size="xl" />
         <EuiFormRow>
-          <EuiButton
-            onClick={handleClick}
-            isDisabled={!isValidDateRange}
-          >
-            Search S3
-          </EuiButton>
+          <EuiFlexGroup>
+            <EuiFlexItem>
+              <EuiButton
+                onClick={handleClick}
+                isDisabled={!isValidDateRange}
+              >
+                Search S3
+              </EuiButton>
+            </EuiFlexItem>
+            <EuiFlexItem>
+
+              <EuiButton>
+                Ingest
+              </EuiButton>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+
         </EuiFormRow>
       </EuiForm>
     </div>
