@@ -17,6 +17,7 @@ const AWSXRayDaemonWriteAccessARN = "arn:aws:iam::aws:policy/AWSXRayDaemonWriteA
 const AmazonS3ReadOnlyAccessARN = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess";
 const AWSLambdaSQSQueueExecutionRoleARN = "arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole";
 const AWSLambdaBasicExecutionRoleARN = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole";
+
 export {
   LAMBDA_ASSUME_ROLE_POLICY,
   AWSXRayDaemonWriteAccessARN,
