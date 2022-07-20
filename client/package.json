@@ -8,6 +8,7 @@
     "@elastic/eui": "^60.3.0",
     "@emotion/cache": "^11.7.1",
     "@emotion/react": "^11.9.3",
+    "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
