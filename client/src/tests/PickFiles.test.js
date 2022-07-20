@@ -16,14 +16,17 @@ describe('Pick Files', () => {
     const para = screen.getAllByText((content, element) => element.tagName.toLowerCase() === 'p' && element.innerHTML === 'No options available') 
     expect(para.length).toBeGreaterThan(1);
   });
-  xtest('ingest button is disabled when no choice is selected', () => {
-
+  test('ingest button is disabled when no choice is selected', () => {
+    const ingest = screen.getByRole('button', {name: /ingest/i})
+    expect(ingest).toBeDisabled();
   });
-  xtest('clear all button is rendered', () => {
-    
+  test('clear all button is rendered', () => {
+    const clear = screen.getByRole('button', {name: /clear all/i})
+    expect(clear).toBeInTheDocument();
   });
-  xtest('select all button is rendered', () => {
-    
+  test('select all button is rendered', () => {
+    const select = screen.getByRole('button', {name: /select all/i})
+    expect(select).toBeInTheDocument();
   });
   // below tests don't work; likely due to elements of interest being out of scope
   // as the elements of interest are returned by an annoymouse function lines 41-46
