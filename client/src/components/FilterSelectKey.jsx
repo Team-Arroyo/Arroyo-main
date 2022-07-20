@@ -1,29 +1,20 @@
 import React, { useState } from 'react';
-import { EuiSelect, useGeneratedHtmlId } from '@elastic/eui';
+import { EuiFieldSearch } from '@elastic/eui';
 
 function FilterSelectKey() {
-  const options = [
-    { value: 'option_one', text: 'HTTP Method' },
-    { value: 'option_two', text: 'IP' },
-    { value: 'option_three', text: 'Type' },
-  ];
-
-  const [value, setValue] = useState(options[1].value);
-
-  const basicSelectId = useGeneratedHtmlId({ prefix: 'basicSelect' });
+  const [value, setValue] = useState('');
 
   const onChange = (e) => {
     setValue(e.target.value);
   };
 
   return (
-    <EuiSelect
-      id={basicSelectId}
-      options={options}
+    <EuiFieldSearch
+      placeholder="Search this"
       value={value}
       onChange={(e) => onChange(e)}
+      isClearable
       aria-label="Use aria labels when no actual label is in use"
-      full-width
     />
   );
 }
