@@ -28,7 +28,7 @@ function PickFilters({ setChoices }) {
   const [endDate, setEndDate] = useState(moment());
   const [column, setColumn] = useState('');
   const [columnValue, setColumnValue] = useState('');
-  // const [filters, setFilters] = useState([]);
+  const [queries, setQueries] = useState([]);
 
   const isValidDateRange = (!formatDate(startDate) && !formatDate(endDate))
   || (startDate !== null && endDate !== null && startDate <= endDate);
@@ -43,6 +43,12 @@ function PickFilters({ setChoices }) {
 
   const handleChangeColumn = (c) => setColumn(c.target.value);
   const handleChangeColumnValue = (cv) => setColumnValue(cv.target.value);
+  const handleAddQueryClick = () => {
+    setQueries([...queries, { column: columnValue }]);
+    console.log(queries);
+    setColumn('');
+    setColumnValue('');
+  };
 
   const handleClick = () => {
     apiClient
@@ -92,7 +98,7 @@ function PickFilters({ setChoices }) {
 
         <EuiSpacer size="xl" />
         <EuiAccordion buttonContent="Add Search Query">
-          <EuiPanel color="subdued">
+          <EuiPanel color="primary">
             <EuiFlexGroup style={{ maxWidth: 600 }} gutterSize="l" alignItems="flexEnd" justifyContent="flexEnd">
               <EuiFlexItem>
                 <EuiFormRow label="Log Attribute" component="form">
@@ -120,6 +126,9 @@ function PickFilters({ setChoices }) {
                     iconType={plusIcon}
                     size="m"
                     display="base"
+                    onClick={handleAddQueryClick}
+                    aria-label="add query search term"
+                    aria-labelledby="add query search term"
                   />
                 </EuiFormRow>
               </EuiFlexItem>
