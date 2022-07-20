@@ -12,10 +12,13 @@ import {
   EuiFieldText,
   EuiAccordion,
   EuiPanel,
+  EuiButtonIcon,
 } from '@elastic/eui';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { icon as searchIcon } from '@elastic/eui/es/components/icon/assets/search';
+import { icon as plusIcon } from '@elastic/eui/es/components/icon/assets/plus';
+// import { icon as trashIcon } from '@elastic/eui/es/components/icon/assets/trash';
 import DatePicker from './DatePicker';
 import { formatDate } from '../libs/utils';
 import apiClient from '../libs/apiclient';
@@ -83,12 +86,14 @@ function PickFilters({ setChoices }) {
               />
             </EuiFlexItem>
           </EuiFlexGroup>
-
         </EuiFormRow>
+
+        {/* PILL BOX HERE */}
+
         <EuiSpacer size="xl" />
         <EuiAccordion buttonContent="Add Search Query">
           <EuiPanel color="subdued">
-            <EuiFlexGroup style={{ maxWidth: 600 }} gutterSize="l">
+            <EuiFlexGroup style={{ maxWidth: 600 }} gutterSize="l" alignItems="flexEnd" justifyContent="flexEnd">
               <EuiFlexItem>
                 <EuiFormRow label="Log Attribute" component="form">
                   <EuiFieldText
@@ -106,6 +111,15 @@ function PickFilters({ setChoices }) {
                     value={columnValue}
                     onChange={handleChangeColumnValue}
                     icon={searchIcon}
+                  />
+                </EuiFormRow>
+              </EuiFlexItem>
+              <EuiFlexItem>
+                <EuiFormRow>
+                  <EuiButtonIcon
+                    iconType={plusIcon}
+                    size="m"
+                    display="base"
                   />
                 </EuiFormRow>
               </EuiFlexItem>
