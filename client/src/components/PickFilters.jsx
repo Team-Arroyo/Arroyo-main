@@ -94,8 +94,6 @@ function PickFilters({ setChoices }) {
           </EuiButton>
         </EuiFormRow>
       </EuiForm>
-      <EuiSpacer size="xl" />
-      <EuiSpacer size="m" />
     </div>
   );
 }

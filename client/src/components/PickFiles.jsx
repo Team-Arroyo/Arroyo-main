@@ -33,7 +33,6 @@ function PickFiles({ choices }) {
 
   return (
     <>
-      <EuiSpacer size="m" />
       <EuiTitle size="s"><h2>Select</h2></EuiTitle>
       <EuiSpacer size="m" />
       <EuiSelectable
