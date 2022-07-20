@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import 'dotenv/config.js';
 import { DEPLOYMENT_PACKAGE_ARCHIVE_NAME, 
          DEPLOYMENT_PACKAGE_RUNTIME, 
          DEPLOYMENT_PACKAGE_HANDLER } from "./constants/lambdaDeploymentPackage.mjs"
@@ -18,11 +18,11 @@ import createQueue from './libs/sqs/createQueue.mjs';
 import sendMessageToQueue from "./libs/sqs/sendMessageToQueue.mjs";
 import getQueueAttributes from './libs/sqs/getQueueAttributes.mjs';
 import createLambda from "./libs/lambda/createLambda.mjs";
-import setLambdaEventSource from "./libs/lambda/setLambdaEventSource.mjs";
+import createEventSourceMapping from "./libs/lambda/createEventSourceMapping.mjs";
 import lambdaClient from "./libs/clients/lambdaClient.mjs";
 import uploadObjectToBucket from "./libs/s3/uploadObjectToBucket.mjs"
 import createRole from "./libs/iam/createRole.mjs";
-import attachMultiplePolicies from "./libs/iam/attachMultiplePolicies.mjs";
+import attachMultipleRolePolicies from "./libs/iam/attachMultipleRolePolicies.mjs";
 
 const REHYDRATION_QUEUE_PARAMS = {
   QueueName: REHYDRATION_QUEUE_NAME,
@@ -36,7 +36,7 @@ export const run = async () => {
     const { roleARN } = await createRole(LAMBDA_ROLE_NAME);
     console.log(`Role created. Role ARN: ${roleARN}`);
 
-    const lambdaPoliciesAttached = await attachMultiplePolicies({ 
+    const lambdaPoliciesAttached = await attachMultipleRolePolicies({ 
       policyARNArray: 
       [
         AWSXRayDaemonWriteAccessARN, 
@@ -81,7 +81,7 @@ export const run = async () => {
       }
 
       try {
-        await setLambdaEventSource({ 
+        await createEventSourceMapping({ 
           functionName: REHYDRATION_LAMBDA_NAME, 
           eventSourceArn: QueueArn 
         });
