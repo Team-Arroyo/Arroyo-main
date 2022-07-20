@@ -85,26 +85,26 @@ function PickFilters({ setChoices }) {
         <EuiSpacer size="xl" />
         <EuiText><p>Enter search query</p></EuiText>
         <EuiSpacer size="s" />
-        <EuiFormRow>
-          <EuiFlexGroup>
-            <EuiFlexItem>
+        <EuiFlexGroup style={{ maxWidth: 600 }} gutterSize="l">
+          <EuiFlexItem>
+            <EuiFormRow label="Log Attribute" component="form">
               <EuiFieldText
-                placeholder="Column"
+                placeholder="ex. HTTP Method"
                 value={column}
                 onChange={handleChangeColumn}
-                aria-label="Use aria labels when no actual label is in use"
               />
-            </EuiFlexItem>
-            <EuiFlexItem>
+            </EuiFormRow>
+          </EuiFlexItem>
+          <EuiFlexItem>
+            <EuiFormRow label="Attribute Value" component="form">
               <EuiFieldText
-                placeholder="Column Value"
+                placeholder="ex. GET"
                 value={columnValue}
                 onChange={handleChangeColumnValue}
-                aria-label="Use aria labels when no actual label is in use"
               />
-            </EuiFlexItem>
-          </EuiFlexGroup>
-        </EuiFormRow>
+            </EuiFormRow>
+          </EuiFlexItem>
+        </EuiFlexGroup>
         <EuiSpacer size="l" />
 
         <EuiFormRow>
