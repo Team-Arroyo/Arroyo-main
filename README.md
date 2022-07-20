@@ -18,6 +18,7 @@
 | Back end only | `npm start` | `root/server` |
 
 ---
+
 ## Usage
 
 Below is a picture of the project's user interface:
