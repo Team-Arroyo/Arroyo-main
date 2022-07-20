@@ -8,13 +8,18 @@ const isInvalidFormat = (queryObj) => {
 const detectQueryErrors = (queries) => {
   let error;
   
-  if(queries.length > SUPPORTED_QUERY_NUM || queries.length < 1) {
+  if(queries.length > SUPPORTED_QUERY_NUM) {
     error = {
       status: 400,
       description: 'Bad Request',
       message: 'Invalid number of key/value pairs provided.',
       maxExpectedPairs: SUPPORTED_QUERY_NUM,
-      minExpectedPairs: 1
+    }
+  } else if(queries.length < 1) {
+    error = {
+      status: 400,
+      description: 'Bad Request',
+      message: 'queries array was provided, but is empty.',
     }
   } else if (queries.some(isInvalidFormat)) {
       error = {
@@ -29,14 +34,12 @@ const detectQueryErrors = (queries) => {
 
 const createSqlExpression = (queries) => {
   const expressionTemplate = "SELECT * FROM s3object s WHERE"
-  // console.log("generating expression", queries);
   const keyValuePairs = queries.map((queryObj) => {
     const [ key, value ] = Object.entries(queryObj).pop();
     return `s.${key} = '${value}'`;
   });
 
   const queryString = keyValuePairs.join(" AND ");
-  //console.log("final expression", `${expressionTemplate} ${queryString}`)
   return `${expressionTemplate} ${queryString}`;
 }
 

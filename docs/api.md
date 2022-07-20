@@ -97,15 +97,29 @@ will format and forward an error message in the body with status 500
 ```
 
 ## 1.3 POST /api/s3objects
-This the NEW route is used to start the rehydrate process of a batchs of AWS S3 objects. Sends a 200 resposne upon success. Will change as architecture changes.
+This the NEW route is used to start the rehydrate process of a batch of AWS S3 objects. Sends a 200 resposne upon success. Will change as architecture changes.
 
-## 1.3.1 Expected Parameters
+An optional `queries` parameter can be supplied to query each log file for a set of key/value pairs and only ingest the matching logs.
+
+Currently, only simple queries are supported where s3Object.key = value.
+
+At the moment you can supply a max of two key/value pairs.
+
+If no `queries` param is supplied, the backend will interpret the job as a full rehydration job.
+
+# 1.3.1 Expected Parameters
 ```json
 {
   "objectKeys": ["kibana-access.log", "nginx-access.log"]
 }
 ```
 
+# 1.3.2 Optional Parameters
+```json
+{
+  "queries": [{"remote_addr": "55.555.555.55"}, {"request_method": "POST"}]
+}
+```
 ## 1.3.2 Example Response
 ```json
 {
@@ -122,7 +136,7 @@ This the NEW route is used to start the rehydrate process of a batchs of AWS S3 
 }
 ```
 
-## 1.3.3 Partial Partial Success Response
+# 1.3.3 Partial Partial Success Response
 If some files fail on reingestion -- the batch status will include an error object associated with the failing file. The response status returns 200
 regardless of a partial batch failure.  Will change as architecture and log volume changes.
 
@@ -157,24 +171,10 @@ regardless of a partial batch failure.  Will change as architecture and log volu
 }
 ```
 
-## 1.3.4 User Error
-If the req. body is missing an objectKeys field, or the supplied array is empty the API will return status 400 with a JSON object describing the error
-
-## 1.3.5 Ecample User Error Response
-```json
-{
-    "status": 400,
-    "description": "Bad Request",
-    "message": "Missing field objectKeys in req. body",
-    "expectedFormat": "{objectKeys: [file1.log, file2.log]}"
-}
-```
-
-
-## 1.3.6 Complete Job Failure
+# 1.3.5 Complete Job Failure
 If all files fail on reingestion -- during development the batch status will include all error messages associated with each file. The response returns a 400 status. Will change as architecture and log volume changes.
 
-## 1.3.7 Example Complete Failure Response
+## 1.3.6 Example Complete Failure Response
 ```json
 {
     "batchStatus": [
@@ -200,4 +200,49 @@ If all files fail on reingestion -- during development the batch status will inc
     ]
 }
 ```
+
+# 1.3.7 User Errors.
+The API will return status 400 with a JSON object describing the error
+
+## 1.3.8 Example Error -- Missing objectKeys.
+```json
+{
+    "status": 400,
+    "description": "Bad Request",
+    "message": "Missing field objectKeys in req. body",
+    "expectedFormat": "{objectKeys: [file1.log, file2.log]}"
+}
+```
+
+## 1.3.9 Example Error -- Too many key/value pairs in queries.
+```json
+{
+    "status": 400,
+    "description": "Bad Request",
+    "message": "Invalid number of key/value pairs provided.",
+    "maxExpectedPairs": 2
+}
+```
+
+## 1.3.10 Example Error -- Queries array supplied, but empty.
+```json
+{
+    "status": 400,
+    "description": "Bad Request",
+    "message": "queries array was provided, but is empty."
+}
+```
+
+## 1.3.11 Example Error -- Imporper key/value object structure.
+```json
+{
+    "status": 400,
+    "description": "Bad Request",
+    "message": "Improper key/value object structure ",
+    "exampleFormat": {
+        "host_ip": "192.168.1.1"
+    }
+}
+```
+
 
