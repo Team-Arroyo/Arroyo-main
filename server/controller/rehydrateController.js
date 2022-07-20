@@ -1,4 +1,5 @@
 const { rehydrateFullS3Object, rehydrateQueriedS3Object } = require("./s3ObjectController")
+const { getBucketObjectsWithinDates } = require("../lib/s3Client");
 
 const isTotalFailure = (batch) => {
   return batch.every(({ status }) => status === 'fail');
@@ -42,7 +43,7 @@ const initializeRehydrateJob = (req, res) => {
   // res.status(500).json({message: 'in dev'});
 }
 
-const initializeQueryRehydrate = (req, res) => {
+const initializeQueryRehydrate = async(req, res) => {
   const startDate = req.startDate;
   const endDate = req.endDate;
   const sqlExpression = req.sqlExpression;
@@ -50,8 +51,20 @@ const initializeQueryRehydrate = (req, res) => {
   console.log("startDate", startDate);
   console.log("endDate", endDate);
   console.log("expression", sqlExpression);
-  
-  res.status(200).json({message: 'no problems with req'});
+
+  try {
+    const logsWithinDates = await getBucketObjectsWithinDates(startDate, endDate);
+    if(logsWithinDates.length < 1) {
+      res.status(400).json({message: 'No files found to ingest within date range'});
+    } else {
+      res.status(202).json({message: 'Rehydrating task in progress...'});
+    }
+  } catch(err) {
+    res.status(500).send({
+      message: "Fetching object from S3 failed, see error message for more details", 
+      error: err
+    });
+  }
 }
 
 module.exports = {
