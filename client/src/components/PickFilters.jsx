@@ -13,6 +13,7 @@ import {
 } from '@elastic/eui';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import { icon as searchIcon } from '@elastic/eui/es/components/icon/assets/search';
 import DatePicker from './DatePicker';
 import { formatDate } from '../libs/utils';
 import apiClient from '../libs/apiclient';
@@ -92,6 +93,7 @@ function PickFilters({ setChoices }) {
                 placeholder="ex. HTTP Method"
                 value={column}
                 onChange={handleChangeColumn}
+                icon={searchIcon}
               />
             </EuiFormRow>
           </EuiFlexItem>
@@ -101,6 +103,7 @@ function PickFilters({ setChoices }) {
                 placeholder="ex. GET"
                 value={columnValue}
                 onChange={handleChangeColumnValue}
+                icon={searchIcon}
               />
             </EuiFormRow>
           </EuiFlexItem>
