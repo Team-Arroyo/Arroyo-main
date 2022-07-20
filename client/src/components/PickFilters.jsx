@@ -1,19 +1,28 @@
 /* eslint-disable no-console */
 import React, { useState } from 'react';
 import {
-  EuiButton, EuiSpacer, EuiTitle, EuiText, EuiForm, EuiFormRow, EuiFlexGroup, EuiFlexItem,
+  EuiButton,
+  EuiSpacer,
+  EuiTitle,
+  EuiText,
+  EuiForm,
+  EuiFormRow,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiFieldText,
 } from '@elastic/eui';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import DatePicker from './DatePicker';
-import FilterSearchValue from './FilterSearchValue';
-import FilterSelectKey from './FilterSelectKey';
 import { formatDate } from '../libs/utils';
 import apiClient from '../libs/apiclient';
 
 function PickFilters({ setChoices }) {
   const [startDate, setStartDate] = useState(moment());
   const [endDate, setEndDate] = useState(moment());
+  const [column, setColumn] = useState('');
+  const [columnValue, setColumnValue] = useState('');
+  // const [filters, setFilters] = useState([]);
 
   const isValidDateRange = (!formatDate(startDate) && !formatDate(endDate))
   || (startDate !== null && endDate !== null && startDate <= endDate);
@@ -25,6 +34,9 @@ function PickFilters({ setChoices }) {
   const handleEndDateChange = (date) => {
     setEndDate(date);
   };
+
+  const handleChangeColumn = (c) => setColumn(c.target.value);
+  const handleChangeColumnValue = (cv) => setColumnValue(cv.target.value);
 
   const handleClick = () => {
     apiClient
@@ -76,10 +88,20 @@ function PickFilters({ setChoices }) {
         <EuiFormRow>
           <EuiFlexGroup>
             <EuiFlexItem>
-              <FilterSelectKey />
+              <EuiFieldText
+                placeholder="Column"
+                value={column}
+                onChange={handleChangeColumn}
+                aria-label="Use aria labels when no actual label is in use"
+              />
             </EuiFlexItem>
             <EuiFlexItem>
-              <FilterSearchValue />
+              <EuiFieldText
+                placeholder="Column Value"
+                value={columnValue}
+                onChange={handleChangeColumnValue}
+                aria-label="Use aria labels when no actual label is in use"
+              />
             </EuiFlexItem>
           </EuiFlexGroup>
         </EuiFormRow>
