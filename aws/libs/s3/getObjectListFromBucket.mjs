@@ -1,4 +1,4 @@
-import s3Client from "../clients/s3Client.mjs"; // Helper function that creates an Amazon S3 service client module.
+import s3Client from "../clients/s3Client.mjs";
 import { ListObjectsCommand } from "@aws-sdk/client-s3";
 
 const getObjectsListFromBucket = async (bucketParams) => {
@@ -11,3 +11,5 @@ const getObjectsListFromBucket = async (bucketParams) => {
 };
 
 export default getObjectsListFromBucket;
+
+//TODO rename to listObjectsInS3Bucket?

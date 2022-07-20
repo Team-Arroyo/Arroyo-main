@@ -1,4 +1,4 @@
-import { CreateQueueCommand, GetQueueAttributesCommand } from "@aws-sdk/client-sqs";
+import { CreateQueueCommand } from "@aws-sdk/client-sqs";
 import sqsClient from "../clients/sqsClient.mjs";
 
 const createQueue = async (queueParams) => {
