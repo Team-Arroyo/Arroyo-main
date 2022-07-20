@@ -1,7 +1,7 @@
 const dotenv = require("dotenv")
 dotenv.config();
 
-const { S3Client, ListObjectsCommand, GetObjectCommand } = require("@aws-sdk/client-s3");
+const { S3Client, ListObjectsCommand, GetObjectCommand, SelectObjectContentCommand } = require("@aws-sdk/client-s3");
 
 const s3Client = new S3Client({
   region: "us-east-1",
@@ -33,6 +33,32 @@ const getObjectContents = async(Key) => {
   }
 }
 
+const queryObjectContents = async(Key, Expression)=> {
+  const params = {
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key,
+    ExpressionType: 'SQL',
+    Expression,
+    InputSerialization: {
+      JSON: {
+        Type: 'LINES'
+      }
+    },
+    OutputSerialization: {
+      JSON: {
+        RecordDelimiter: '\n'
+      }
+    }
+  }
+
+  try {
+    const data = await s3Client.send(new SelectObjectContentCommand(params))
+    return data;
+  } catch(err) {
+    throw err
+  }
+}
+
 const getBucketObjectsWithinDates = async(startDate, endDate) => {
   const startMs = Date.parse(startDate);
   const endMs = Date.parse(endDate);
@@ -55,5 +81,6 @@ const getBucketObjectsWithinDates = async(startDate, endDate) => {
 module.exports = { 
   getAllBucketObjects, 
   getObjectContents,
-  getBucketObjectsWithinDates
+  getBucketObjectsWithinDates,
+  queryObjectContents
  }

@@ -1,4 +1,4 @@
-const { rehydrateS3Objects } = require("./s3ObjectController")
+const { rehydrateFullS3Object, rehydrateQueriedS3Object } = require("./s3ObjectController")
 
 const isTotalFailure = (batch) => {
   return batch.every(({ status }) => status === 'fail');
@@ -8,7 +8,9 @@ const initializeRehydrateJob = (req, res) => {
   console.log("Rehydrating tasks in progress...")
   const keyError = req.keyError;
   const queryError = req.queryError;
+
   const objectKeys = req.objectKeys;
+  const sqlExpression = req.sqlExpression;
 
   if(keyError) {
     console.log("keyError detected");
@@ -22,17 +24,22 @@ const initializeRehydrateJob = (req, res) => {
     return;
   }
   
-  // const promises  = objectKeys.map(objectKey => rehydrateS3Objects(objectKey));
-  // Promise.allSettled(promises).then(resultArray => {
-  //   console.log(resultArray);
-  //   const batchStatus = resultArray.map(({ reason, value }) => reason ? reason : value);
-  //   console.log(batchStatus);
-  //   console.log("Rehydrating tasks completed...");
+  const promises  = objectKeys.map(objectKey => {
+    return sqlExpression ? 
+      rehydrateQueriedS3Object(objectKey, sqlExpression) 
+      :rehydrateFullS3Object(objectKey)
+  });
+
+  Promise.allSettled(promises).then(resultArray => {
+    console.log("All promises settled");
+    const batchStatus = resultArray.map(({ reason, value }) => reason ? reason : value);
+    console.log("Batch status", batchStatus);
+    console.log("Rehydrating tasks completed...");
 
 
-  //   res.status(isTotalFailure(batchStatus) ? 400 : 200).json({batchStatus})
-  // });
-  res.status(500).json({message: 'in dev'});
+    res.status(isTotalFailure(batchStatus) ? 400 : 200).json({batchStatus})
+  });
+  // res.status(500).json({message: 'in dev'});
 }
 
 module.exports = initializeRehydrateJob;

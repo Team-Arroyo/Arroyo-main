@@ -29,7 +29,7 @@ const detectQueryErrors = (queries) => {
 
 const createSqlExpression = (queries) => {
   const expressionTemplate = "SELECT * FROM s3object s WHERE"
-  console.log("generating expression", queries);
+  // console.log("generating expression", queries);
   const keyValuePairs = queries.map((queryObj) => {
     const [ key, value ] = Object.entries(queryObj).pop();
     return `s.${key} = '${value}'`;
@@ -42,15 +42,7 @@ const createSqlExpression = (queries) => {
 
 const validateQueries = (req, _, next) => {
   const { queries } = req.body;
-
-  if(!Array.isArray(queries)) {
-    req.queryError = {
-      status: 400,
-      description: 'Bad Request',
-      message: 'queries prop must be an array',
-      exampleFormat: JSON.parse(`{ "objectKeys": [], "queries": [] }`)
-    }
-  } else if(queries) {
+  if(queries) {
     req.queryError = detectQueryErrors(queries);
     req.sqlExpression = createSqlExpression(queries);
   } 

@@ -1,5 +1,6 @@
-const  { getAllBucketObjects, getObjectContents, getBucketObjectsWithinDates } = require("../lib/s3Client");
+const  { getAllBucketObjects, getObjectContents, getBucketObjectsWithinDates, queryObjectContents } = require("../lib/s3Client");
 const { streamToString } = require("../utils/streamToString");
+const queryStreamToString = require("../utils/queryStreamToString");
 const { logStringToJson } = require("../utils/logStringToJson");
 const { postToLogstash } = require("../services/logstashService");
 
@@ -53,12 +54,30 @@ const rehydrateS3Object = async(req, res, next) => {
   }
 }
 
-const rehydrateS3Objects = async(objectKey) => {
+const rehydrateFullS3Object = async(objectKey) => {
   return new Promise(async(resolve, reject) => {
     try {
-      const data = await getObjectContents(objectKey);
+      console.log("normal_ingest", objectKey);
+      const data = await getObjectContents(objectKey)
       const rawLogString = await streamToString(data.Body);
       const logsJson = logStringToJson(rawLogString);
+      console.log("result length", logsJson.length);
+      await postToLogstash(logsJson);
+      resolve({objectKey, status: 'complete'})
+    } catch(err) {
+      reject({objectKey, status: 'fail', error: err})
+    }
+  })
+}
+
+const rehydrateQueriedS3Object = async(objectKey, sqlExpression) => {
+  return new Promise(async(resolve, reject) => {
+    try {
+      console.log("query_ingest", objectKey);
+      const data = await queryObjectContents(objectKey, sqlExpression);
+      const rawLogString = await queryStreamToString(data.Payload);
+      const logsJson = logStringToJson(rawLogString);
+      console.log("result length", logsJson.length);
       await postToLogstash(logsJson);
       resolve({objectKey, status: 'complete'})
     } catch(err) {
@@ -70,5 +89,6 @@ const rehydrateS3Objects = async(objectKey) => {
 module.exports = {
   getS3Objects,
   rehydrateS3Object,
-  rehydrateS3Objects
+  rehydrateFullS3Object,
+  rehydrateQueriedS3Object
 }
