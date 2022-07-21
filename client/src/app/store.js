@@ -3,12 +3,13 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import dateReducer from '../features/dateRangeSlice.js';
+import queryReducer from '../features/queriesSlice.js';
 import choiceReducer from '../features/choicesSlice.js';
 
 export default configureStore({
   reducer: {
     dateRange: dateReducer,
-    // queries: queriesReducer,
+    queries: queryReducer,
     choices: choiceReducer,
   },
 });
