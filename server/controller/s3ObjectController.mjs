@@ -1,9 +1,9 @@
-const  { getAllBucketObjects, getObjectContents, getBucketObjectsWithinDates } = require("../lib/s3Client");
-const { streamToString } = require("../utils/streamToString");
-const { logStringToJson } = require("../utils/logStringToJson");
-const { postToLogstash } = require("../services/logstashService");
+import  { getAllBucketObjects, getObjectContents, getBucketObjectsWithinDates } from '../lib/s3Client.mjs';
+import { streamToString } from  '../utils/streamToString.mjs';
+import { logStringToJson } from '../utils/logStringToJson.mjs';
+import { postToLogstash } from '../services/logstashService.mjs';
 
-const getS3Objects = async(req, res, next) => {
+export const getS3Objects = async(req, res, next) => {
   const dateError = req.dateError;
   const startDate = req.startDate;
   const endDate = req.endDate;
@@ -34,7 +34,7 @@ const getS3Objects = async(req, res, next) => {
   }
 }
 
-const rehydrateS3Object = async(req, res, next) => {
+export const rehydrateS3Object = async(req, res, next) => {
   try {
     const { objectKey } = req.body;
     const data = await getObjectContents(objectKey);
@@ -53,7 +53,7 @@ const rehydrateS3Object = async(req, res, next) => {
   }
 }
 
-const rehydrateS3Objects = async(objectKey) => {
+export const rehydrateS3Objects = async(objectKey) => {
   return new Promise(async(resolve, reject) => {
     try {
       const data = await getObjectContents(objectKey);
@@ -67,8 +67,8 @@ const rehydrateS3Objects = async(objectKey) => {
   })
 }
 
-module.exports = {
-  getS3Objects,
-  rehydrateS3Object,
-  rehydrateS3Objects
-}
+// module.exports = {
+//   getS3Objects,
+//   rehydrateS3Object,
+//   rehydrateS3Objects
+// }
