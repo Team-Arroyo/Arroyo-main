@@ -1,6 +1,6 @@
-const DEPLOYMENT_PACKAGE_ARCHIVE_NAME = "nodejs.zip";
-const DEPLOYMENT_PACKAGE_RUNTIME = "nodejs14.x";
-const DEPLOYMENT_PACKAGE_HANDLER = "index.handler";
+const DEPLOYMENT_PACKAGE_ARCHIVE_NAME = 'nodejs.zip';
+const DEPLOYMENT_PACKAGE_RUNTIME = 'nodejs14.x';
+const DEPLOYMENT_PACKAGE_HANDLER = 'index.handler';
 
 export {
   DEPLOYMENT_PACKAGE_ARCHIVE_NAME,

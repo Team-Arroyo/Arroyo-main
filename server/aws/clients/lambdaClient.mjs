@@ -1,4 +1,4 @@
-import { LambdaClient } from "@aws-sdk/client-lambda";
+import { LambdaClient } from '@aws-sdk/client-lambda';
 
 const lambdaClient = new LambdaClient({ 
   region: process.env.AWS_REGION

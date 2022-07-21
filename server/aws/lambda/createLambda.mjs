@@ -1,5 +1,5 @@
-import { CreateFunctionCommand } from "@aws-sdk/client-lambda";
-import LambdaClient from "../clients/lambdaClient.mjs";
+import { CreateFunctionCommand } from '@aws-sdk/client-lambda';
+import LambdaClient from '../clients/lambdaClient.mjs';
 
 const createLambda = async (lambdaParams) => {
   try {
@@ -8,7 +8,7 @@ const createLambda = async (lambdaParams) => {
 
     return response;
   } catch (err) {
-    console.log("Error", err);
+    console.log('Error', err);
   }
 };
 

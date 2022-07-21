@@ -1,5 +1,5 @@
-import { ListEventSourceMappingsCommand } from "@aws-sdk/client-lambda";
-import lambdaClient from "../clients/lambdaClient.mjs";
+import { ListEventSourceMappingsCommand } from '@aws-sdk/client-lambda';
+import lambdaClient from '../clients/lambdaClient.mjs';
 
 const listEventSourceMappings = async ({ eventSourceArn, functionName }) => {
   try {

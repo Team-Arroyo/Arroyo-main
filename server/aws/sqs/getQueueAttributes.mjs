@@ -1,5 +1,5 @@
-import { GetQueueAttributesCommand } from "@aws-sdk/client-sqs";
-import sqsClient from "../clients/sqsClient.mjs";
+import { GetQueueAttributesCommand } from '@aws-sdk/client-sqs';
+import sqsClient from '../clients/sqsClient.mjs';
 
 const getQueueAttributes = async ({ attributesArray, queueURL }) => {
   try {
@@ -18,7 +18,7 @@ const getQueueAttributes = async ({ attributesArray, queueURL }) => {
 
     return resultObj;
   } catch (err) {
-    console.log("Error", err);
+    console.log('Error', err);
   }
 };
 

@@ -1,5 +1,5 @@
-import { SendMessageCommand } from "@aws-sdk/client-sqs";
-import sqsClient from "../clients/sqsClient.mjs";
+import { SendMessageCommand } from '@aws-sdk/client-sqs';
+import sqsClient from '../clients/sqsClient.mjs';
 
 const sendMessageToQueue = async (messageParams) => {
   try {
@@ -7,7 +7,7 @@ const sendMessageToQueue = async (messageParams) => {
     const response = await sqsClient.send(command);
     return response;
   } catch (err) {
-    console.log("Error", err);
+    console.log('Error', err);
   }
 };
 
