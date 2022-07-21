@@ -1,7 +1,7 @@
-const dotenv = require("dotenv")
+import dotenv from 'dotenv';
 dotenv.config();
 
-const { S3Client, ListObjectsCommand, GetObjectCommand, SelectObjectContentCommand } = require("@aws-sdk/client-s3");
+import { S3Client, ListObjectsCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 
 const s3Client = new S3Client({
   region: "us-east-1",
@@ -11,7 +11,7 @@ const s3Client = new S3Client({
   }
 })
 
-const getAllBucketObjects = async() => {
+export const getAllBucketObjects = async() => {
   try {
     const response = await s3Client.send( new ListObjectsCommand({Bucket: process.env.AWS_BUCKET_NAME}))
     const objectKeys = response.Contents?.map(({Key}) => Key);
@@ -21,7 +21,7 @@ const getAllBucketObjects = async() => {
   }
 }
 
-const getObjectContents = async(Key) => {
+export const getObjectContents = async(Key) => {
   try {
     const data = await s3Client.send(new GetObjectCommand({
       Bucket: process.env.AWS_BUCKET_NAME,
@@ -59,7 +59,7 @@ const queryObjectContents = async(Key, Expression)=> {
   }
 }
 
-const getBucketObjectsWithinDates = async(startDate, endDate) => {
+export const getBucketObjectsWithinDates = async(startDate, endDate) => {
   const startMs = Date.parse(startDate);
   const endMs = Date.parse(endDate);
 
@@ -78,9 +78,8 @@ const getBucketObjectsWithinDates = async(startDate, endDate) => {
   }
 }
 
-module.exports = { 
-  getAllBucketObjects, 
-  getObjectContents,
-  getBucketObjectsWithinDates,
-  queryObjectContents
- }
+// module.exports = { 
+//   getAllBucketObjects, 
+//   getObjectContents,
+//   getBucketObjectsWithinDates
+//  }
