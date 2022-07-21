@@ -1,15 +1,7 @@
-<<<<<<< HEAD:server/controller/s3ObjectController.js
-const  { getAllBucketObjects, getObjectContents, getBucketObjectsWithinDates, queryObjectContents } = require("../lib/s3Client");
-const { streamToString } = require("../utils/streamToString");
-const queryStreamToString = require("../utils/queryStreamToString");
-const { logStringToJson } = require("../utils/logStringToJson");
-const { postToLogstash } = require("../services/logstashService");
-=======
 import  { getAllBucketObjects, getObjectContents, getBucketObjectsWithinDates } from '../lib/s3Client.mjs';
 import { streamToString } from  '../utils/streamToString.mjs';
 import { logStringToJson } from '../utils/logStringToJson.mjs';
 import { postToLogstash } from '../services/logstashService.mjs';
->>>>>>> deploy_test:server/controller/s3ObjectController.mjs
 
 export const getS3Objects = async(req, res, next) => {
   const dateError = req.dateError;
@@ -40,7 +32,7 @@ export const getS3Objects = async(req, res, next) => {
       error
     });
   }
-}
+};
 
 export const rehydrateS3Object = async(req, res, next) => {
   try {
@@ -61,11 +53,7 @@ export const rehydrateS3Object = async(req, res, next) => {
   }
 }
 
-<<<<<<< HEAD:server/controller/s3ObjectController.js
-const rehydrateFullS3Object = async(objectKey) => {
-=======
-export const rehydrateS3Objects = async(objectKey) => {
->>>>>>> deploy_test:server/controller/s3ObjectController.mjs
+export const rehydrateFullS3Object = async(objectKey) => {
   return new Promise(async(resolve, reject) => {
     try {
       console.log("normal_ingest", objectKey);
@@ -79,34 +67,3 @@ export const rehydrateS3Objects = async(objectKey) => {
     }
   })
 }
-
-const rehydrateQueriedS3Object = async(objectKey, sqlExpression) => {
-  return new Promise(async(resolve, reject) => {
-    try {
-      console.log("query_ingest", objectKey);
-      const data = await queryObjectContents(objectKey, sqlExpression);
-      const rawLogString = await queryStreamToString(data.Payload);
-      const logsJson = logStringToJson(rawLogString);
-      console.log("result length", logsJson.length);
-      await postToLogstash(logsJson);
-      resolve({objectKey, status: 'complete'})
-    } catch(err) {
-      reject({objectKey, status: 'fail', error: err})
-    }
-  })
-}
-
-<<<<<<< HEAD:server/controller/s3ObjectController.js
-module.exports = {
-  getS3Objects,
-  rehydrateS3Object,
-  rehydrateFullS3Object,
-  rehydrateQueriedS3Object
-}
-=======
-// module.exports = {
-//   getS3Objects,
-//   rehydrateS3Object,
-//   rehydrateS3Objects
-// }
->>>>>>> deploy_test:server/controller/s3ObjectController.mjs

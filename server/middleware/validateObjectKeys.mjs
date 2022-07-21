@@ -23,4 +23,3 @@ const validateObjectKeys = (req, _, next) => {
 };
 
 export default validateObjectKeys;
-// module.exports = validateObjectKeys;
