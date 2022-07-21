@@ -1,8 +1,8 @@
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import s3Client from "../clients/s3Client.mjs"; 
 import fs from "fs";
-import { DEPLOYMENT_PACKAGE_ARCHIVE_NAME } from "../../constants/lambdaDeploymentPackage.mjs";
-import { CONTENT_TYPE_APPLICATION_ZIP, ACL_PRIVATE, ERROR, OPEN, LAMBDA_DEPLOYMENT_PACKAGE_S3_BUCKET_NAME } from "../../constants/general.mjs";
+import { DEPLOYMENT_PACKAGE_ARCHIVE_NAME } from "../constants/lambdaDeploymentPackage.mjs";
+import { CONTENT_TYPE_APPLICATION_ZIP, ACL_PRIVATE, ERROR, OPEN, LAMBDA_DEPLOYMENT_PACKAGE_S3_BUCKET_NAME } from "../constants/general.mjs";
 
 const uploadObjectToBucket = async(fileName) => {
   /*

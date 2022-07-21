@@ -1,6 +1,6 @@
 import iamClient from "../clients/iamClient.mjs";
 import { CreateRoleCommand } from "@aws-sdk/client-iam";
-import { LAMBDA_ASSUME_ROLE_POLICY } from "../../constants/lambdaAWSPolicies.mjs";
+import { LAMBDA_ASSUME_ROLE_POLICY } from "../constants/lambdaAWSPolicies.mjs";
 
 const createRole = async (roleName) => {
   const roleParams = {
