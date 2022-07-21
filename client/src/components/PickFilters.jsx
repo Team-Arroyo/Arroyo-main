@@ -56,7 +56,7 @@ function PickFilters() {
         {/* PILL BOX HERE */}
 
         <EuiSpacer size="xl" />
-        <EuiAccordion buttonContent="Add Search Query">
+        <EuiAccordion id="query-accordion" buttonContent="Add Search Query">
           <EuiPanel color="primary">
             <EuiFlexGroup style={{ maxWidth: 600 }} gutterSize="l" alignItems="flexEnd" justifyContent="flexEnd">
               <EuiFlexItem>
