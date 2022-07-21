@@ -16,32 +16,18 @@ import {
   EuiPanel,
   EuiButtonIcon,
 } from '@elastic/eui';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import { icon as searchIcon } from '@elastic/eui/es/components/icon/assets/search';
 import { icon as plusIcon } from '@elastic/eui/es/components/icon/assets/plus';
 // import { icon as trashIcon } from '@elastic/eui/es/components/icon/assets/trash';
 import DateRange from './DateRange';
-import { formatDate } from '../libs/utils';
 import apiClient from '../libs/apiclient';
 
 function PickFilters({ setChoices }) {
-  // const [startDate, setStartDate] = useState(moment());
-  // const [endDate, setEndDate] = useState(moment());
+
   const [column, setColumn] = useState('');
   const [columnValue, setColumnValue] = useState('');
   const [queries, setQueries] = useState([]);
-
-  // const isValidDateRange = (!formatDate(startDate) && !formatDate(endDate))
-  // || (startDate !== null && endDate !== null && startDate <= endDate);
-
-  // const handleStartDateChange = (date) => {
-  //   setStartDate(date);
-  // };
-
-  // const handleEndDateChange = (date) => {
-  //   setEndDate(date);
-  // };
 
   const handleChangeColumn = (c) => setColumn(c.target.value);
   const handleChangeColumnValue = (cv) => setColumnValue(cv.target.value);
@@ -62,12 +48,6 @@ function PickFilters({ setChoices }) {
     //   .catch((e) => console.log(e));
   };
 
-  // const getErrorMessage = () => {
-  //   if (!formatDate(startDate) || !formatDate(endDate)) return ['Enter start and end date'];
-  //   if (!isValidDateRange) return ['Start date cannot be greater than end date'];
-  //   return ['Error'];
-  // };
-
   return (
     <div>
       <EuiTitle size="s"><h2>Filter</h2></EuiTitle>
@@ -76,28 +56,7 @@ function PickFilters({ setChoices }) {
       <EuiSpacer size="s" />
       <EuiForm>
         <DateRange />
-        {/* <EuiFormRow
-          isInvalid={!isValidDateRange}
-          error={getErrorMessage()}
-        >
-          <EuiFlexGroup>
-            <EuiFlexItem>
-              <DatePicker
-                dateType="start date"
-                dateStatus={startDate}
-                handleChange={handleStartDateChange}
-              />
-            </EuiFlexItem>
-            <EuiFlexItem>
-              <DatePicker
-                dateType="end date"
-                dateStatus={endDate}
-                handleChange={handleEndDateChange}
-              />
-            </EuiFlexItem>
-          </EuiFlexGroup>
-        </EuiFormRow> */}
-
+        
         {/* PILL BOX HERE */}
 
         <EuiSpacer size="xl" />
@@ -145,7 +104,6 @@ function PickFilters({ setChoices }) {
             <EuiFlexItem>
               <EuiButton
                 onClick={handleClick}
-
               >
                 Search S3
               </EuiButton>

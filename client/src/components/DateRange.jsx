@@ -4,11 +4,13 @@ import {
   EuiFormRow,
   EuiFlexItem,
 } from '@elastic/eui';
+import { isValidDateRange } from '../libs/utils';
 import DatePicker from './DatePicker';
 
 function DateRange() {
+  const errors = ['Start Date must be before End Date'];
   return (
-    <EuiFormRow>
+    <EuiFormRow isInvalid={!(isValidDateRange())} error={errors}>
       <EuiFlexGroup>
         <EuiFlexItem>
           <DatePicker

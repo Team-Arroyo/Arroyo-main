@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { useSelector } from 'react-redux';
 
 const toOptions = (s3Keys) => s3Keys.map((key) => ({
   label: key,
@@ -16,6 +17,13 @@ const convert = {
 export const formatDate = (dateObj) => {
   if (!dateObj) return null;
   return moment(dateObj).format('MM-DD-YYYY');
+};
+
+export const isValidDateRange = () => {
+  const range = useSelector((state) => state.dateRange);
+  const start = moment(range.start, 'MM-DD-YYYY');
+  const end = moment(range.end, 'MM-DD-YYYY');
+  return start.isSameOrBefore(end);
 };
 
 export default convert;
