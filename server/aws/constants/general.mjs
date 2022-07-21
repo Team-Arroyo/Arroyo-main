@@ -1,7 +1,7 @@
-const CONTENT_TYPE_APPLICATION_ZIP = "application/zip";
-const ACL_PRIVATE = "private";
-const OPEN = "open";
-const ERROR = "error";
+const CONTENT_TYPE_APPLICATION_ZIP = 'application/zip';
+const ACL_PRIVATE = 'private';
+const OPEN = 'open';
+const ERROR = 'error';
 const USER_LOGS_S3_BUCKET_NAME='test44441'; // TODO this bucket will be created programmatically
 const LAMBDA_DEPLOYMENT_PACKAGE_S3_BUCKET_NAME='lambda-test-deployment-pkg';
 const REHYDRATION_LAMBDA_NAME='TestLambda48';

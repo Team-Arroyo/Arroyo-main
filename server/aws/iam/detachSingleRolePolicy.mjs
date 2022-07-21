@@ -1,5 +1,5 @@
-import iamClient from "../clients/iamClient.mjs";
-import { DetachRolePolicyCommand } from "@aws-sdk/client-iam";
+import iamClient from '../clients/iamClient.mjs';
+import { DetachRolePolicyCommand } from '@aws-sdk/client-iam';
 
 const detachSingleRolePolicy = async ({ roleName, policyArn }) => {
     try {
@@ -7,10 +7,10 @@ const detachSingleRolePolicy = async ({ roleName, policyArn }) => {
         PolicyArn: policyArn,
         RoleName: roleName
       }));
-      console.log("Success. Policy detached. Data: ", data);
+      console.log('Success. Policy detached. Data: ', data);
       return data;
     } catch (err) {
-      console.log("Error", err);
+      console.log('Error', err);
     }
 };
 

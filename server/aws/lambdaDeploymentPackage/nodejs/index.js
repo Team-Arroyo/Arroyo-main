@@ -1,5 +1,5 @@
-const axios = require("axios");
-const { S3Client, SelectObjectContentCommand } = require("@aws-sdk/client-s3");
+const axios = require('axios');
+const { S3Client, SelectObjectContentCommand } = require('@aws-sdk/client-s3');
 const s3Client = new S3Client();
   
   const convertDataToJson = async (generator) => {
@@ -10,7 +10,7 @@ const s3Client = new S3Client();
             }
         }  
         const payload = Buffer.concat(chunks).toString('utf8');
-        const rawLogs = payload.split("\n")
+        const rawLogs = payload.split('\n')
       //Splitting leaves an empty string as final element -- pop it off ''
         rawLogs.pop()
         return rawLogs.map(text => JSON.parse(text))
@@ -39,7 +39,7 @@ exports.handler = async (event) => {
 
     let payload;
     try {
-        console.log("entering function");
+        console.log('entering function');
         const data = await s3Client.send(new SelectObjectContentCommand(params))
         const logs = await convertDataToJson(data.Payload)
         payload = logs
