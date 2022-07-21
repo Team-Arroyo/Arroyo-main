@@ -1,15 +1,14 @@
-import iamClient from "../clients/iamClient.mjs";
-import { CreateRoleCommand } from "@aws-sdk/client-iam";
+import iamClient from '../clients/iamClient.mjs';
+import { DeleteRoleCommand } from '@aws-sdk/client-iam';
 
-const deleteRole = async (roleName) => {
-  const roleParams = {
-      RoleName: roleName
-  };
+const deleteRole = async ({ roleName }) => {
     try {
-      const data = await iamClient.send(new CreateRoleCommand(roleParams));
-      console.log("Role delted, data: ", data);
+      const data = await iamClient.send(new DeleteRoleCommand({
+        RoleName: roleName
+    }));
+      console.log('Role deleted, data: ', data);
     } catch (err) {
-      console.log("Error", err);
+      console.log('Error', err);
     }
 };
 
