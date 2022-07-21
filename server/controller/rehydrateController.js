@@ -21,6 +21,8 @@ const initializeRehydrateJob = (req, res) => {
   
   const promises  = objectKeys.map(objectKey => rehydrateFullS3Object(objectKey))
 
+  objectKeys.forEach(Key => sendMessageToQueue({Key}));
+
   Promise.allSettled(promises).then(resultArray => {
     console.log("All promises settled");
     const batchStatus = resultArray.map(({ reason, value }) => reason ? reason : value);

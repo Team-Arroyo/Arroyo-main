@@ -58,11 +58,10 @@ const rehydrateFullS3Object = async(objectKey) => {
   return new Promise(async(resolve, reject) => {
     try {
       console.log("normal_ingest", objectKey);
-      const data = await getObjectContents(objectKey)
-      const rawLogString = await streamToString(data.Body);
-      const logsJson = logStringToJson(rawLogString);
-      console.log("result length", logsJson.length);
-      await postToLogstash(logsJson);
+      //const data = await getObjectContents(objectKey)
+      //const rawLogString = await streamToString(data.Body);
+      //const logsJson = logStringToJson(rawLogString);
+      //await postToLogstash(logsJson);
       resolve({objectKey, status: 'complete'})
     } catch(err) {
       reject({objectKey, status: 'fail', error: err})

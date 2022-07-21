@@ -35,11 +35,13 @@ const sendMessageToQueue = async(additionalParams) => {
     QueueUrl
   };
 
+  console.log('messaggeParams', messageParams);
+
   try {
-    const command = new SendMessageCommand(messageParams)
+    const command = new SendMessageCommand(messageParams);
     const response = await sqsClient.send(command);
   } catch(err) {
-    console.log("Error sending messages to sqs queue.", err);
+    console.log('Error sending messages to sqs queue.', err);
   }
 }
 
@@ -48,8 +50,8 @@ const testSqsConnection = async() => {
     const command = new GetQueueUrlCommand({QueueName});
     const response = await sqsClient.send(command);
   } catch(err) {
-    console.log("Error in SQS connect test", err);
-    throw err
+    console.log('Error in SQS connect test', err);
+    throw err;
   }
 }
 
