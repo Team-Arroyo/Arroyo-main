@@ -1,4 +1,5 @@
-import React, { useState, Fragment, useEffect } from 'react';
+import React, { useState, Fragment } from 'react';
+import { useSelector } from 'react-redux';
 import {
   EuiSelectable,
   EuiButton,
@@ -7,13 +8,14 @@ import {
   EuiFlexItem,
   EuiTitle,
 } from '@elastic/eui';
-import PropTypes from 'prop-types';
 import convert from '../libs/utils';
 import apiClient from '../libs/apiclient';
 
-function PickFiles({ choices }) {
+function PickFiles() {
+  const choices = useSelector((state) => state.choices);
   const starting = convert.toOptions(choices);
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState(starting);
+
   const handleIngest = () => {
     const selectedKeys = convert.toKeys(options);
     // eslint-disable-next-line no-console
@@ -27,9 +29,6 @@ function PickFiles({ choices }) {
     const allCleared = options.map((o) => ({ ...o, checked: null }));
     setOptions(allCleared);
   };
-  useEffect(() => {
-    setOptions(starting);
-  }, [choices]);
 
   return (
     <>
@@ -72,13 +71,5 @@ function PickFiles({ choices }) {
     </>
   );
 }
-
-PickFiles.defaultProps = {
-  choices: [],
-};
-
-PickFiles.propTypes = {
-  choices: PropTypes.arrayOf(PropTypes.string),
-};
 
 export default PickFiles;
