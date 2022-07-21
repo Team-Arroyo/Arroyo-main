@@ -1,4 +1,8 @@
+/* eslint-disable import/extensions */
+/* eslint-disable no-console */
+
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   EuiPanel,
   EuiFlexGroup,
@@ -9,20 +13,21 @@ import {
 } from '@elastic/eui';
 import { icon as searchIcon } from '@elastic/eui/es/components/icon/assets/search';
 import { icon as plusIcon } from '@elastic/eui/es/components/icon/assets/plus';
+import { addQuery } from '../features/queriesSlice.js';
 
 function QueryTerms() {
+  const dispatch = useDispatch();
   const [column, setColumn] = useState('');
   const [columnValue, setColumnValue] = useState('');
-  const [queries, setQueries] = useState([]);
-
   const handleChangeColumn = (c) => setColumn(c.target.value);
   const handleChangeColumnValue = (cv) => setColumnValue(cv.target.value);
   const handleAddQueryClick = () => {
-    setQueries([...queries, { column: columnValue }]);
-    console.log(queries);
+    dispatch(addQuery({ column, columnValue }));
+    console.log('Queries from QueryTerms', { column, columnValue });
     setColumn('');
     setColumnValue('');
   };
+
   return (
     <EuiPanel color="primary">
       <EuiFlexGroup style={{ maxWidth: 600 }} gutterSize="l" alignItems="flexEnd" justifyContent="flexEnd">

@@ -1,5 +1,8 @@
 /* eslint-disable no-console */
-import React, { useState } from 'react';
+/* eslint-disable */
+
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   EuiButton,
   EuiSpacer,
@@ -9,60 +12,20 @@ import {
   EuiFormRow,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiFieldText,
   EuiAccordion,
-  EuiPanel,
-  EuiButtonIcon,
 } from '@elastic/eui';
-import moment from 'moment';
-import PropTypes from 'prop-types';
-import { icon as searchIcon } from '@elastic/eui/es/components/icon/assets/search';
-import { icon as plusIcon } from '@elastic/eui/es/components/icon/assets/plus';
-// import { icon as trashIcon } from '@elastic/eui/es/components/icon/assets/trash';
-import DatePicker from './DatePicker';
-import { formatDate } from '../libs/utils';
-import apiClient from '../libs/apiclient';
+import DateRange from './DateRange';
+import QueryTerms from './QueryTerms';
+import { getKeysAndSetChoices } from '../features/choicesSlice';
 
-function PickFilters({ setChoices }) {
-  const [startDate, setStartDate] = useState(moment());
-  const [endDate, setEndDate] = useState(moment());
-  const [column, setColumn] = useState('');
-  const [columnValue, setColumnValue] = useState('');
-  const [queries, setQueries] = useState([]);
-
-  const isValidDateRange = (!formatDate(startDate) && !formatDate(endDate))
-  || (startDate !== null && endDate !== null && startDate <= endDate);
-
-  const handleStartDateChange = (date) => {
-    setStartDate(date);
-  };
-
-  const handleEndDateChange = (date) => {
-    setEndDate(date);
-  };
-
-  const handleChangeColumn = (c) => setColumn(c.target.value);
-  const handleChangeColumnValue = (cv) => setColumnValue(cv.target.value);
-  const handleAddQueryClick = () => {
-    setQueries([...queries, { column: columnValue }]);
-    console.log(queries);
-    setColumn('');
-    setColumnValue('');
-  };
+function PickFilters() {
+  const dispatch = useDispatch();
+  const startDate = useSelector((state) => state.dateRange.start)
+  const endDate = useSelector((state) => state.dateRange.end)
 
   const handleClick = () => {
-    apiClient
-      .getKeys(formatDate(startDate), formatDate(endDate))
-      .then(
-        (keys) => setChoices(keys),
-      )
-      .catch((e) => console.log(e));
-  };
-
-  const getErrorMessage = () => {
-    if (!formatDate(startDate) || !formatDate(endDate)) return ['Enter start and end date'];
-    if (!isValidDateRange) return ['Start date cannot be greater than end date'];
-    return ['Error'];
+    console.log('from button', startDate)
+    dispatch(getKeysAndSetChoices({startDate, endDate}));
   };
 
   return (
@@ -72,68 +35,13 @@ function PickFilters({ setChoices }) {
       <EuiText><p>Select a Date Range</p></EuiText>
       <EuiSpacer size="s" />
       <EuiForm>
-        <EuiFormRow
-          isInvalid={!isValidDateRange}
-          error={getErrorMessage()}
-        >
-          <EuiFlexGroup>
-            <EuiFlexItem>
-              <DatePicker
-                dateType="start date"
-                dateStatus={startDate}
-                handleChange={handleStartDateChange}
-              />
-            </EuiFlexItem>
-            <EuiFlexItem>
-              <DatePicker
-                dateType="end date"
-                dateStatus={endDate}
-                handleChange={handleEndDateChange}
-              />
-            </EuiFlexItem>
-          </EuiFlexGroup>
-        </EuiFormRow>
-
+        <DateRange />
+        
         {/* PILL BOX HERE */}
 
         <EuiSpacer size="xl" />
-        <EuiAccordion buttonContent="Add Search Query">
-          <EuiPanel color="primary">
-            <EuiFlexGroup style={{ maxWidth: 600 }} gutterSize="l" alignItems="flexEnd" justifyContent="flexEnd">
-              <EuiFlexItem>
-                <EuiFormRow label="Log Attribute" component="form">
-                  <EuiFieldText
-                    placeholder="ex. HTTP Method"
-                    value={column}
-                    onChange={handleChangeColumn}
-                    icon={searchIcon}
-                  />
-                </EuiFormRow>
-              </EuiFlexItem>
-              <EuiFlexItem>
-                <EuiFormRow label="Attribute Value" component="form">
-                  <EuiFieldText
-                    placeholder="ex. GET"
-                    value={columnValue}
-                    onChange={handleChangeColumnValue}
-                    icon={searchIcon}
-                  />
-                </EuiFormRow>
-              </EuiFlexItem>
-              <EuiFlexItem>
-                <EuiFormRow>
-                  <EuiButtonIcon
-                    iconType={plusIcon}
-                    size="m"
-                    display="base"
-                    onClick={handleAddQueryClick}
-                    aria-label="add query search term"
-                    aria-labelledby="add query search term"
-                  />
-                </EuiFormRow>
-              </EuiFlexItem>
-            </EuiFlexGroup>
-          </EuiPanel>
+        <EuiAccordion id="query-accordion" buttonContent="Add Search Query">
+          <QueryTerms />
         </EuiAccordion>
         <EuiSpacer size="xl" />
         <EuiFormRow>
@@ -141,7 +49,6 @@ function PickFilters({ setChoices }) {
             <EuiFlexItem>
               <EuiButton
                 onClick={handleClick}
-                isDisabled={!isValidDateRange}
               >
                 Search S3
               </EuiButton>
@@ -159,13 +66,5 @@ function PickFilters({ setChoices }) {
     </div>
   );
 }
-
-PickFilters.defaultProps = {
-  setChoices: () => console.log('the real function wasn not passed down'),
-};
-
-PickFilters.propTypes = {
-  setChoices: PropTypes.func,
-};
 
 export default PickFilters;
