@@ -1,5 +1,5 @@
-import { CreateQueueCommand } from "@aws-sdk/client-sqs";
-import sqsClient from "../clients/sqsClient.mjs";
+import { CreateQueueCommand } from '@aws-sdk/client-sqs';
+import sqsClient from '../clients/sqsClient.mjs';
 
 const createQueue = async (queueParams) => {
   try {
@@ -8,7 +8,7 @@ const createQueue = async (queueParams) => {
 
     return { QueueUrl: createQueueResponse.QueueUrl };
   } catch (err) {
-    console.log("Error", err);
+    console.log('Error', err);
   }
 };
 
