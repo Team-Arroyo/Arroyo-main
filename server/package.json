@@ -1,5 +1,6 @@
 {
   "name": "server",
+  "type": "module",
   "version": "1.0.0",
   "description": "backend application",
   "main": "index.js",
@@ -21,6 +22,7 @@
     "@aws-sdk/client-sqs": "^3.131.0",
     "aws-sdk": "^2.1171.0",
     "axios": "^0.27.2",
+    "configstore": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
