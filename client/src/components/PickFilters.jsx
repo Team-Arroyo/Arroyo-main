@@ -1,4 +1,6 @@
 /* eslint-disable no-console */
+/* eslint-disable */
+
 import React, { useState } from 'react';
 import {
   EuiButton,

@@ -1,23 +1,17 @@
+/* eslint-disable import/extensions */
 import { createSlice } from '@reduxjs/toolkit';
 import moment from 'moment';
+import { formatDate } from '../libs/utils.js';
 
 export const dateRangeSlice = createSlice({
   name: 'dateRange',
-  initialState: [
-    { start: moment() },
-    { end: moment() },
-  ],
+  initialState: {
+    start: formatDate(moment()),
+    end: formatDate(moment()),
+  },
   reducers: {
-    setStartDate: (state, action) => {
-      const startDate = state.find((d) => Object.keys(d).includes('start'));
-      startDate.start = action.payload;
-      return state;
-    },
-    setEndDate: (state, action) => {
-      const startDate = state.find((d) => Object.keys(d).includes('end'));
-      startDate.end = action.payload;
-      return state;
-    },
+    setStartDate: (state, action) => ({ ...state, start: action.payload }),
+    setEndDate: (state, action) => ({ ...state, end: action.payload }),
   },
 });
 

@@ -1,23 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { EuiDatePicker, EuiFormRow } from '@elastic/eui';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { formatDate } from '../libs/utils';
 import { setStartDate, setEndDate } from '../features/dateRangeSlice';
 
 function DatePicker({ dateType }) {
   const toggleDateType = dateType === 'start date' ? 'start' : 'end';
   const action = toggleDateType === 'start' ? setStartDate : setEndDate;
   const dispatch = useDispatch();
-  const date = useSelector((state) => {
-    const string = state.dateRange.find((d) => Object.keys(d).includes('start'));
-    return moment(string);
-  });
+
+  const [selectedDate, setSelectedDate] = useState(moment());
   return (
     <EuiFormRow label={dateType}>
       <EuiDatePicker
-        selected={date}
-        onChange={() => dispatch(action(date))}
+        selected={selectedDate}
+        onChange={(d) => {
+          setSelectedDate(d);
+          dispatch(action(formatDate(d)));
+        }}
       />
     </EuiFormRow>
   );
@@ -32,3 +34,5 @@ DatePicker.propTypes = {
 };
 
 export default DatePicker;
+
+// moment().toString();
