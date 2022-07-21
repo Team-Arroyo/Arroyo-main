@@ -1,14 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import moment from 'moment';
 
-const initialState = [
-  { start: moment() },
-  { end: moment() },
-];
-
 export const dateRangeSlice = createSlice({
   name: 'dateRange',
-  initialState,
+  initialState: [
+    { start: moment() },
+    { end: moment() },
+  ],
   reducers: {
     setStartDate: (state, action) => {
       const startDate = state.find((d) => Object.keys(d).includes('start'));

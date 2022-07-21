@@ -19,27 +19,27 @@ import PropTypes from 'prop-types';
 import { icon as searchIcon } from '@elastic/eui/es/components/icon/assets/search';
 import { icon as plusIcon } from '@elastic/eui/es/components/icon/assets/plus';
 // import { icon as trashIcon } from '@elastic/eui/es/components/icon/assets/trash';
-import DatePicker from './DatePicker';
+import DateRange from './DateRange';
 import { formatDate } from '../libs/utils';
 import apiClient from '../libs/apiclient';
 
 function PickFilters({ setChoices }) {
-  const [startDate, setStartDate] = useState(moment());
-  const [endDate, setEndDate] = useState(moment());
+  // const [startDate, setStartDate] = useState(moment());
+  // const [endDate, setEndDate] = useState(moment());
   const [column, setColumn] = useState('');
   const [columnValue, setColumnValue] = useState('');
   const [queries, setQueries] = useState([]);
 
-  const isValidDateRange = (!formatDate(startDate) && !formatDate(endDate))
-  || (startDate !== null && endDate !== null && startDate <= endDate);
+  // const isValidDateRange = (!formatDate(startDate) && !formatDate(endDate))
+  // || (startDate !== null && endDate !== null && startDate <= endDate);
 
-  const handleStartDateChange = (date) => {
-    setStartDate(date);
-  };
+  // const handleStartDateChange = (date) => {
+  //   setStartDate(date);
+  // };
 
-  const handleEndDateChange = (date) => {
-    setEndDate(date);
-  };
+  // const handleEndDateChange = (date) => {
+  //   setEndDate(date);
+  // };
 
   const handleChangeColumn = (c) => setColumn(c.target.value);
   const handleChangeColumnValue = (cv) => setColumnValue(cv.target.value);
@@ -51,19 +51,20 @@ function PickFilters({ setChoices }) {
   };
 
   const handleClick = () => {
-    apiClient
-      .getKeys(formatDate(startDate), formatDate(endDate))
-      .then(
-        (keys) => setChoices(keys),
-      )
-      .catch((e) => console.log(e));
+    console.log('clicked');
+    // apiClient
+    //   .getKeys(formatDate(startDate), formatDate(endDate))
+    //   .then(
+    //     (keys) => setChoices(keys),
+    //   )
+    //   .catch((e) => console.log(e));
   };
 
-  const getErrorMessage = () => {
-    if (!formatDate(startDate) || !formatDate(endDate)) return ['Enter start and end date'];
-    if (!isValidDateRange) return ['Start date cannot be greater than end date'];
-    return ['Error'];
-  };
+  // const getErrorMessage = () => {
+  //   if (!formatDate(startDate) || !formatDate(endDate)) return ['Enter start and end date'];
+  //   if (!isValidDateRange) return ['Start date cannot be greater than end date'];
+  //   return ['Error'];
+  // };
 
   return (
     <div>
@@ -72,7 +73,8 @@ function PickFilters({ setChoices }) {
       <EuiText><p>Select a Date Range</p></EuiText>
       <EuiSpacer size="s" />
       <EuiForm>
-        <EuiFormRow
+        <DateRange />
+        {/* <EuiFormRow
           isInvalid={!isValidDateRange}
           error={getErrorMessage()}
         >
@@ -92,7 +94,7 @@ function PickFilters({ setChoices }) {
               />
             </EuiFlexItem>
           </EuiFlexGroup>
-        </EuiFormRow>
+        </EuiFormRow> */}
 
         {/* PILL BOX HERE */}
 
@@ -141,7 +143,7 @@ function PickFilters({ setChoices }) {
             <EuiFlexItem>
               <EuiButton
                 onClick={handleClick}
-                isDisabled={!isValidDateRange}
+
               >
                 Search S3
               </EuiButton>

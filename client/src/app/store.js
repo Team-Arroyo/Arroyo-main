@@ -2,7 +2,7 @@
 /* eslint-disable import/extensions */
 
 import { configureStore } from '@reduxjs/toolkit';
-import dateReducer from '../slices/dateRangeSlice.js';
+import dateReducer from '../features/dateRangeSlice.js';
 
 export default configureStore({
   reducer: {
