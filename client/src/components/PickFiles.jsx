@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
   EuiSelectable,
@@ -29,6 +29,10 @@ function PickFiles() {
     const allCleared = options.map((o) => ({ ...o, checked: null }));
     setOptions(allCleared);
   };
+
+  useEffect(() => {
+    setOptions(starting);
+  }, [choices]);
 
   return (
     <>
