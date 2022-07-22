@@ -1,5 +1,5 @@
 import React, { useState, Fragment, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   EuiSelectable,
   EuiButton,
@@ -10,11 +10,13 @@ import {
 } from '@elastic/eui';
 import convert from '../libs/utils';
 import apiClient from '../libs/apiclient';
+import { emptyChoices } from '../features/choicesSlice';
 
 function PickFiles() {
   const choices = useSelector((state) => state.choices);
   const starting = convert.toOptions(choices);
   const [options, setOptions] = useState(starting);
+  const dispatch = useDispatch();
 
   const handleIngest = () => {
     const selectedKeys = convert.toKeys(options);
@@ -77,7 +79,7 @@ function PickFiles() {
         </EuiFlexItem>
         <EuiFlexItem>
           <EuiButton
-            onClick={() => console.log('resetting')}
+            onClick={() => dispatch(emptyChoices())}
           >
             Cancel Select Files
           </EuiButton>

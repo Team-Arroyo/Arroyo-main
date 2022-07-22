@@ -41,6 +41,6 @@ export const choiceSlice = createSlice({
   },
 });
 
-export const { setChoices } = choiceSlice.actions;
+export const { setChoices, emptyChoices } = choiceSlice.actions;
 
 export default choiceSlice.reducer;
