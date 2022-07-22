@@ -31,7 +31,10 @@ function PickFiltersButtonGroup() {
         </EuiFlexItem>
         <EuiFlexItem>
 
-          <EuiButton>
+          <EuiButton
+            isDisabled={!hasQueryTerms()}
+            onClick={() => console.log('sending query terms to back-end')}
+          >
             Ingest Matching Log Enteries
           </EuiButton>
         </EuiFlexItem>
