@@ -8,9 +8,9 @@ import {
 } from '@elastic/eui';
 import { useSelector, useDispatch } from 'react-redux';
 import { getKeysAndSetChoices } from '../features/choicesSlice';
-import { isValidDateRange, hasQueryTerms } from '../libs/utils';
+import { isValidDateRange } from '../libs/utils';
 
-function PickFiltersButtonGroup() {
+function PickByDateButton() {
   const dispatch = useDispatch();
   const startDate = useSelector((state) => state.dateRange.start);
   const endDate = useSelector((state) => state.dateRange.end);
@@ -24,7 +24,7 @@ function PickFiltersButtonGroup() {
         <EuiFlexItem>
           <EuiButton
             onClick={handleClick}
-            isDisabled={!isValidDateRange() || hasQueryTerms()}
+            isDisabled={!isValidDateRange()}
           >
             Select Log Files
           </EuiButton>
@@ -34,4 +34,4 @@ function PickFiltersButtonGroup() {
   );
 }
 
-export default PickFiltersButtonGroup;
+export default PickByDateButton;
