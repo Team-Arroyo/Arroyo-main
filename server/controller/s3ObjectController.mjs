@@ -1,5 +1,7 @@
-import  { getObjectContents, getBucketObjectsWithinDates } from '../lib/s3Client.mjs';
-import getAllBucketObjectKeys from '../aws/s3/getAllBucketObjectKeys.mjs'
+// import  { getObjectContents, getBucketObjectsWithinDates } from '../lib/s3Client.mjs';
+import getObjectContents from '../aws/s3/getObjectContents.mjs';
+import getBucketObjectsWithinDates from '../aws/s3/getBucketObjectsWithinDates.mjs';
+import getAllBucketObjectKeys from '../aws/s3/getAllBucketObjectKeys.mjs';
 import { streamToString } from  '../utils/streamToString.mjs';
 import { logStringToJson } from '../utils/logStringToJson.mjs';
 import { postToLogstash } from '../services/logstashService.mjs';

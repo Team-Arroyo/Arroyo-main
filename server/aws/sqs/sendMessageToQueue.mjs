@@ -1,9 +1,9 @@
 import { SendMessageCommand } from '@aws-sdk/client-sqs';
 import sqsClient from '../clients/sqsClient.mjs';
 
-const sendMessageToQueue = async({ messageBodyTemplate, additionalParams }) => {
+const sendMessageToQueue = async({ messageBodyTemplate, additionalParams, QueueUrl }) => {
   const MessageBody = JSON.stringify({...messageBodyTemplate, ...additionalParams});
-
+  console.log("queueurl", QueueUrl);
   const messageParams = {
     MessageBody,
     QueueUrl
