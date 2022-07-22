@@ -25,7 +25,7 @@ function QueryBadges() {
                 key={k}
                 iconType="cross"
                 iconSide="right"
-                iconOnClick={() => {}}
+                iconOnClick={() => {dispatchEvent()}}
                 iconOnClickAriaLabel="Click to remove Query Term"
               >
                 {`${k}:${queries[k]}`}

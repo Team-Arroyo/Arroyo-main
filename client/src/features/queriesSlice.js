@@ -13,6 +13,10 @@ export const queriesSlice = createSlice({
       // eslint-disable-next-line no-param-reassign
       state[column] = columnValue;
     },
+    removeQuery: (state, action) => {
+      // eslint-disable-next-line no-param-reassign
+      delete state[action.payload];
+    },
   },
 });
 
