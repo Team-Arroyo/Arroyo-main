@@ -63,7 +63,7 @@ function PickFiles() {
         </EuiFlexItem>
         <EuiFlexItem>
           <EuiButton onClick={handleClearAll}>
-            Clear All Files
+            Clear All Selections
           </EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>
@@ -81,7 +81,7 @@ function PickFiles() {
           <EuiButton
             onClick={() => dispatch(emptyChoices())}
           >
-            Cancel Select Files
+            Cancel File Selection
           </EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>

@@ -2,7 +2,7 @@
 /* eslint-disable semi */
 /* eslint-disable no-console */
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   EuiBadge,
   EuiPanel,
@@ -22,10 +22,11 @@ function QueryBadges() {
           { keys.map((k) => {
             return (
               <EuiBadge
+                key={k}
                 iconType="cross"
                 iconSide="right"
                 iconOnClick={() => {}}
-                iconOnClickAriaLabel="Click this icon to..."
+                iconOnClickAriaLabel="Click to remove Query Term"
               >
                 {`${k}:${queries[k]}`}
               </EuiBadge>
