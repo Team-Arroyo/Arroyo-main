@@ -6,7 +6,8 @@ import '@elastic/eui/dist/eui_theme_light.css';
 import { EuiProvider } from '@elastic/eui';
 import PageContainer from './components/PageContainer.jsx';
 // import Wrapper from './components/Wrapper.jsx';
-import ByDateTab from './components/ByDateTab.jsx';
+// import ByDateTab from './components/ByDateTab.jsx';
+import ByQueryTab from './components/ByQueryTab.jsx';
 
 function App() {
   const cache = createCache({
@@ -17,7 +18,7 @@ function App() {
 
   return (
     <EuiProvider cache={cache} colorMode="light">
-      <PageContainer content={ByDateTab()} />
+      <PageContainer content={ByQueryTab()} />
     </EuiProvider>
   );
 }
