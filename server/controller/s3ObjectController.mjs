@@ -1,4 +1,5 @@
-import  { getAllBucketObjects, getObjectContents, getBucketObjectsWithinDates } from '../lib/s3Client.mjs';
+import  { getObjectContents, getBucketObjectsWithinDates } from '../lib/s3Client.mjs';
+import getAllBucketObjectKeys from '../aws/s3/getAllBucketObjectKeys.mjs'
 import { streamToString } from  '../utils/streamToString.mjs';
 import { logStringToJson } from '../utils/logStringToJson.mjs';
 import { postToLogstash } from '../services/logstashService.mjs';
@@ -18,10 +19,10 @@ export const getS3Objects = async(req, res) => {
 
     if(!!startDate && !!endDate) {
       console.log('date supplied');
-      objectKeys = await getBucketObjectsWithinDates(startDate, endDate);
+      objectKeys = await getBucketObjectsWithinDates({ startDate, endDate });
     } else {
       console.log('No date supplied');
-      objectKeys = await getAllBucketObjects();
+      objectKeys = await getAllBucketObjectKeys({ Bucket: process.env.AWS_BUCKET_NAME });
     }
 
     res.send({objectKeys});

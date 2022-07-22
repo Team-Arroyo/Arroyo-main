@@ -1,5 +1,5 @@
 import { rehydrateFullS3Object } from './s3ObjectController.mjs';
-import { getBucketObjectsWithinDates } from '../lib/s3Client.mjs';
+import getBucketObjectsWithinDates from '../aws/s3/getBucketObjectsWithinDates.mjs'
 import { testSqsConnection, sendMessageToQueue } from '../lib/sqsClient.mjs';
 
 const isTotalFailure = (batch) => {
@@ -39,7 +39,7 @@ export const initializeQueryRehydrate = async(req, res) => {
   const Expression = req.sqlExpression;
 
   try {
-    const logsWithinDates = await getBucketObjectsWithinDates(startDate, endDate);
+    const logsWithinDates = await getBucketObjectsWithinDates({ startDate, endDate });
     if(logsWithinDates.length < 1) {
       res.status(400).json({message: 'No files found to ingest within date range'});
     } else {
