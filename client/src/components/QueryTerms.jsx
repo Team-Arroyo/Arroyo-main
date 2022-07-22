@@ -14,7 +14,6 @@ import {
 import { icon as searchIcon } from '@elastic/eui/es/components/icon/assets/search';
 import { icon as plusIcon } from '@elastic/eui/es/components/icon/assets/plus';
 import { addQuery } from '../features/queriesSlice.js';
-import { hasChoices } from '../libs/utils';
 
 function QueryTerms() {
   const dispatch = useDispatch();
@@ -24,7 +23,6 @@ function QueryTerms() {
   const handleChangeColumnValue = (cv) => setColumnValue(cv.target.value);
   const handleAddQueryClick = () => {
     dispatch(addQuery({ column, columnValue }));
-    console.log('Queries from QueryTerms', { column, columnValue });
     setColumn('');
     setColumnValue('');
   };
@@ -56,7 +54,6 @@ function QueryTerms() {
           <EuiFormRow>
             <EuiButtonIcon
               iconType={plusIcon}
-              isDisabled={hasChoices()}
               size="m"
               display="base"
               onClick={handleAddQueryClick}
