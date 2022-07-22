@@ -31,4 +31,9 @@ export const hasQueryTerms = () => {
   return Object.keys(terms).length > 0;
 };
 
+export const hasChoices = () => {
+  const choices = useSelector((state) => state.choices);
+  return choices.length > 0;
+};
+
 export default convert;
