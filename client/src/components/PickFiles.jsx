@@ -66,12 +66,23 @@ function PickFiles() {
         </EuiFlexItem>
       </EuiFlexGroup>
       <EuiSpacer size="l" />
-      <EuiButton
-        onClick={handleIngest}
-        isDisabled={!(convert.toKeys(options)).length}
-      >
-        Ingest Logs
-      </EuiButton>
+      <EuiFlexGroup>
+        <EuiFlexItem>
+          <EuiButton
+            onClick={handleIngest}
+            isDisabled={!(convert.toKeys(options)).length}
+          >
+            Ingest Logs
+          </EuiButton>
+        </EuiFlexItem>
+        <EuiFlexItem>
+          <EuiButton
+            onClick={() => console.log('resetting')}
+          >
+            Cancel Select Files
+          </EuiButton>
+        </EuiFlexItem>
+      </EuiFlexGroup>
     </>
   );
 }
