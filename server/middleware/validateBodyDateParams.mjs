@@ -1,12 +1,9 @@
 import ERROR_HANDLING from "../aws/constants/errorHandling.mjs";
+import isValidDateOrder from "../utils/isValidDateOrder.mjs";
 
 const isValidDateFormat = (dateString) => {
   const validDatePattern = /^\d{2}-\d{2}-\d{4}$/;
   return validDatePattern.test(dateString) && !isNaN(Date.parse(dateString));
-};
-
-const isValidDateOrder = (startDate, endDate) => {
-  return Date.parse(startDate) <= Date.parse(endDate);
 };
 
 const validateBodyDateParams = (req, res, next) => {
