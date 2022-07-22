@@ -58,12 +58,12 @@ function PickFiles() {
       <EuiFlexGroup>
         <EuiFlexItem>
           <EuiButton onClick={handleSelectAll}>
-            Select All
+            Select All Files
           </EuiButton>
         </EuiFlexItem>
         <EuiFlexItem>
           <EuiButton onClick={handleClearAll}>
-            Clear All
+            Clear All Files
           </EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>
@@ -74,7 +74,7 @@ function PickFiles() {
             onClick={handleIngest}
             isDisabled={!(convert.toKeys(options)).length}
           >
-            Ingest Logs
+            Ingest Selected Files
           </EuiButton>
         </EuiFlexItem>
         <EuiFlexItem>
