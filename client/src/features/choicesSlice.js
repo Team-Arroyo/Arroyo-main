@@ -34,12 +34,13 @@ export const choiceSlice = createSlice({
   initialState: [],
   reducers: {
     setChoices: (state, action) => [...action.payload],
+    emptyChoices: (state, action) => [],
   },
   extraReducers: (builder) => {
     builder.addCase(getKeysAndSetChoices.fulfilled, (state, action) => [...action.payload]);
   },
 });
 
-export const { setChoices } = choiceSlice.actions;
+export const { setChoices, emptyChoices } = choiceSlice.actions;
 
 export default choiceSlice.reducer;

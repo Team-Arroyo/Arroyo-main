@@ -1,5 +1,5 @@
 import React, { useState, Fragment, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   EuiSelectable,
   EuiButton,
@@ -10,11 +10,13 @@ import {
 } from '@elastic/eui';
 import convert from '../libs/utils';
 import apiClient from '../libs/apiclient';
+import { emptyChoices } from '../features/choicesSlice';
 
 function PickFiles() {
   const choices = useSelector((state) => state.choices);
   const starting = convert.toOptions(choices);
   const [options, setOptions] = useState(starting);
+  const dispatch = useDispatch();
 
   const handleIngest = () => {
     const selectedKeys = convert.toKeys(options);
@@ -56,22 +58,33 @@ function PickFiles() {
       <EuiFlexGroup>
         <EuiFlexItem>
           <EuiButton onClick={handleSelectAll}>
-            Select All
+            Select All Files
           </EuiButton>
         </EuiFlexItem>
         <EuiFlexItem>
           <EuiButton onClick={handleClearAll}>
-            Clear All
+            Clear All Selections
           </EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>
       <EuiSpacer size="l" />
-      <EuiButton
-        onClick={handleIngest}
-        isDisabled={!(convert.toKeys(options)).length}
-      >
-        Ingest Logs
-      </EuiButton>
+      <EuiFlexGroup>
+        <EuiFlexItem>
+          <EuiButton
+            onClick={handleIngest}
+            isDisabled={!(convert.toKeys(options)).length}
+          >
+            Ingest Selected Files
+          </EuiButton>
+        </EuiFlexItem>
+        <EuiFlexItem>
+          <EuiButton
+            onClick={() => dispatch(emptyChoices())}
+          >
+            Cancel File Selection
+          </EuiButton>
+        </EuiFlexItem>
+      </EuiFlexGroup>
     </>
   );
 }
