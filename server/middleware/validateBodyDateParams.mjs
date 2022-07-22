@@ -1,10 +1,9 @@
+import ERROR_HANDLING from "../aws/constants/errorHandling.mjs";
+import isValidDateOrder from "../utils/isValidDateOrder.mjs";
+
 const isValidDateFormat = (dateString) => {
   const validDatePattern = /^\d{2}-\d{2}-\d{4}$/;
   return validDatePattern.test(dateString) && !isNaN(Date.parse(dateString));
-};
-
-const isValidDateOrder = (startDate, endDate) => {
-  return Date.parse(startDate) <= Date.parse(endDate);
 };
 
 const validateBodyDateParams = (req, res, next) => {
@@ -14,28 +13,28 @@ const validateBodyDateParams = (req, res, next) => {
   if(!startDate || !endDate) {
     error = {
       status: 400,
-      description: 'Bad Request',
-      message: 'Missing startDate,endDate, or both properities in req. body',
+      description: ERROR_HANDLING.badRequest,
+      message: ERROR_HANDLING.missingEndDateStartDateOrBoth,
       expectedFormat: {
-        startDate: 'mm-dd-yyyy',
-        endDate: 'mm-dd-yyyy',
-        queries: [{logProperty: 'logValue'}]
+        startDate: ERROR_HANDLING.correctDateFormat,
+        endDate: ERROR_HANDLING.correctDateFormat,
+        queries: [{logProperty: ERROR_HANDLING.logValue}]
       }
     };
   } else if(!isValidDateFormat(startDate) || !isValidDateFormat(endDate)) {
     error = {
       status: 400,
-      description: 'Bad Request',
-      message: 'Malformed date parameter(s)',
+      description: ERROR_HANDLING.badRequest,
+      message: ERROR_HANDLING.malformedDateParameters,
       startDateRecieved: startDate,
       endDateRecieved: endDate,
-      expectedFormat: 'mm-dd-yyyy',
+      expectedFormat: ERROR_HANDLING.correctDateFormat,
     };
   } else if(!isValidDateOrder(startDate, endDate)) {
     error = {
       status: 400,
-      description: 'Bad Request',
-      message: 'startDate must be <= endDate',
+      description: ERROR_HANDLING.badRequest,
+      message: ERROR_HANDLING.startDateMustBelessThanOrEqualToEndDate,
     };
   } else {
     req.startDate = startDate;

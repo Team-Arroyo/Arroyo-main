@@ -1,6 +1,19 @@
 import { rehydrateFullS3Object } from './s3ObjectController.mjs';
-import { getBucketObjectsWithinDates } from '../lib/s3Client.mjs';
-import { testSqsConnection, sendMessageToQueue } from '../lib/sqsClient.mjs';
+import getBucketObjectsWithinDates from '../aws/s3/getBucketObjectsWithinDates.mjs'
+import sendMessageToQueue from '../aws/sqs/sendMessageToQueue.mjs';
+import getQueue from '../aws/sqs/getQueue.mjs';
+
+const logstashEndpoint = process.env.LOGSTASH_HOST;
+const Bucket = process.env.AWS_BUCKET_NAME;
+const QueueUrl = process.env.SQS_QUEUE;
+const QueueName = process.env.SQS_QUEUE_NAME;
+
+
+const messageBodyTemplate = {
+  Bucket,
+  logstashEndpoint
+};
+
 
 const isTotalFailure = (batch) => {
   return batch.every(({ status }) => status === 'fail');
@@ -20,7 +33,7 @@ export const initializeRehydrateJob = (req, res) => {
   
   const promises  = objectKeys.map(objectKey => rehydrateFullS3Object(objectKey));
 
-  objectKeys.forEach(Key => sendMessageToQueue({Key}));
+  objectKeys.forEach(Key => sendMessageToQueue({ messageBodyTemplate, additionalParams: { Key, QueueUrl } }));
 
   Promise.allSettled(promises).then(resultArray => {
     console.log('All promises settled');
@@ -39,16 +52,16 @@ export const initializeQueryRehydrate = async(req, res) => {
   const Expression = req.sqlExpression;
 
   try {
-    const logsWithinDates = await getBucketObjectsWithinDates(startDate, endDate);
+    const logsWithinDates = await getBucketObjectsWithinDates({ startDate, endDate });
     if(logsWithinDates.length < 1) {
       res.status(400).json({message: 'No files found to ingest within date range'});
     } else {
       //final test of AWS credentials and infastructure before returning 202 status
-      await testSqsConnection();
+      await getQueue({ QueueName });
       res.status(202).json({message: 'Rehydrating task in progress...'});
     }
 
-    logsWithinDates.forEach(Key => sendMessageToQueue({Key, Expression}));
+    logsWithinDates.forEach(Key => sendMessageToQueue({ additionalParams: { Key, Expression } }));
   } catch(err) {
     res.status(500).send({
       message: 'AWS responded with an error.', 
