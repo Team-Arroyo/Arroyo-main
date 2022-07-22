@@ -38,10 +38,6 @@ export const initializeQueryRehydrate = async(req, res) => {
   const endDate = req.endDate;
   const Expression = req.sqlExpression;
 
-  // console.log("startDate", startDate);
-  // console.log("endDate", endDate);
-  // console.log("expression", Expression);
-
   try {
     const logsWithinDates = await getBucketObjectsWithinDates(startDate, endDate);
     if(logsWithinDates.length < 1) {

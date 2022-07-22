@@ -5,6 +5,3 @@ export const logStringToJson = (logString) => {
   return stringifiedLogs.map(text => JSON.parse(text));
 };
 
-// module.exports = {
-//   logStringToJson
-// }

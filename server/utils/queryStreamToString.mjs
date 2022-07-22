@@ -9,4 +9,4 @@ const queryStreamToString = async(generator) => {
   return payload;
 }
 
-module.exports = queryStreamToString;
+export default queryStreamToString;

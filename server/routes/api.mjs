@@ -18,5 +18,4 @@ router.post('/s3objects', validateObjectKeys, initializeRehydrateJob);
 
 router.post('/query-ingest', validateBodyDateParams, validateQueries, initializeQueryRehydrate);
 
-// module.exports = router
 export default router;
