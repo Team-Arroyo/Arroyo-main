@@ -1,19 +1,32 @@
+/* eslint-disable no-console */
 import React from 'react';
-import { EuiPanel, EuiSpacer } from '@elastic/eui';
-import PickFiles from './PickFiles';
-import PickFilters from './PickFilters';
+import { EuiTabbedContent } from '@elastic/eui';
+import ByDateTab from './ByDateTab';
+import ByQueryTab from './ByQueryTab';
 
 function Wrapper() {
+  const tabs = [
+    {
+      id: 'bydate-tab',
+      name: 'By Date Range',
+      content: (<ByDateTab />),
+    },
+    {
+      id: 'byquery-tab',
+      name: 'By Search Term',
+      content: (<ByQueryTab />),
+    },
+  ];
+
   return (
-    <>
-      <EuiPanel paddingSize="l">
-        <PickFilters />
-      </EuiPanel>
-      <EuiSpacer size="xl" />
-      <EuiPanel paddingSize="l">
-        <PickFiles />
-      </EuiPanel>
-    </>
+    <EuiTabbedContent
+      tabs={tabs}
+      initialSelectedTab={tabs[0]}
+      autoFocus="selected"
+      onTabClick={(tab) => {
+        console.log('clicked tab', tab);
+      }}
+    />
   );
 }
 

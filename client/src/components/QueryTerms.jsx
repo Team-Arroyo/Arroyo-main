@@ -56,7 +56,6 @@ function QueryTerms() {
           <EuiFormRow>
             <EuiButtonIcon
               iconType={plusIcon}
-              isDisabled={hasChoices()}
               size="m"
               display="base"
               onClick={handleAddQueryClick}
