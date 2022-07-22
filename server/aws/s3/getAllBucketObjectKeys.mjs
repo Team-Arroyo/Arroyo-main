@@ -1,4 +1,4 @@
-import getObjectsListFromBucket from '../aws/s3/getObjectListFromBucket.mjs';
+import getObjectsListFromBucket from './getObjectListFromBucket.mjs';
 
 const getAllBucketObjectKeys = async(bucketParams) => {
   try {
@@ -8,6 +8,6 @@ const getAllBucketObjectKeys = async(bucketParams) => {
   } catch(error) {
     throw error;
   }
-}
+};
 
 export default getAllBucketObjectKeys;

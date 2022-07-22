@@ -1,5 +1,5 @@
 import { GetObjectCommand } from '@aws-sdk/client-s3';
-import s3Client from '../aws/clients/s3Client.mjs';
+import s3Client from '../clients/s3Client.mjs';
 
 const getObjectContents = async(Key) => {
   try {
