@@ -1,54 +1,42 @@
-const axios = require('axios');
-const { S3Client, SelectObjectContentCommand } = require('@aws-sdk/client-s3');
-const s3Client = new S3Client();
-  
-  const convertDataToJson = async (generator) => {
-        const chunks = [];
-        for await (const value of generator) {
-            if (value.Records) {
-              chunks.push(value.Records.Payload);
-            }
-        }  
-        const payload = Buffer.concat(chunks).toString('utf8');
-        const rawLogs = payload.split('\n')
-      //Splitting leaves an empty string as final element -- pop it off ''
-        rawLogs.pop()
-        return rawLogs.map(text => JSON.parse(text))
-    }
+const { getAllLogs, queryForLogs } = require("./services/logFetchService");
+const { postToLogstash } = require("./services/logstashService");
 
 exports.handler = async (event) => {
-  console.log(event.Records[0])
-  const { Bucket, Key } = JSON.parse(event.Records[0].body);
-
-  const params = {
-    Bucket,
-    Key,
-    ExpressionType: 'SQL',
-    Expression: `SELECT * FROM s3object s LIMIT 5`,
-    InputSerialization: {
-      JSON: {
-        Type: 'LINES'
-      }
-    },
-    OutputSerialization: {
-      JSON: {
-        RecordDelimiter: '\n'
-      }
-    }
-  }
-
-    let payload;
+    console.log("Records", event.Records);
+    const { messageId, body } = event.Records[0];
+    console.log("body", typeof body);
+    const { Bucket, Key, logstashEndpoint, Expression } = JSON.parse(body);
+    
+    let response = {};
+    console.log("Bucket", Bucket);
+    console.log("Key", Key);
+    console.log("logstashHost", logstashEndpoint);
+    console.log(`Expression: ${Expression}`)
+   
     try {
-        console.log('entering function');
-        const data = await s3Client.send(new SelectObjectContentCommand(params))
-        const logs = await convertDataToJson(data.Payload)
-        payload = logs
-    } catch(err) {
-        console.log(err)
-        payload = err
+        let logsJson = [];
+        
+        if(Expression) {
+            logsJson = await queryForLogs(Bucket, Key, Expression)
+        } else {
+            logsJson = await getAllLogs(Bucket, Key);
+        }
+        
+        await postToLogstash(logstashEndpoint, logsJson)
+        
+        response = {
+            statusCode: 200,
+            body: JSON.stringify('Hello from Lambda!'),
+        };
+        
+    } catch(error) {
+        console.log("Failed rehydrate job", error);
+        console.log("Reporting back to SQS\n");
+        response = {
+            statusCode: 400,
+            body: JSON.stringify({error})
+        }
     }
-    console.log('payload: ', payload);
-
-    const postResponse = await axios.post('https://requestbin.io/1dvd1rq1', JSON.stringify(payload));
-    console.log('Posted to webhook. Response: ', postResponse);
+    
+    return response;
 };
