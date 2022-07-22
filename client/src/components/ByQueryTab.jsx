@@ -15,20 +15,17 @@ function ByQueryTab() {
   return (
     <div>
       <EuiPanel paddingSize="m">
-        <EuiTitle size="s"><h2>Filter</h2></EuiTitle>
+        <EuiTitle size="s"><h2>Filter by Search</h2></EuiTitle>
+        <EuiText size="s"><p><i>Ingest only matching log enteries</i></p></EuiText>
         <EuiSpacer size="m" />
-        <EuiText><p>Select a Date Range</p></EuiText>
-        <EuiSpacer size="s" />
         <EuiForm>
           <DateRange />
         </EuiForm>
         <EuiSpacer size="m" />
         <QueryTerms />
         <EuiSpacer size="m" />
-
         <QueryBadges />
         <EuiSpacer size="xl" />
-
         <IngestByQueryButton />
       </EuiPanel>
     </div>

@@ -14,10 +14,9 @@ function ByDateTab() {
   return (
     <div>
       <EuiPanel>
-        <EuiTitle size="s"><h2>Filter</h2></EuiTitle>
+        <EuiTitle size="s"><h2>Filter by Date</h2></EuiTitle>
+        <EuiText size="s"><p><i>Ingest whole log files</i></p></EuiText>
         <EuiSpacer size="m" />
-        <EuiText><p>Select a Date Range</p></EuiText>
-        <EuiSpacer size="s" />
         <EuiForm>
           <DateRange />
           <EuiSpacer size="xl" />
