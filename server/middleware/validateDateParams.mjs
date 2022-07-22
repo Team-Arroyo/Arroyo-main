@@ -1,10 +1,11 @@
 const isValidDateFormat = (dateString) => {
-  const validDatePattern = /^\d{2}-\d{2}-\d{4}$/
+  const validDatePattern = /^\d{2}-\d{2}-\d{4}$/;
   return validDatePattern.test(dateString);
-}
+};
+
 
 const validateDateParams = (req, _, next) => {
-  const { startDate, endDate } = req.query
+  const { startDate, endDate } = req.query;
 
   if((startDate && !endDate) || (!startDate && endDate)) {
     req.dateError = {
@@ -20,7 +21,7 @@ const validateDateParams = (req, _, next) => {
         description: 'Bad Request',
         message: 'Malformed date parameter',
         expectedFormat: 'mm-dd-yyyy',
-      }
+      };
     } else {
       req.startDate = startDate;
       req.endDate = endDate;
@@ -28,6 +29,7 @@ const validateDateParams = (req, _, next) => {
   }
 
   next();
-}
+};
 
-module.exports = validateDateParams;
+
+export default validateDateParams;
