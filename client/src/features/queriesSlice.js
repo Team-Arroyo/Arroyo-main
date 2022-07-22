@@ -20,6 +20,6 @@ export const queriesSlice = createSlice({
   },
 });
 
-export const { addQuery } = queriesSlice.actions;
+export const { addQuery, removeQuery } = queriesSlice.actions;
 
 export default queriesSlice.reducer;

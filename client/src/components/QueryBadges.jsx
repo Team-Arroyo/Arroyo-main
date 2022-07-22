@@ -9,10 +9,12 @@ import {
   EuiBadgeGroup,
   EuiSpacer,
 } from '@elastic/eui';
+import { removeQuery } from '../features/queriesSlice';
 
 function QueryBadges() {
   const queries = useSelector((state) => state.queries);
   const keys = Object.keys(queries);
+  const dispatch = useDispatch()
 
   return (
     <>
@@ -25,7 +27,7 @@ function QueryBadges() {
                 key={k}
                 iconType="cross"
                 iconSide="right"
-                iconOnClick={() => {dispatchEvent()}}
+                iconOnClick={() => dispatch(removeQuery(k))}
                 iconOnClickAriaLabel="Click to remove Query Term"
               >
                 {`${k}:${queries[k]}`}
