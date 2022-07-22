@@ -11,6 +11,7 @@ import {
 } from '@elastic/eui';
 import DateRange from './DateRange';
 import QueryTerms from './QueryTerms';
+import QueryBadges from './QueryBadges';
 import PickFiltersButtonGroup from './PickFiltersButtonGroup';
 
 function PickFilters() {
@@ -22,9 +23,7 @@ function PickFilters() {
       <EuiSpacer size="s" />
       <EuiForm>
         <DateRange />
-        
-        {/* PILL BOX HERE */}
-
+        <QueryBadges />
         <EuiSpacer size="xl" />
         <EuiAccordion id="query-accordion" buttonContent="Add Search Query">
           <QueryTerms />
