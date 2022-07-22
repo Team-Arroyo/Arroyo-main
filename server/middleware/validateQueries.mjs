@@ -1,4 +1,6 @@
 const SUPPORTED_QUERY_NUM = 2;
+import ERROR_HANDLING from "../aws/constants/errorHandling.mjs";
+import SQL_EXPRESSION_TEMPLATES from '../aws/constants/sqlExpressionTemplates.mjs'
 
 const isInvalidFormat = (queryObj) => {
   const [key, value] = Object.entries(queryObj).pop();
@@ -6,13 +8,13 @@ const isInvalidFormat = (queryObj) => {
 };
 
 const createSqlExpression = (queries) => {
-  const expressionTemplate = 'SELECT * FROM s3object s WHERE';
+  const expressionTemplate = SQL_EXPRESSION_TEMPLATES.template;
   const keyValuePairs = queries.map((queryObj) => {
     const [ key, value ] = Object.entries(queryObj).pop();
     return `s.${key} = '${value}'`;
   });
 
-  const queryString = keyValuePairs.join(' AND ');
+  const queryString = keyValuePairs.join(SQL_EXPRESSION_TEMPLATES.andOperator);
   return `${expressionTemplate} ${queryString}`;
 };
 
@@ -22,33 +24,33 @@ const detectQueryErrors = (queries) => {
   if(!queries || !Array.isArray(queries)) {
     error = {
       status: 400,
-      description: 'Bad Request',
-      message: 'Queries property is either missing ot not an array',
+      description: ERROR_HANDLING.badRequest,
+      message: ERROR_HANDLING.queriesPropertyMissingOrInvalid,
       expectedFormat: {
-        startDate: 'mm-dd-yyyy',
-        endDate: 'mm-dd-yyyy',
-        queries: [{logProperty: 'logValue'}]
+        startDate: ERROR_HANDLING.correctDateFormat,
+        endDate: ERROR_HANDLING.correctDateFormat,
+        queries: [{logProperty: ERROR_HANDLING.logValue}]
       }
     };
   } else if(queries.length > SUPPORTED_QUERY_NUM) {
     error = {
       status: 400,
-      description: 'Bad Request',
-      message: 'Invalid number of key/value pairs provided.',
+      description: ERROR_HANDLING.badRequest,
+      message: ERROR_HANDLING.invalidNumberOfKeyValPairs,
       maxExpectedPairs: SUPPORTED_QUERY_NUM,
     };
   } else if(queries.length < 1) {
     error = {
       status: 400,
-      description: 'Bad Request',
-      message: 'queries array was provided, but is empty.',
+      description: ERROR_HANDLING.badRequest,
+      message: ERROR_HANDLING.queriesPropertyEmpty,
     };
   } else if (queries.some(isInvalidFormat)) {
     error = {
       status: 400,
-      description: 'Bad Request',
-      message: 'Improper key/value object structure ',
-      exampleFormat: { host_ip: '192.168.1.1' }
+      description: ERROR_HANDLING.badRequest,
+      message: ERROR_HANDLING.invalidKeyValueStructure,
+      exampleFormat: { host_ip:  ERROR_HANDLING.exampleIPAddress}
     };
   }
   return error;
