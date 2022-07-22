@@ -26,4 +26,9 @@ export const isValidDateRange = () => {
   return start.isSameOrBefore(end);
 };
 
+export const hasQueryTerms = () => {
+  const terms = useSelector((state) => state.queries);
+  return Object.keys(terms).length > 0;
+};
+
 export default convert;
