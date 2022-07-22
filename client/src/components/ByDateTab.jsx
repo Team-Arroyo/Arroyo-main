@@ -27,6 +27,7 @@ function ByDateTab() {
       <EuiPanel>
         <PickFiles />
       </EuiPanel>
+      <EuiSpacer size="m" />
     </div>
   );
 }
