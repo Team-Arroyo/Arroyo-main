@@ -9,7 +9,14 @@ export const queriesSlice = createSlice({
   initialState: {},
   reducers: {
     addQuery: (state, action) => {
+      const currentKeys = Object.keys(state);
       const { column, columnValue } = action.payload;
+      if (!column.trim() || !columnValue.trim()) {
+        return;
+      }
+      if (Object.keys(state).length >= 2 && !currentKeys.includes(column)) {
+        return;
+      }
       // eslint-disable-next-line no-param-reassign
       state[column] = columnValue;
     },
