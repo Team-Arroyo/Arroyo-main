@@ -6,13 +6,7 @@ import {
 
 export const toastSlice = createSlice({
   name: 'toasts',
-  initialState: [
-    {
-      title: 'testing a toast',
-      text: 'this is where content goes',
-      id: htmlIdGenerator()(),
-    },
-  ],
+  initialState: [],
   reducers: {
     addToast: (state, action) => state.push({ ...action.payload, id: htmlIdGenerator()() }),
     removeToast: (state, action) => state.filter((t) => t.id !== action.payload),
