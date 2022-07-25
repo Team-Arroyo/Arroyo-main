@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import { EuiTabbedContent } from '@elastic/eui';
 import ByDateTab from './ByDateTab';
@@ -23,9 +22,6 @@ function Wrapper() {
       tabs={tabs}
       initialSelectedTab={tabs[0]}
       autoFocus="selected"
-      onTabClick={(tab) => {
-        console.log('clicked tab', tab);
-      }}
     />
   );
 }

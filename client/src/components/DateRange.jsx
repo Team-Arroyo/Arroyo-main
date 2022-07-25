@@ -9,6 +9,7 @@ import DatePicker from './DatePicker';
 
 function DateRange() {
   const errors = ['Start Date must be before End Date'];
+
   return (
     <EuiFormRow isInvalid={!(isValidDateRange())} error={errors}>
       <EuiFlexGroup>

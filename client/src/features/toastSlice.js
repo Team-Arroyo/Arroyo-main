@@ -1,9 +1,6 @@
-/* eslint-disable import/extensions */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import {
-  htmlIdGenerator,
-} from '@elastic/eui';
 import axios from 'axios';
+import { htmlIdGenerator } from '@elastic/eui';
 import { POST_QUERY_INGEST } from '../constants/ApiRoutes.js';
 import { getKeysAndSetChoices } from './choicesSlice.js';
 

@@ -20,5 +20,8 @@
         "jest"
     ],
     "rules": {
+        "import/extensions": {
+            "js": "always"
+        }
     }
 }

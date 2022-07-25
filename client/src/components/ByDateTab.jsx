@@ -7,8 +7,8 @@ import {
   EuiPanel,
 } from '@elastic/eui';
 import DateRange from './DateRange';
-import PickFiles from './PickFiles';
 import PickByDateButton from './PickByDateButton';
+import PickFiles from './PickFiles';
 
 function ByDateTab() {
   return (

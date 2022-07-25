@@ -8,8 +8,8 @@ import {
   EuiFlexItem,
   EuiTitle,
 } from '@elastic/eui';
-import convert from '../libs/utils';
 import apiClient from '../libs/apiclient';
+import convert from '../libs/utils';
 import { addToast } from '../features/toastSlice';
 
 function PickFiles() {
@@ -20,7 +20,6 @@ function PickFiles() {
 
   const handleIngest = () => {
     const selectedKeys = convert.toKeys(options);
-    // eslint-disable-next-line no-console
     apiClient
       .getObjects(selectedKeys)
       .then(() => dispatch(addToast({ title: 'Files Ingested', text: 'Check Kibana', color: 'success' })));

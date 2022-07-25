@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import { createSlice } from '@reduxjs/toolkit';
 import moment from 'moment';
 import { formatDate } from '../libs/utils.js';

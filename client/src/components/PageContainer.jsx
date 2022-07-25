@@ -14,6 +14,7 @@ import { removeToast } from '../features/toastSlice';
 function PageContainer({ content }) {
   const toasts = useSelector((state) => state.toasts);
   const dispatch = useDispatch();
+
   return (
     <EuiPage paddingSize="none">
       <EuiPageBody panelled>
