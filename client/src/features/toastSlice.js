@@ -4,7 +4,7 @@ import {
   htmlIdGenerator,
 } from '@elastic/eui';
 
-export const tostSlice = createSlice({
+export const toastSlice = createSlice({
   name: 'toasts',
   initialState: [
     {
@@ -19,6 +19,6 @@ export const tostSlice = createSlice({
   },
 });
 
-export const { addToast, removeToast } = tostSlice.actions;
+export const { addToast, removeToast } = toastSlice.actions;
 
-export default tostSlice.reducer;
+export default toastSlice.reducer;
