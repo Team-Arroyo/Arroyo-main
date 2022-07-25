@@ -3,14 +3,15 @@
 /* eslint-disable no-console */
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+// import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { GET_KEYS_URL } from '../constants/ApiRoutes.js';
+// import { addToast } from './toastSlice.js';
 
 export const getKeysAndSetChoices = createAsyncThunk(
   'choices/getKeysAndSetChoices',
   async (arg) => {
     const { startDate, endDate } = arg;
-    console.log('the thunk', startDate, endDate);
     let queryParams;
     if (startDate && endDate) {
       queryParams = `?startDate=${startDate}&endDate=${endDate}`;
@@ -24,7 +25,7 @@ export const getKeysAndSetChoices = createAsyncThunk(
       }
       return response.data.objectKeys;
     } catch (error) {
-      return error;
+      return Promise.reject(error);
     }
   },
 );
@@ -34,13 +35,12 @@ export const choiceSlice = createSlice({
   initialState: [],
   reducers: {
     setChoices: (state, action) => [...action.payload],
-    emptyChoices: (state, action) => [],
   },
   extraReducers: (builder) => {
     builder.addCase(getKeysAndSetChoices.fulfilled, (state, action) => [...action.payload]);
   },
 });
 
-export const { setChoices, emptyChoices } = choiceSlice.actions;
+export const { setChoices } = choiceSlice.actions;
 
 export default choiceSlice.reducer;
