@@ -3,10 +3,14 @@ const ACL_PRIVATE = 'private';
 const OPEN = 'open';
 const ERROR = 'error';
 const USER_LOGS_S3_BUCKET_NAME='test44441'; // TODO this bucket will be created programmatically
-const LAMBDA_DEPLOYMENT_PACKAGE_S3_BUCKET_NAME='lambda-test-deployment-pkg';
-const REHYDRATION_LAMBDA_NAME='TestLambda48';
-const REHYDRATION_QUEUE_NAME='SQS_OBJECT_KEYS48';
-const LAMBDA_ROLE_NAME='lambda-test-role';
+const LAMBDA_DEPLOYMENT_PACKAGE_S3_BUCKET_NAME='rehydrate-lambda-dep-pkg';
+const REHYDRATION_LAMBDA_NAME='RehydrateLambda';
+const REHYDRATION_QUEUE_NAME='RehydrateSQS';
+const STATUS_QUEUE_NAME='StatusSQS';
+const REHYDRATION_DLQ='RehydrateSQSDLQ';
+const STATUS_DLQ='StatusSQSDLQ';
+
+const REHYDRATE_LAMBDA_ROLE_NAME='rehydrate-lambda-role';
 const TIMEOUT_LENGTH_IN_MILLIS = 30 * 1000;
 
 export {
@@ -18,6 +22,9 @@ export {
   LAMBDA_DEPLOYMENT_PACKAGE_S3_BUCKET_NAME,
   REHYDRATION_LAMBDA_NAME,
   REHYDRATION_QUEUE_NAME,
-  LAMBDA_ROLE_NAME,
-  TIMEOUT_LENGTH_IN_MILLIS
+  REHYDRATE_LAMBDA_ROLE_NAME,
+  TIMEOUT_LENGTH_IN_MILLIS,
+  STATUS_QUEUE_NAME,
+  REHYDRATION_DLQ,
+  STATUS_DLQ
 }
