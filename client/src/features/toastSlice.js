@@ -4,7 +4,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   htmlIdGenerator,
 } from '@elastic/eui';
-import { hasChoices } from '../libs/utils.js';
 import { getKeysAndSetChoices } from './choicesSlice.js';
 
 export const toastSlice = createSlice({
@@ -16,7 +15,12 @@ export const toastSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getKeysAndSetChoices.rejected, (state, action) => [...state, { title: 'Error: Filtering unsuccessful', text: action.payload, id: htmlIdGenerator()() }]);
-    builder.addCase((getKeysAndSetChoices.fulfilled && hasChoices), (state, action) => [...state, { title: 'Error', text: `No files found in provided date range.\n${action.payload}`, id: htmlIdGenerator()() }]);
+    builder.addCase(getKeysAndSetChoices.fulfilled, (state, action) => {
+      if (!action.payload.length) {
+        return [...state, { title: 'No choices found', text: 'Try widening the date range', id: htmlIdGenerator()() }];
+      }
+      return state;
+    });
   },
 });
 
