@@ -6,7 +6,7 @@ const createQueue = async (queueParams) => {
     const createQueueCommand = new CreateQueueCommand(queueParams);
     const createQueueResponse = await sqsClient.send(createQueueCommand);
 
-    return { QueueUrl: createQueueResponse.QueueUrl };
+    return createQueueResponse.QueueUrl;
   } catch (err) {
     console.log('Error', err);
   }
