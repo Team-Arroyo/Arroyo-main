@@ -1,7 +1,7 @@
 import { AWSXRayDaemonWriteAccessARN,
   AmazonS3ReadOnlyAccessARN,
   AWSLambdaSQSQueueExecutionRoleARN, 
-  AWSLambdaBasicExecutionRoleARN } from '../constants/lambdaAWSPolicies.mjs';
+  AWSLambdaBasicExecutionRoleARN } from './iam/lambdaAWSPolicies.mjs';
 
 import 'dotenv/config.js';
 import Configstore from 'configstore';
@@ -19,7 +19,9 @@ const config = new Configstore(packageJson.name, {});
 
 const destroyResources = async () => {    
   try {
-    const { roleName, lamdaS3BucketName, lamdaRoleARN, SQSUrl, SQSArn, lambdaName, eventSourceMappingUUID } = config.all;
+    const { lamdaS3BucketName, RehydrateSQSDLQUrl, StatusSQSDLQUrl, RehydrateSQSUrl, 
+      RehydrateSQSArn, StatusSQSUrl, StatusSQSArn, lambdaRoleARN,
+      lambdaRoleName, lambdaName, eventSourceMappingUUID, SQSSendMessagePolicy } = config.all;
   
     // All objects in the S3 bucket must be deleted first, only then we can delete the bucket itself
     const deleteAllObjectsResponse = await deleteAllObjectsS3Bucket({Bucket: lamdaS3BucketName});
@@ -37,23 +39,37 @@ const destroyResources = async () => {
         AWSXRayDaemonWriteAccessARN,
         AmazonS3ReadOnlyAccessARN,
         AWSLambdaSQSQueueExecutionRoleARN, 
-        AWSLambdaBasicExecutionRoleARN ], 
-      roleName: roleName 
+        AWSLambdaBasicExecutionRoleARN,
+        SQSSendMessagePolicy
+       ], 
+      roleName: lambdaRoleName 
     });
     await pause(3000);
     console.log(detachPoliciesResponse);
     
-    const deleteRoleResponse = await deleteRole({ roleName });
+    const deleteRoleResponse = await deleteRole({ roleName: lambdaRoleName });
     await pause(3000);
     console.log(deleteRoleResponse);
     
     const deleteLambdaResponse = await deleteLambda({ lambdaName });
     await pause(3000);
-    console.log(deleteLambdaResponse);
+    console.log(`Deleting lambda: ${lambdaName}\n`, deleteLambdaResponse);
     
-    const deleteQueueResponse = await deleteQueue({ SQSUrl });
+    const deleteRehydrateQueueResponse = await deleteQueue({ SQSUrl: RehydrateSQSUrl });
     await pause(3000);
-    console.log(deleteQueueResponse);
+    console.log(`Deleting queue with url: ${RehydrateSQSUrl}\n`, deleteRehydrateQueueResponse);
+    
+    const deleteRehydrateDLQResponse = await deleteQueue({ SQSUrl: RehydrateSQSDLQUrl });
+    await pause(3000);
+    console.log(`Deleting queue with url: ${RehydrateSQSDLQUrl}\n`, deleteRehydrateDLQResponse);
+    
+    const deleteStatusQueueResponse = await deleteQueue({ SQSUrl: StatusSQSUrl });
+    await pause(3000);
+    console.log(`Deleting queue with url: ${StatusSQSUrl}\n`, deleteStatusQueueResponse);
+    
+    const deleteStatusDLQResponse = await deleteQueue({ SQSUrl: StatusSQSDLQUrl });
+    await pause(3000);
+    console.log(`Deleting queue with url: ${StatusSQSDLQUrl}\n`, deleteStatusDLQResponse);
     
     const deleteEventSourceMappingResponse = await deleteEventSourceMapping({ UUID: eventSourceMappingUUID });
     await pause(3000);
