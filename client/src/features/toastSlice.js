@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 /* eslint-disable import/extensions */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {
@@ -6,15 +5,17 @@ import {
 } from '@elastic/eui';
 import axios from 'axios';
 import { POST_QUERY_INGEST } from '../constants/ApiRoutes.js';
-
 import { getKeysAndSetChoices } from './choicesSlice.js';
 
 export const getLogLines = createAsyncThunk(
   'toasts/getLogLines',
   async (payload) => {
-    const { data } = await axios.post(POST_QUERY_INGEST, payload);
-    console.log('data', data);
-    return data;
+    try {
+      const response = await axios.post(POST_QUERY_INGEST, payload);
+      return response.data.message;
+    } catch (err) {
+      return Promise.reject(err.response.data);
+    }
   },
 );
 
@@ -44,6 +45,18 @@ export const toastSlice = createSlice({
       }
       return state;
     });
+    builder.addCase(getLogLines.fulfilled, (state, action) => [...state, {
+      title: 'Query search started',
+      text: action.payload,
+      color: 'success',
+      id: htmlIdGenerator()(),
+    }]);
+    builder.addCase(getLogLines.rejected, (state, action) => [...state, {
+      title: 'Query search failed',
+      text: action.error.message,
+      color: 'danger',
+      id: htmlIdGenerator()(),
+    }]);
   },
 });
 

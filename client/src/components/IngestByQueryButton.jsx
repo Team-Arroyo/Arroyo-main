@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   EuiButton,
   EuiFormRow,
@@ -7,10 +7,11 @@ import {
   EuiFlexItem,
 
 } from '@elastic/eui';
-// import { getLogLines } from '../features/toastSlice';
+import { getLogLines } from '../features/toastSlice';
 import { hasQueryTerms, queriesToArray } from '../libs/utils';
 
 function IngestByQueryButton() {
+  const dispatch = useDispatch();
   const dateRange = useSelector((state) => state.dateRange);
   const queriesArr = useSelector((state) => state.queries);
   const payload = {
@@ -25,9 +26,12 @@ function IngestByQueryButton() {
         <EuiFlexItem>
           <EuiButton
             isDisabled={!hasQueryTerms()}
-            onClick={() => console.log('payload', payload)}
+            onClick={() => {
+              console.log('Ingest by query button clicked');
+              dispatch(getLogLines(payload));
+            }}
           >
-            Ingest Matching Log Enteries
+            Ingest Matching Log Entries
           </EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>

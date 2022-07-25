@@ -16,7 +16,7 @@ function ByQueryTab() {
     <div>
       <EuiPanel paddingSize="m">
         <EuiTitle size="s"><h2>Filter by Search</h2></EuiTitle>
-        <EuiText size="s"><p><i>Ingest only matching log enteries</i></p></EuiText>
+        <EuiText size="s"><p><i>Ingest only matching log entries</i></p></EuiText>
         <EuiSpacer size="m" />
         <EuiForm>
           <DateRange />
