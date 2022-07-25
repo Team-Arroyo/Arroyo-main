@@ -1,10 +1,22 @@
 /* eslint-disable max-len */
 /* eslint-disable import/extensions */
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {
   htmlIdGenerator,
 } from '@elastic/eui';
+import axios from 'axios';
+import { POST_QUERY_INGEST } from '../constants/ApiRoutes.js';
+
 import { getKeysAndSetChoices } from './choicesSlice.js';
+
+export const getLogLines = createAsyncThunk(
+  'toasts/getLogLines',
+  async (payload) => {
+    const { data } = await axios.post(POST_QUERY_INGEST, payload);
+    console.log('data', data);
+    return data;
+  },
+);
 
 export const toastSlice = createSlice({
   name: 'toasts',

@@ -36,4 +36,14 @@ export const hasChoices = () => {
   return choices.length > 0;
 };
 
+export const queriesToArray = (queryObj) => {
+  const results = [];
+  Object.keys(queryObj).forEach((key) => {
+    const tmpObj = {};
+    tmpObj[key] = queryObj[key];
+    results.push(tmpObj);
+  });
+  return results;
+};
+
 export default convert;
