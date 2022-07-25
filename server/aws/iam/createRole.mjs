@@ -1,6 +1,6 @@
 import iamClient from '../clients/iamClient.mjs';
 import { CreateRoleCommand } from '@aws-sdk/client-iam';
-import { LAMBDA_ASSUME_ROLE_POLICY } from '../constants/lambdaAWSPolicies.mjs';
+import { LAMBDA_ASSUME_ROLE_POLICY } from '../resourceManagement/iam/lambdaAWSPolicies.mjs';
 
 const createRole = async (roleName) => {
   const roleParams = {
@@ -10,7 +10,7 @@ const createRole = async (roleName) => {
   };
     try {
       const data = await iamClient.send(new CreateRoleCommand(roleParams));
-      return { roleARN: data.Role.Arn};
+      return data.Role.Arn;
     } catch (err) {
       console.log('Error', err);
     }
