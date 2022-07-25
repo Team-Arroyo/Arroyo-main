@@ -105,7 +105,7 @@ const deployResources = async () => {
     });
     await pause(5000);
     console.log('Created event source mapping\n');
-    config.set('eventSourceMappingUUID ', eventSourceMappingUUID);
+    config.set('eventSourceMappingUUID', eventSourceMappingUUID);
     console.log('Done!');
     console.log(JSON.stringify(config.all));
   } catch (error) {
