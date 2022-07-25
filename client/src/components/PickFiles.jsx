@@ -1,5 +1,5 @@
 import React, { useState, Fragment, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   EuiSelectable,
   EuiButton,
@@ -10,16 +10,20 @@ import {
 } from '@elastic/eui';
 import convert from '../libs/utils';
 import apiClient from '../libs/apiclient';
+import { addToast } from '../features/toastSlice';
 
 function PickFiles() {
   const choices = useSelector((state) => state.choices);
   const starting = convert.toOptions(choices);
   const [options, setOptions] = useState(starting);
+  const dispatch = useDispatch();
 
   const handleIngest = () => {
     const selectedKeys = convert.toKeys(options);
     // eslint-disable-next-line no-console
-    apiClient.getObjects(selectedKeys).then((r) => console.log(r));
+    apiClient
+      .getObjects(selectedKeys)
+      .then(() => dispatch(addToast({ title: 'Files Ingested', text: 'Check Kibana', color: 'success' })));
   };
   const handleSelectAll = () => {
     const allSelected = options.map((o) => ({ ...o, checked: 'on' }));

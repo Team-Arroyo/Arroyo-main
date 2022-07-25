@@ -8,8 +8,8 @@ import {
   EuiPageBody,
   EuiGlobalToastList,
 } from '@elastic/eui';
-import { removeToast } from '../features/toastSlice';
 import PropTypes from 'prop-types';
+import { removeToast } from '../features/toastSlice';
 
 function PageContainer({ content }) {
   const toasts = useSelector((state) => state.toasts);
