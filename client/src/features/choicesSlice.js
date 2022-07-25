@@ -38,7 +38,6 @@ export const choiceSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getKeysAndSetChoices.fulfilled, (state, action) => [...action.payload]);
-    // builder.addCase(getKeysAndSetChoices.rejected, (state, action) => []);
   },
 });
 

@@ -14,10 +14,21 @@ export const toastSlice = createSlice({
     removeToast: (state, action) => state.filter((t) => t.id !== action.payload),
   },
   extraReducers: (builder) => {
-    builder.addCase(getKeysAndSetChoices.rejected, (state, action) => [...state, { title: 'Error: Filtering unsuccessful', text: action.payload, id: htmlIdGenerator()() }]);
+    builder.addCase(getKeysAndSetChoices.rejected, (state, action) => [...state, {
+      title: 'Error: Filtering unsuccessful',
+      text: action.payload,
+      color: 'danger',
+      id: htmlIdGenerator()(),
+    },
+    ]);
     builder.addCase(getKeysAndSetChoices.fulfilled, (state, action) => {
       if (!action.payload.length) {
-        return [...state, { title: 'No choices found', text: 'Try widening the date range', id: htmlIdGenerator()() }];
+        return [...state, {
+          title: 'No choices found',
+          text: 'Try widening the date range',
+          color: 'warning',
+          id: htmlIdGenerator()(),
+        }];
       }
       return state;
     });
