@@ -1,6 +1,7 @@
 import express from 'express';
 import { getS3Objects } from '../controller/s3ObjectController.mjs';
 import { initializeRehydrateJob, initializeQueryRehydrate }  from '../controller/rehydrateController.mjs';
+import { establishSseConnection } from '../controller/sseController.mjs';
 
 import validateObjectKeys from '../middleware/validateObjectKeys.mjs';
 import validateUrlDateParams from '../middleware/validateUrlDateParams.mjs';
@@ -15,4 +16,5 @@ router.post('/s3objects', validateObjectKeys, initializeRehydrateJob);
 
 router.post('/query-ingest', validateBodyDateParams, validateQueries, initializeQueryRehydrate);
 
+router.get('/statuses', establishSseConnection);
 export default router;
