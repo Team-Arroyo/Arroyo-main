@@ -1,6 +1,5 @@
 import getBucketObjectsWithinDates from '../aws/s3/getBucketObjectsWithinDates.mjs'
 import sendMessageToQueue from '../aws/sqs/sendMessageToQueue.mjs';
-import testQueueConnection from '../aws/sqs/testQueueConnection.mjs';
 import pollStatusQueue from '../aws/sqs/pollStatusQueue.mjs';
 import dotenv from 'dotenv';
 import Configstore from 'configstore';
@@ -36,7 +35,6 @@ export const initializeRehydrateJob = async(req, res) => {
   }
   
   try {
-    await testQueueConnection(RehydrateSQSUrl);
 
     res.status(202).json({message: 'Rehydrating task in progress...'});
     objectKeys.forEach(Key => sendMessageToQueue({ 
@@ -63,8 +61,7 @@ export const initializeQueryRehydrate = async(req, res) => {
 
   try {
     const logsWithinDates = await getBucketObjectsWithinDates({ startDate, endDate });
-    await testQueueConnection(RehydrateSQSUrl);
-    
+
     if(logsWithinDates.length < 1) {
       res.status(400).json({message: 'No files found to ingest within date range'});
     } else {
