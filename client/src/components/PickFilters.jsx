@@ -1,6 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable */
-
 import React from 'react';
 import {
   EuiSpacer,
@@ -10,9 +7,9 @@ import {
   EuiAccordion,
 } from '@elastic/eui';
 import DateRange from './DateRange';
-import QueryTerms from './QueryTerms';
-import QueryBadges from './QueryBadges';
 import PickFiltersButtonGroup from './PickFiltersButtonGroup';
+import QueryBadges from './QueryBadges';
+import QueryTerms from './QueryTerms';
 
 function PickFilters() {
   return (

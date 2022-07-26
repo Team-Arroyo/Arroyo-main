@@ -1,8 +1,5 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/extensions */
-/* eslint-disable no-console */
-
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+/* eslint-disable no-param-reassign */
+import { createSlice } from '@reduxjs/toolkit';
 
 export const queriesSlice = createSlice({
   name: 'queries',
@@ -17,11 +14,9 @@ export const queriesSlice = createSlice({
       if (Object.keys(state).length >= 2 && !currentKeys.includes(column)) {
         return;
       }
-      // eslint-disable-next-line no-param-reassign
       state[column] = columnValue;
     },
     removeQuery: (state, action) => {
-      // eslint-disable-next-line no-param-reassign
       delete state[action.payload];
     },
   },

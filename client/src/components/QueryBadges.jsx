@@ -1,6 +1,4 @@
 /* eslint-disable arrow-body-style */
-/* eslint-disable semi */
-/* eslint-disable no-console */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -8,12 +6,12 @@ import {
   EuiPanel,
   EuiBadgeGroup,
 } from '@elastic/eui';
-import { removeQuery } from '../features/queriesSlice';
+import { removeQuery } from '../features/queriesSlice.js';
 
 function QueryBadges() {
+  const dispatch = useDispatch();
   const queries = useSelector((state) => state.queries);
   const keys = Object.keys(queries);
-  const dispatch = useDispatch()
 
   return (
     <EuiPanel color="subdued" style={{ maxWidth: 400 }}>
@@ -29,7 +27,7 @@ function QueryBadges() {
             >
               {`${k}:${queries[k]}`}
             </EuiBadge>
-          )
+          );
         })}
       </EuiBadgeGroup>
     </EuiPanel>

@@ -1,12 +1,6 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/extensions */
-/* eslint-disable no-console */
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-// import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { GET_KEYS_URL } from '../constants/ApiRoutes.js';
-// import { addToast } from './toastSlice.js';
 
 export const getKeysAndSetChoices = createAsyncThunk(
   'choices/getKeysAndSetChoices',

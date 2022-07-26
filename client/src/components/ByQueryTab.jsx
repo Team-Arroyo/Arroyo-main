@@ -8,15 +8,15 @@ import {
 } from '@elastic/eui';
 import DateRange from './DateRange';
 import IngestByQueryButton from './IngestByQueryButton';
-import QueryTerms from './QueryTerms';
 import QueryBadges from './QueryBadges';
+import QueryTerms from './QueryTerms';
 
 function ByQueryTab() {
   return (
     <div>
       <EuiPanel paddingSize="m">
-        <EuiTitle size="s"><h2>Filter by Search</h2></EuiTitle>
-        <EuiText size="s"><p><i>Ingest only matching log enteries</i></p></EuiText>
+        <EuiTitle size="s"><h2>Filter by Search Term</h2></EuiTitle>
+        <EuiText size="s"><p><i>Ingest only matching log entries</i></p></EuiText>
         <EuiSpacer size="m" />
         <EuiForm>
           <DateRange />

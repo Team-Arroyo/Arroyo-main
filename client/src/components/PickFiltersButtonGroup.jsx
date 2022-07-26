@@ -4,16 +4,16 @@ import {
   EuiFormRow,
   EuiFlexGroup,
   EuiFlexItem,
-
 } from '@elastic/eui';
 import { useSelector, useDispatch } from 'react-redux';
-import { getKeysAndSetChoices } from '../features/choicesSlice';
-import { isValidDateRange, hasQueryTerms } from '../libs/utils';
+import { isValidDateRange, hasQueryTerms } from '../libs/utils.js';
+import { getKeysAndSetChoices } from '../features/choicesSlice.js';
 
 function PickFiltersButtonGroup() {
   const dispatch = useDispatch();
   const startDate = useSelector((state) => state.dateRange.start);
   const endDate = useSelector((state) => state.dateRange.end);
+
   const handleClick = () => {
     dispatch(getKeysAndSetChoices({ startDate, endDate }));
   };
@@ -33,7 +33,6 @@ function PickFiltersButtonGroup() {
 
           <EuiButton
             isDisabled={!hasQueryTerms()}
-            onClick={() => console.log('sending query terms to back-end')}
           >
             Ingest Matching Log Enteries
           </EuiButton>
