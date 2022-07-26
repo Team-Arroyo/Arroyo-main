@@ -4,7 +4,7 @@ import {
   EuiFormRow,
   EuiFlexItem,
 } from '@elastic/eui';
-import { isValidDateRange } from '../libs/utils';
+import { isValidDateRange } from '../libs/utils.js';
 import DatePicker from './DatePicker';
 
 function DateRange() {

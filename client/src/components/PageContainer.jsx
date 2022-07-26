@@ -9,7 +9,7 @@ import {
   EuiGlobalToastList,
 } from '@elastic/eui';
 import PropTypes from 'prop-types';
-import { removeToast } from '../features/toastSlice';
+import { removeToast } from '../features/toastSlice.js';
 
 function PageContainer({ content }) {
   const toasts = useSelector((state) => state.toasts);

@@ -6,7 +6,7 @@ import {
   EuiPanel,
   EuiBadgeGroup,
 } from '@elastic/eui';
-import { removeQuery } from '../features/queriesSlice';
+import { removeQuery } from '../features/queriesSlice.js';
 
 function QueryBadges() {
   const dispatch = useDispatch();

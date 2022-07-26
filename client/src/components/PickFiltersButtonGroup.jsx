@@ -1,15 +1,15 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import {
   EuiButton,
   EuiFormRow,
   EuiFlexGroup,
   EuiFlexItem,
 } from '@elastic/eui';
-import { isValidDateRange } from '../libs/utils.js';
+import { useSelector, useDispatch } from 'react-redux';
+import { isValidDateRange, hasQueryTerms } from '../libs/utils.js';
 import { getKeysAndSetChoices } from '../features/choicesSlice.js';
 
-function PickByDateButton() {
+function PickFiltersButtonGroup() {
   const dispatch = useDispatch();
   const startDate = useSelector((state) => state.dateRange.start);
   const endDate = useSelector((state) => state.dateRange.end);
@@ -24,9 +24,17 @@ function PickByDateButton() {
         <EuiFlexItem>
           <EuiButton
             onClick={handleClick}
-            isDisabled={!isValidDateRange()}
+            isDisabled={!isValidDateRange() || hasQueryTerms()}
           >
             Select Log Files
+          </EuiButton>
+        </EuiFlexItem>
+        <EuiFlexItem>
+
+          <EuiButton
+            isDisabled={!hasQueryTerms()}
+          >
+            Ingest Matching Log Enteries
           </EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>
@@ -34,4 +42,4 @@ function PickByDateButton() {
   );
 }
 
-export default PickByDateButton;
+export default PickFiltersButtonGroup;

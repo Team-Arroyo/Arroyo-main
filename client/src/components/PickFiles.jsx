@@ -8,9 +8,9 @@ import {
   EuiFlexItem,
   EuiTitle,
 } from '@elastic/eui';
-import apiClient from '../libs/apiclient';
-import convert from '../libs/utils';
-import { addToast } from '../features/toastSlice';
+import apiClient from '../libs/apiclient.js';
+import convert from '../libs/utils.js';
+import { addToast } from '../features/toastSlice.js';
 
 function PickFiles() {
   const choices = useSelector((state) => state.choices);

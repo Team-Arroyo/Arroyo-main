@@ -1,6 +1,6 @@
 {
     "env": {
-        "browser": true,
+        "browser": false,
         "es2021": true,
         "jest/globals": true
     },
@@ -20,8 +20,11 @@
         "jest"
     ],
     "rules": {
-        "import/extensions": {
-            "js": "always"
-        }
+        "import/extensions": [
+            2,
+            {
+              "js": "always"
+            }
+        ]
     }
 }

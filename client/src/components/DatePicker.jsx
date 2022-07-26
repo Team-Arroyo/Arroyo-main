@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux';
 import { EuiDatePicker, EuiFormRow } from '@elastic/eui';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { formatDate } from '../libs/utils';
-import { setStartDate, setEndDate } from '../features/dateRangeSlice';
+import { formatDate } from '../libs/utils.js';
+import { setStartDate, setEndDate } from '../features/dateRangeSlice.js';
 
 function DatePicker({ dateType }) {
   const dispatch = useDispatch();

@@ -6,8 +6,8 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
 } from '@elastic/eui';
-import { getLogLines } from '../features/toastSlice';
-import { hasQueryTerms, queriesToArray } from '../libs/utils';
+import { getLogLines } from '../features/toastSlice.js';
+import { hasQueryTerms, queriesToArray } from '../libs/utils.js';
 
 function IngestByQueryButton() {
   const dispatch = useDispatch();
