@@ -14,12 +14,12 @@ import deleteLambda from '../../lambda/deleteLambda.mjs';
 import deleteQueue from '../../sqs/deleteQueue.mjs';
 import deleteEventSourceMapping from '../../lambda/deleteEventSourceMapping.mjs';
 import pause from '../../../utils/pause.js';
+import ora from 'ora';
+import chalk from 'chalk';
 const packageJson = JSON.parse(fs.readFileSync('./AWSconfig.json', 'utf8'));
 const config = new Configstore(packageJson.name, {});
-import chalk from 'chalk';
 const log = console.log;
 const errorMessage = chalk.bold.red;
-const message = chalk.hex('#051094');
 
 const destroyResources = async () => {    
 
@@ -27,25 +27,41 @@ const destroyResources = async () => {
     RehydrateSQSArn, StatusSQSUrl, StatusSQSArn, lambdaRoleArn,
     lambdaRoleName, lambdaName, eventSourceMappingUUID, SQSSendMessagePolicy } = config.all;
 
-  // All objects in the S3 bucket must be deleted first, only then we can delete the bucket itself
-  try {
+    const spinner = ora({
+      text: 'Getting ready to tear down Arroyo infrastructure',
+      color: 'yellow'
+    }).start();
+
+    await pause(2000);
+    
+    spinner.stop();
+    spinner.start('Removing Lambda Deployment package');
+    // All objects in the S3 bucket must be removed first, only then we can remove the bucket itself
+    try {
+    await pause(2000);
     await deleteAllObjectsS3Bucket({Bucket: lambdaS3BucketName});
-    await pause(3000);
+    spinner.succeed('Deployment package for Lambda function has been removed');
   } catch (error) {
+    spinner.fail('There was an error when removing deployment package for Lambda function. Error: ', error);
     log(errorMessage(error));
   }
   
   try {
+    await pause(1000);
+    spinner.start('Removing Rehydrate SQS Dead Letter Queue');
     await deleteS3Bucket({Bucket: lambdaS3BucketName});
-    log(message('Deleted Lambda deployment package'));
-    await pause(3000);
+    await pause(2000);
+    spinner.succeed('Rehydrate SQS Dead Letter Queue has been removed');
   } catch (error) {
+    spinner.fail('There was an error when removing Rehydrate SQS Dead Letter Queue. Error: ', error);
     log(errorMessage(error));
   }
-
+  
   // First need to detach all policies from the role and only then, 
-  // we are able to delete the role itself
+  // we are able to remove the role itself
   try {
+    await pause(1000);
+    spinner.start('Removing IAM Lambda role');
     await detachMultipleRolePolicies({ 
       policyARNArray: [
         AWSXRayDaemonWriteAccessARN,
@@ -53,71 +69,91 @@ const destroyResources = async () => {
         AWSLambdaSQSQueueExecutionRoleARN, 
         AWSLambdaBasicExecutionRoleARN,
         SQSSendMessagePolicy
-        ], 
+      ], 
       roleName: lambdaRoleName 
     });
-    await pause(3000);
   } catch (error) {
-    log(errorMessage(error));
-  }
-
-  try {
-    await deleteRole({ roleName: lambdaRoleName });
-    await pause(3000);
-    log(message('Deleted Lambda role'));
-  } catch (error) {
-    log(errorMessage(error));
-  }
-
-  try {
-    await deleteLambda({ lambdaName });
-    await pause(3000);
-    log(message('Deleted Lambda function'));
-  } catch (error) {
-    log(errorMessage(error));
-  }
-
-  try {
-    await deleteQueue({ SQSUrl: RehydrateSQSUrl });
-    await pause(3000);
-    log(message('Deleted RehydrateSQS'));
-  } catch (error) {
-    log(errorMessage(error));
-  }
-
-  try {
-    await deleteQueue({ SQSUrl: RehydrateSQSDLQUrl });
-    await pause(3000);
-    log(message('Deleted RehydrateSQS DLQ'));
-  } catch (error) {
-    log(errorMessage(error));
-  }
-
-  try {
-    await deleteQueue({ SQSUrl: StatusSQSUrl });
-    await pause(3000);
-    log(message('Deleted StatusSQS'));
-  } catch (error) {
-    log(errorMessage(error));
-  }
-
-  try {
-    await deleteQueue({ SQSUrl: StatusSQSDLQUrl });
-    await pause(3000);
-    log(message('Deleted StatusSQS DLQ'));
-  } catch (error) {
-    log(errorMessage(error));
-  }
-
-  try {
-    await deleteEventSourceMapping({ UUID: eventSourceMappingUUID });
-    await pause(3000);
-    log(message('Deleted Event source mapping'));
-  } catch (error) {
+    spinner.fail('There was an error when removing IAM Lambda role');
     log(errorMessage(error));
   }
   
-  log(message('AWS resource teardown completed'));
+  try {
+    await deleteRole({ roleName: lambdaRoleName });
+    await pause(3000);
+    spinner.succeed('IAM role for Lambda has been removed');
+  } catch (error) {
+    spinner.fail('There was an error when removing IAM Lambda role');
+    log(errorMessage(error));
+  }
+  
+  try {
+    await pause(1000);
+    spinner.start('Removing Lambda Function');
+    await deleteLambda({ lambdaName });
+    await pause(2000);
+    spinner.succeed('Lambda Function has been removed');
+  } catch (error) {
+    spinner.fail('There was an error when removing Lambda Function');
+    log(errorMessage(error));
+  }
+  
+  try {
+    await pause(1000);
+    spinner.start('Removing Rehydrate SQS Queue');
+    await deleteQueue({ SQSUrl: RehydrateSQSUrl });
+    await pause(2000);
+    spinner.succeed('Rehydrate SQS Queue has been removed');
+  } catch (error) {
+    spinner.fail('There was an error when removing Rehydrate SQS Queue. Error: ', error);
+    log(errorMessage(error));
+  }
+  
+  try {
+    await pause(1000);
+    spinner.start('Removing Rehydrate SQS Dead Letter Queue');
+    await deleteQueue({ SQSUrl: RehydrateSQSDLQUrl });
+    await pause(2000);
+    spinner.succeed('Rehydrate SQS Dead Letter Queue has been removed');
+  } catch (error) {
+    spinner.fail('There was an error when removing Rehydrate SQS Dead Letter Queue. Error: ', error);
+    log(errorMessage(error));
+  }
+  
+  try {
+    await pause(2000);
+    spinner.start('Removing Status SQS Queue');
+    await deleteQueue({ SQSUrl: StatusSQSUrl });
+    await pause(2000);
+    spinner.succeed('Status SQS Queue has been removed');
+  } catch (error) {
+    spinner.fail('There was an error when removing Status SQS Queue. Error: ', error);
+    log(errorMessage(error));
+  }
+  
+  try {
+    await pause(1000);
+    spinner.start('Removing Status SQS Dead Letter Queue');
+    await deleteQueue({ SQSUrl: StatusSQSDLQUrl });
+    await pause(2000);
+    spinner.succeed('Status SQS Dead Letter Queue has been removed');
+  } catch (error) {
+    spinner.fail('There was an error when removing Status SQS Dead Letter Queue. Error: ', error);
+    log(errorMessage(error));
+  }
+  
+  try {
+    await pause(1000);
+    spinner.start('Removing Event source mapping');
+    await deleteEventSourceMapping({ UUID: eventSourceMappingUUID });
+    await pause(2000);
+    spinner.succeed('Event source mapping has been removed');
+  } catch (error) {
+    spinner.fail('There was an error when removing Event source mapping. Error: ', error);
+    log(errorMessage(error));
+  }
+  spinner.stopAndPersist({
+    text: 'AWS infrastructure has been removed.'
+  })
 }
 
 export default destroyResources;

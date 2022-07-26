@@ -13,11 +13,9 @@ import fs from 'fs';
 import deployLambdaRole from './deployLambdaRole.mjs';
 import deployRehydrateLambda from './deployRehydrateLambda.mjs';
 import chalk from 'chalk';
+import ora from 'ora';
 const log = console.log;
 const errorMessage = chalk.bold.red;
-const message = chalk.hex('#0492C2');
-// import ora from 'ora';
-// const spinner = ora('Loading unicorns').start();
 
 const uuid = uuidv4();
 const packageJson = JSON.parse(fs.readFileSync('./AWSconfig.json', 'utf8'));
@@ -27,91 +25,118 @@ config.set('uuid', uuid);
 
 const deployResources = async () => {
   const lambdaS3BucketName = `${LAMBDA_DEPLOYMENT_PACKAGE_S3_BUCKET_NAME}-${uuid}`;
+  const spinner = ora({
+    text: 'Getting ready to deploy AWS infrastructure',
+    color: 'yellow'
+  }).start();
+
+  await pause(2000);
+  
+  spinner.stop();
+  await pause(1000);
+  spinner.start('Creating Deployment package for Lambda function');
 
   try {
-    // const deployLambdaDeploymentPackageSpinner = ora('Setting up lambda').start();
     await deployLambdaDeploymentPackage({ lambdaS3BucketName });
-    log(message('Created deployment package for Lambda function'));
+    await pause(8000);
+    spinner.succeed('Deployment package for Lambda function has been created');
   } catch (error) {
+    spinner.fail('There was an error when creating deployment package for Lambda function. Error: ', error);
     log(errorMessage(error));
   }
 
-  await pause(30000);
   
   let rehydrateSQSDLQArn;
   try {
+    spinner.start('Creating Rehydrate SQS Dead Letter Queue');
+    await pause(2000);
     rehydrateSQSDLQArn = await deployRehydrateSQSDLQ({ uuid });
-    log(message('Created Rehydrate SQS Dead Letter Queue'));
+    await pause(2000);
+    spinner.succeed('Rehydrate SQS Dead Letter Queue has been created')
   } catch (error) {
+    spinner.fail('There was an error when creating Rehydrate SQS Dead Letter Queue');
     log(errorMessage(error));
   }
 
-  await pause(10000);
   let statusSQSDLQArn;
   try {
+    spinner.start('Creating Status SQS Dead Letter Queue');
     statusSQSDLQArn = await deployStatusSQSDLQ({ uuid });
-    log(message('Created StatusSQS Dead Letter Queue'));
+    await pause(5000);
+    spinner.succeed('Status SQS Dead Letter Queue has been created');
   } catch (error) {
+    spinner.fail('There was an error when creating Status SQS Dead Letter Queue');
     log(errorMessage(error));
   }
 
-  await pause(10000);
   let rehydrateSQSArn;
 
   try {
+    spinner.start('Creating Rehydrate SQS Queue');
     rehydrateSQSArn = await deployRehydrateSQS({ uuid, rehydrateSQSDLQArn });
-    log(message('Created RehydrateSQS queue'));
+    await pause(3000);
+    spinner.succeed('Rehydrate SQS Queue has been created');
   } catch (error) {
+    spinner.fail('There was an error when creating Rehydrate SQS Queue');
     log(errorMessage(error));
   }
   
-  await pause(10000);
   
   let statusSQSArn;
   let statusSQSUrl;
   try {
+    spinner.start('Creating Status SQS Queue');
     ({ statusSQSArn, statusSQSUrl } = await deployStatusSQS({ uuid, statusSQSDLQArn }));
-    log(message('Created StatusSQS queue'));
+    await pause(3000);
+    spinner.succeed('Status SQS Queue has been created');
   } catch(error) {
+    spinner.fail('There was an error when creating Status SQS Queue');
     log(errorMessage(error));
   }
   
-  await pause(10000);
   
   try {
+    spinner.start('Creating IAM role for Lambda');
     await deployLambdaRole({ uuid, statusSQSArn });
-    log(message('Created IAM role for Lambda'));
+    await pause(5000);
+    spinner.succeed('IAM role for Lambda has been created');
   } catch (error) {
+    spinner.fail('There was an error when creating IAM role for Lambda');
     log(errorMessage(error));
   }
-
-  await pause(5000);
+  
   const rehydrateLambdaName = `${REHYDRATION_LAMBDA_NAME}-${uuid}`;
   
   const lambdaRoleArn = config.get('lambdaRoleArn');
   try {
+    spinner.start('Creating Lambda Function');
     await deployRehydrateLambda({ lambdaS3BucketName, statusSQSUrl, lambdaRoleArn, rehydrateLambdaName });
-    log(message('Created Lambda'));
+    await pause(8000);
+    spinner.succeed('Lambda Function has been created');
   } catch(error) {
+    spinner.fail('There was an error when creating Lambda Function');
     log(errorMessage(error));
   }
-
-  await pause(10000);
-
+  
+  
   try {
+    spinner.start('Creating Event source mapping');
     const eventSourceMappingUUID = await createEventSourceMapping({ 
       functionName: rehydrateLambdaName, 
       eventSourceArn: rehydrateSQSArn
     });
-  
+    
     config.set('eventSourceMappingUUID', eventSourceMappingUUID);
-    log(message('Created Event source mapping'));
-    log(chalk.yellow('Done!'));
+    await pause(2000);
+    spinner.succeed('Event source mapping has been created');
   } catch(error) {
+    spinner.fail('There was an error when creating Event source mapping');
     log(errorMessage(error));
   }
 
-  log(chalk.yellow(JSON.stringify(config.all)));
+  spinner.stopAndPersist({
+    text: '\nArroyo AWS infrastructure has been deployed!',
+  })
 }
 
 export default deployResources;
