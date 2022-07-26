@@ -1,25 +1,25 @@
-import { rehydrateFullS3Object } from './s3ObjectController.mjs';
 import getBucketObjectsWithinDates from '../aws/s3/getBucketObjectsWithinDates.mjs'
 import sendMessageToQueue from '../aws/sqs/sendMessageToQueue.mjs';
-import getQueue from '../aws/sqs/getQueue.mjs';
 import dotenv from 'dotenv';
-
+import Configstore from 'configstore';
+import fs from 'fs';
 dotenv.config();
+
+const packageJson = JSON.parse(fs.readFileSync('./AWSconfig.json', 'utf8'));
+const config = new Configstore(packageJson.name, {});
+
+const { RehydrateSQSUrl } = config.all;
 
 const logstashEndpoint = process.env.LOGSTASH_HOST;
 const Bucket = process.env.AWS_BUCKET_NAME;
-const QueueUrl = process.env.SQS_QUEUE;
-const QueueName = process.env.SQS_QUEUE_NAME;
+//conditional included for dev in case configstore not set up on dev machine.
+const RehydrateQueueUrl = RehydrateSQSUrl || process.env.SQS_QUEUE;
 
 const messageBodyTemplate = {
   Bucket,
   logstashEndpoint
 };
 
-
-const isTotalFailure = (batch) => {
-  return batch.every(({ status }) => status === 'fail');
-};
 
 export const initializeRehydrateJob = (req, res) => {
   console.log('Rehydrating tasks in progress...');
@@ -32,20 +32,18 @@ export const initializeRehydrateJob = (req, res) => {
     res.status(400).json(keyError);
     return;
   }
+
+  res.status(202).json({message: 'Rehydrating task in progress...'});
   
-  const promises  = objectKeys.map(objectKey => rehydrateFullS3Object(objectKey));
-
-  objectKeys.forEach(Key => sendMessageToQueue({ messageBodyTemplate, additionalParams: { Key }, QueueUrl }));
-
-  Promise.allSettled(promises).then(resultArray => {
-    console.log('All promises settled');
-    const batchStatus = resultArray.map(({ reason, value }) => reason ? reason : value);
-    console.log(batchStatus);
-    console.log('Rehydrating tasks completed...');
-
-
-    res.status(isTotalFailure(batchStatus) ? 400 : 200).json({batchStatus});
-  });
+  try {
+    objectKeys.forEach(Key => sendMessageToQueue({ 
+      messageBodyTemplate, 
+      additionalParams: { Key }, 
+      QueueUrl: RehydrateQueueUrl
+    }));
+  } catch(err) {
+    console.log('Error in file rehydrate', err);
+  }
 };
 
 export const initializeQueryRehydrate = async(req, res) => {
@@ -59,18 +57,16 @@ export const initializeQueryRehydrate = async(req, res) => {
     if(logsWithinDates.length < 1) {
       res.status(400).json({message: 'No files found to ingest within date range'});
     } else {
-      //final test of AWS credentials and infastructure before returning 202 status
-      console.log('testing connection');
-      await getQueue({ QueueName });
       res.status(202).json({message: 'Rehydrating task in progress...'});
     }
 
     console.log('sending query');
-    logsWithinDates.forEach(Key => sendMessageToQueue({messageBodyTemplate, additionalParams: { Key, Expression }, QueueUrl }));
+    logsWithinDates.forEach(Key => sendMessageToQueue({
+      messageBodyTemplate,
+      additionalParams: { Key, Expression },
+      QueueUrl: RehydrateQueueUrl
+    }));
   } catch(err) {
-    res.status(500).send({
-      message: 'AWS responded with an error.', 
-      error: err
-    });
+    console.log('Error in query rehydrate', err);
   }
 };
