@@ -1,10 +1,10 @@
 import iamClient from '../clients/iamClient.mjs';
 import { CreateRoleCommand } from '@aws-sdk/client-iam';
-import { LAMBDA_ASSUME_ROLE_POLICY } from '../resourceManagement/iam/lambdaAWSPolicies.mjs';
+import { LambdaAssumeRolePolicy } from '../constants/lambdaAWSPoliciesConst.mjs';
 
 const createRole = async (roleName) => {
   const roleParams = {
-      AssumeRolePolicyDocument: LAMBDA_ASSUME_ROLE_POLICY,
+      AssumeRolePolicyDocument: LambdaAssumeRolePolicy,
       Path: '/',
       RoleName: roleName
   };
