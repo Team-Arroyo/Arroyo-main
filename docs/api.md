@@ -78,7 +78,13 @@ The API will return a 400 status code and a body describing the error.
 
 
 ## 1.2 POST /api/s3objects
-This the route is used to start the rehydrate process of a batch of AWS S3 objects. Sends a 202 response upon being accepted.
+This the route is used to start the rehydrate process of a batch of AWS S3 objects. Sends a 202 response upon being accepted with JSON message.
+
+```json
+{
+    "message": "Rehydrating task in progress..."
+}
+```
 
 ### 1.2.1 Expected Parameters
 ```json
@@ -152,7 +158,13 @@ The API will return status 400 with a JSON object describing the error.
 
 ## 1.3 POST /api/query-ingest
 This route is used to search for logs within a specified date range and selectivly pull
-only the log lines that match ```key/value``` pairs that are provided. Response returns a 202 to signify the query is in progress.
+only the log lines that match ```key/value``` pairs that are provided. Response returns a 202 with JSON message to signify the query is in progress.
+
+```json
+{
+    "message": "Rehydrating task in progress..."
+}
+```
 
 ### 1.3.1 Expected Payload
 ```json
