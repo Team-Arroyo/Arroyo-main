@@ -1,5 +1,6 @@
 import getBucketObjectsWithinDates from '../aws/s3/getBucketObjectsWithinDates.mjs'
 import sendMessageToQueue from '../aws/sqs/sendMessageToQueue.mjs';
+import testQueueConnection from '../aws/sqs/testQueueConnection.mjs';
 import dotenv from 'dotenv';
 import Configstore from 'configstore';
 import fs from 'fs';
@@ -21,7 +22,7 @@ const messageBodyTemplate = {
 };
 
 
-export const initializeRehydrateJob = (req, res) => {
+export const initializeRehydrateJob = async(req, res) => {
   console.log('Rehydrating tasks in progress...');
   const keyError = req.keyError;
 
@@ -32,17 +33,20 @@ export const initializeRehydrateJob = (req, res) => {
     res.status(400).json(keyError);
     return;
   }
-
-  res.status(202).json({message: 'Rehydrating task in progress...'});
   
   try {
+    await testQueueConnection(RehydrateSQSUrl);
+    res.status(202).json({message: 'Rehydrating task in progress...'});
     objectKeys.forEach(Key => sendMessageToQueue({ 
       messageBodyTemplate, 
       additionalParams: { Key }, 
       QueueUrl: RehydrateQueueUrl
     }));
-  } catch(err) {
-    console.log('Error in file rehydrate', err);
+  } catch(error) {
+    res.status(500).json({
+      message: 'Failed to connect to rehydrate queue',
+      error
+    });
   }
 };
 
@@ -54,6 +58,7 @@ export const initializeQueryRehydrate = async(req, res) => {
 
   try {
     const logsWithinDates = await getBucketObjectsWithinDates({ startDate, endDate });
+    await testQueueConnection(RehydrateSQSUrl);
     if(logsWithinDates.length < 1) {
       res.status(400).json({message: 'No files found to ingest within date range'});
     } else {
@@ -66,7 +71,10 @@ export const initializeQueryRehydrate = async(req, res) => {
       additionalParams: { Key, Expression },
       QueueUrl: RehydrateQueueUrl
     }));
-  } catch(err) {
-    console.log('Error in query rehydrate', err);
+  } catch(error) {
+    res.status(500).json({
+      message: 'Failed to connect to rehydrate queue',
+      error
+    });
   }
 };
