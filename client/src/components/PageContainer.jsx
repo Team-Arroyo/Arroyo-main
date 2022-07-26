@@ -10,6 +10,7 @@ import {
 } from '@elastic/eui';
 import PropTypes from 'prop-types';
 import { removeToast } from '../features/toastSlice.js';
+import arroyoLogo from './logos/arroyographic_color.svg';
 
 function PageContainer({ content }) {
   const toasts = useSelector((state) => state.toasts);
@@ -20,7 +21,7 @@ function PageContainer({ content }) {
       <EuiPageBody panelled>
         <EuiPageHeader
           restrictWidth
-          iconType="logoElastic"
+          iconType={arroyo}
           pageTitle="Rehydrate Logs"
         />
         <EuiPageContent
