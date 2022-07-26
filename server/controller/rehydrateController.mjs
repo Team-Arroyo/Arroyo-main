@@ -43,7 +43,7 @@ export const initializeRehydrateJob = async(req, res) => {
       QueueUrl: RehydrateQueueUrl
     }));
 
-    pollStatusQueue();
+    pollStatusQueue('byDate');
 
   } catch(error) {
     res.status(500).json({
@@ -75,7 +75,7 @@ export const initializeQueryRehydrate = async(req, res) => {
       QueueUrl: RehydrateQueueUrl
     }));
 
-    pollStatusQueue();
+    pollStatusQueue('byQuery');
 
   } catch(error) {
     res.status(500).json({

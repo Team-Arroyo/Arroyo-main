@@ -1,6 +1,7 @@
 import express from 'express';
-import { getS3Objects, rehydrateS3Object } from '../controller/s3ObjectController.mjs';
+import { getS3Objects } from '../controller/s3ObjectController.mjs';
 import { initializeRehydrateJob, initializeQueryRehydrate }  from '../controller/rehydrateController.mjs';
+import { establishSseConnection } from '../controller/sseController.mjs';
 
 import validateObjectKeys from '../middleware/validateObjectKeys.mjs';
 import validateUrlDateParams from '../middleware/validateUrlDateParams.mjs';
@@ -11,11 +12,9 @@ const router = express.Router();
 
 router.get('/s3objects', validateUrlDateParams, getS3Objects);
 
-//will be removed once front end switches to new api
-router.post('/s3object/rehydrate', rehydrateS3Object);
-
 router.post('/s3objects', validateObjectKeys, initializeRehydrateJob);
 
 router.post('/query-ingest', validateBodyDateParams, validateQueries, initializeQueryRehydrate);
 
+router.get('/statuses', establishSseConnection);
 export default router;
