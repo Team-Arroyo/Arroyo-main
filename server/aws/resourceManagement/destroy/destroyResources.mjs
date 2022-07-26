@@ -37,7 +37,7 @@ const destroyResources = async () => {
   
   try {
     await deleteS3Bucket({Bucket: lambdaS3BucketName});
-    log(message('Deleted lambda deployment package'));
+    log(message('Deleted Lambda deployment package'));
     await pause(3000);
   } catch (error) {
     log(errorMessage(error));
@@ -64,7 +64,7 @@ const destroyResources = async () => {
   try {
     await deleteRole({ roleName: lambdaRoleName });
     await pause(3000);
-    log(message('Deleted lambda role'));
+    log(message('Deleted Lambda role'));
   } catch (error) {
     log(errorMessage(error));
   }
@@ -72,7 +72,7 @@ const destroyResources = async () => {
   try {
     await deleteLambda({ lambdaName });
     await pause(3000);
-    log(message('Deleted Lambda'));
+    log(message('Deleted Lambda function'));
   } catch (error) {
     log(errorMessage(error));
   }
@@ -117,7 +117,7 @@ const destroyResources = async () => {
     log(errorMessage(error));
   }
   
-  log(message('Teardown completed.'));
+  log(message('AWS resource teardown completed'));
 }
 
 export default destroyResources;

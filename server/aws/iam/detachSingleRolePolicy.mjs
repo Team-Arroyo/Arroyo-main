@@ -8,8 +8,8 @@ const detachSingleRolePolicy = async ({ roleName, policyArn }) => {
         RoleName: roleName
       }));
       return data;
-    } catch (err) {
-      console.log('Error', err);
+    } catch (error) {
+     throw new Error(error);
     }
 };
 

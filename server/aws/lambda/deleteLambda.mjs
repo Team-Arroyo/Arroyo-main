@@ -7,8 +7,8 @@ const deleteLambda = async ({ lambdaName }) => {
     const response = await LambdaClient.send(command);
 
     return response;
-  } catch (err) {
-    console.log('Error', err);
+  } catch (error) {
+   throw new Error(error);
   }
 };
 

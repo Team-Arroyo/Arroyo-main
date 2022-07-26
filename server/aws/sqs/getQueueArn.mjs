@@ -12,8 +12,8 @@ const getQueueArn = async ({ queueURL }) => {
     const attributesObject = getQueueAttributesResponse.Attributes;
 
     return attributesObject.QueueArn;
-  } catch (err) {
-    console.log('Error', err);
+  } catch (error) {
+    throw new Error(error);
   }
 };
 

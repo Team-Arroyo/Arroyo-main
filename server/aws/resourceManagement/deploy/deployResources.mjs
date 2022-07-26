@@ -31,7 +31,7 @@ const deployResources = async () => {
   try {
     // const deployLambdaDeploymentPackageSpinner = ora('Setting up lambda').start();
     await deployLambdaDeploymentPackage({ lambdaS3BucketName });
-    log(message('Successfully deployed rehydration lambda function'));
+    log(message('Created deployment package for Lambda function'));
   } catch (error) {
     log(errorMessage(error));
   }
@@ -41,7 +41,7 @@ const deployResources = async () => {
   let rehydrateSQSDLQArn;
   try {
     rehydrateSQSDLQArn = await deployRehydrateSQSDLQ({ uuid });
-    log(message('Successfully deployed Rehydrate SQS Dead Letter Queue'));
+    log(message('Created Rehydrate SQS Dead Letter Queue'));
   } catch (error) {
     log(errorMessage(error));
   }

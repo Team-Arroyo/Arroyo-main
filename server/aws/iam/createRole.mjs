@@ -11,8 +11,8 @@ const createRole = async (roleName) => {
     try {
       const data = await iamClient.send(new CreateRoleCommand(roleParams));
       return data.Role.Arn;
-    } catch (err) {
-      console.log('Error', err);
+    } catch (error) {
+     throw new Error(error);
     }
 };
 
