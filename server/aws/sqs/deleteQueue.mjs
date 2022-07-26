@@ -6,8 +6,8 @@ const deleteQueue = async ({ SQSUrl }) => {
     const deleteQueueCommand = new DeleteQueueCommand({ QueueUrl: SQSUrl });
     const deleteQueueResponse = await sqsClient.send(deleteQueueCommand);
     return deleteQueueResponse;
-  } catch (err) {
-    console.log('Error', err);
+  } catch (error) {
+   throw new Error(error);
   }
 };
 
