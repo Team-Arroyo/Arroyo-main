@@ -12,6 +12,7 @@ const { RehydrateSQSUrl } = config.all;
 
 const logstashEndpoint = process.env.LOGSTASH_HOST;
 const Bucket = process.env.AWS_BUCKET_NAME;
+//conditional included for dev in case configstore not set up on dev machine.
 const RehydrateQueueUrl = RehydrateSQSUrl || process.env.SQS_QUEUE;
 
 const messageBodyTemplate = {
