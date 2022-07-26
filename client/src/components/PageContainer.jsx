@@ -21,7 +21,7 @@ function PageContainer({ content }) {
       <EuiPageBody panelled>
         <EuiPageHeader
           restrictWidth
-          iconType={arroyo}
+          iconType={arroyoLogo}
           pageTitle="Rehydrate Logs"
         />
         <EuiPageContent
