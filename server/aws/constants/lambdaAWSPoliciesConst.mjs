@@ -1,4 +1,4 @@
-const LAMBDA_ASSUME_ROLE_POLICY = `{
+const LambdaAssumeRolePolicy = `{
   "Version": "2012-10-17",
   "Statement": [
     {
@@ -19,7 +19,7 @@ const AWSLambdaSQSQueueExecutionRoleARN = 'arn:aws:iam::aws:policy/service-role/
 const AWSLambdaBasicExecutionRoleARN = 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole';
 
 export {
-  LAMBDA_ASSUME_ROLE_POLICY,
+  LambdaAssumeRolePolicy,
   AWSXRayDaemonWriteAccessARN,
   AmazonS3ReadOnlyAccessARN,
   AWSLambdaSQSQueueExecutionRoleARN,
