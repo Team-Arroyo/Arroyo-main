@@ -1,5 +1,5 @@
-import iamClient from "../../clients/iamClient.mjs";
-import { CreatePolicyCommand } from "@aws-sdk/client-iam";
+import iamClient from "../clients/iamClient.mjs";
+import { CreatePolicyCommand } from '@aws-sdk/client-iam';
 
 const createSQSSEndMessagePolicy = async ({ SQSArn, uuid }) => {
   const SQSSendMessagePolicy = {
@@ -19,10 +19,9 @@ const createSQSSEndMessagePolicy = async ({ SQSArn, uuid }) => {
   };
       try {
       const data = await iamClient.send(new CreatePolicyCommand(createPolicyParams));
-      console.log("SQS Send Message Policy created", data);
       return data;
-    } catch (err) {
-      console.log("Error", err);
+    } catch (error) {
+      console.log("Error", error);
     }
 }
 
