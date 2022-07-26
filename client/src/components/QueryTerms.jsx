@@ -8,8 +8,7 @@ import {
   EuiFieldText,
   EuiButtonIcon,
 } from '@elastic/eui';
-import { icon as plusIcon } from '@elastic/eui/es/components/icon/assets/plus.js';
-import { icon as searchIcon } from '@elastic/eui/es/components/icon/assets/search.js';
+import { plusIcon, searchIcon } from '../libs/icons.js';
 import { addQuery } from '../features/queriesSlice.js';
 
 function QueryTerms() {
