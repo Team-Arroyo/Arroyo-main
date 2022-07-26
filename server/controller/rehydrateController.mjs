@@ -1,6 +1,7 @@
 import getBucketObjectsWithinDates from '../aws/s3/getBucketObjectsWithinDates.mjs'
 import sendMessageToQueue from '../aws/sqs/sendMessageToQueue.mjs';
 import testQueueConnection from '../aws/sqs/testQueueConnection.mjs';
+import pollStatusQueue from '../aws/sqs/pollStatusQueue.mjs';
 import dotenv from 'dotenv';
 import Configstore from 'configstore';
 import fs from 'fs';
@@ -36,12 +37,16 @@ export const initializeRehydrateJob = async(req, res) => {
   
   try {
     await testQueueConnection(RehydrateSQSUrl);
+
     res.status(202).json({message: 'Rehydrating task in progress...'});
     objectKeys.forEach(Key => sendMessageToQueue({ 
       messageBodyTemplate, 
       additionalParams: { Key }, 
       QueueUrl: RehydrateQueueUrl
     }));
+
+    pollStatusQueue();
+
   } catch(error) {
     res.status(500).json({
       message: 'Failed to connect to rehydrate queue',
@@ -59,6 +64,7 @@ export const initializeQueryRehydrate = async(req, res) => {
   try {
     const logsWithinDates = await getBucketObjectsWithinDates({ startDate, endDate });
     await testQueueConnection(RehydrateSQSUrl);
+    
     if(logsWithinDates.length < 1) {
       res.status(400).json({message: 'No files found to ingest within date range'});
     } else {
@@ -71,6 +77,9 @@ export const initializeQueryRehydrate = async(req, res) => {
       additionalParams: { Key, Expression },
       QueueUrl: RehydrateQueueUrl
     }));
+
+    pollStatusQueue();
+
   } catch(error) {
     res.status(500).json({
       message: 'Failed to connect to rehydrate queue',
