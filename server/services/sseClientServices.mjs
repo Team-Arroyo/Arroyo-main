@@ -10,8 +10,7 @@ const sendEventStreamData = (payload) => {
 };
 
 export const reportStatuses = ({eventType, statusStrings}) => {
-  // console.log('Reporting statuses', statusStrings);
-  const failedFiles = formatStatusesToJson(statusStrings).filter(({ status }) => status === 'complete');
+  const failedFiles = formatStatusesToJson(statusStrings).filter(({ status }) => status === 'fail');
   console.log('failedFiles', failedFiles);
   sendEventStreamData({
     eventType,
