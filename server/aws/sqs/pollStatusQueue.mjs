@@ -1,5 +1,6 @@
 import recieveQueueMessages from './receiveQueueMessages.mjs';
 import removeMessageFromQueue from './removeMessageFromQueue.mjs';
+import { reportStatuses } from '../../services/sseClientServices.mjs';
 import dotenv from 'dotenv';
 import Configstore from 'configstore';
 import fs from 'fs';
@@ -14,10 +15,10 @@ const { StatusSQSUrl } = config.all;
 //conditional kept so development. Not required to run deploy script.
 const StatusQueueUrl = StatusSQSUrl || process.env.STATUS_QUEUE_URL;
 
-const pollStatusQueue = async() => {
+const pollStatusQueue = async(eventType) => {
   console.log('Polling Status Queue...');
   let retryCounter = 0;
-  let statuses = [];
+  let statusStrings = [];
 
   while(retryCounter < 3) {
     try {
@@ -25,7 +26,7 @@ const pollStatusQueue = async() => {
 
       if(Messages) {
         const receiptHandles = Messages.map(({ ReceiptHandle }) => ReceiptHandle);
-        statuses = statuses.concat(Messages.map(({ Body }) => Body));
+        statusStrings = statusStrings.concat(Messages.map(({ Body }) => Body));
 
         const promises = receiptHandles.map(handle => removeMessageFromQueue(StatusQueueUrl, handle));
         await Promise.allSettled(promises);
@@ -40,7 +41,7 @@ const pollStatusQueue = async() => {
   }
 
   console.log('Polling has ended.');
-  console.log('Statuses', statuses);
+  reportStatuses({eventType, statusStrings});
 };
 
 export default pollStatusQueue;
