@@ -40,9 +40,9 @@ const destroyResources = async () => {
     try {
     await pause(2000);
     await deleteAllObjectsS3Bucket({Bucket: lambdaS3BucketName});
-    spinner.succeed('Deployment package for Lambda function has been removed');
+    spinner.succeed('Deployment package for Lambda Function has been removed');
   } catch (error) {
-    spinner.fail('There was an error when removing deployment package for Lambda function. Error: ', error);
+    spinner.fail('There was an error when removing deployment package for Lambda Function. Error: ', error);
     log(errorMessage(error));
   }
   

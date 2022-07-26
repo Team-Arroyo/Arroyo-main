@@ -34,12 +34,12 @@ const deployResources = async () => {
   
   spinner.stop();
   await pause(1000);
-  spinner.start('Creating Deployment package for Lambda function');
+  spinner.start('Creating Deployment package for Lambda Function');
 
   try {
     await deployLambdaDeploymentPackage({ lambdaS3BucketName });
     await pause(8000);
-    spinner.succeed('Deployment package for Lambda function has been created');
+    spinner.succeed('Deployment package for Lambda Function has been created');
   } catch (error) {
     spinner.fail('There was an error when creating deployment package for Lambda function. Error: ', error);
     log(errorMessage(error));
