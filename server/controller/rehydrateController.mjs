@@ -35,7 +35,11 @@ export const initializeRehydrateJob = (req, res) => {
   res.status(202).json({message: 'Rehydrating task in progress...'});
   
   try {
-    objectKeys.forEach(Key => sendMessageToQueue({ messageBodyTemplate, additionalParams: { Key }, QueueUrl: RehydrateQueueUrl  }));
+    objectKeys.forEach(Key => sendMessageToQueue({ 
+      messageBodyTemplate, 
+      additionalParams: { Key }, 
+      QueueUrl: RehydrateQueueUrl
+    }));
   } catch(err) {
     console.log('Error in file rehydrate', err);
   }
@@ -56,7 +60,11 @@ export const initializeQueryRehydrate = async(req, res) => {
     }
 
     console.log('sending query');
-    logsWithinDates.forEach(Key => sendMessageToQueue({messageBodyTemplate, additionalParams: { Key, Expression }, QueueUrl: RehydrateQueueUrl }));
+    logsWithinDates.forEach(Key => sendMessageToQueue({
+      messageBodyTemplate,
+      additionalParams: { Key, Expression },
+      QueueUrl: RehydrateQueueUrl
+    }));
   } catch(err) {
     console.log('Error in query rehydrate', err);
   }
