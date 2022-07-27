@@ -47,13 +47,12 @@ const destroyResources = async () => {
   }
   
   try {
-    await pause(1000);
-    spinner.start('Removing Rehydrate SQS Dead Letter Queue');
+    await pause(10000);
     await deleteS3Bucket({Bucket: lambdaS3BucketName});
+    spinner.succeed('Deployment package for Lambda function has been removed');
     await pause(2000);
-    spinner.succeed('Rehydrate SQS Dead Letter Queue has been removed');
   } catch (error) {
-    spinner.fail('There was an error when removing Rehydrate SQS Dead Letter Queue. Error: ', error);
+    spinner.fail('There was an error when removing deployment package for Lambda function. Error: ', error);
     log(errorMessage(error));
   }
   
