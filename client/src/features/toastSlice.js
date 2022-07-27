@@ -20,7 +20,18 @@ export const toastSlice = createSlice({
   name: 'toasts',
   initialState: [],
   reducers: {
-    addToast: (state, action) => state.push({ ...action.payload, id: htmlIdGenerator()() }),
+    addToast: (state, action) => {
+      const { eventType, failedFiles } = action.payload;
+      if (!failedFiles.length) {
+        return [...state, { id: htmlIdGenerator()(), title: `${eventType} search complete`, color: 'success' }];
+      }
+      return [...state, {
+        id: htmlIdGenerator()(),
+        title: `${eventType} search failed`,
+        color: 'danger',
+        text: failedFiles.toString(),
+      }];
+    },
     removeToast: (state, action) => state.filter((t) => t.id !== action.payload),
   },
   extraReducers: (builder) => {
