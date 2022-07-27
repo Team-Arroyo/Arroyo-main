@@ -6,8 +6,7 @@ const getQueue = async({ QueueName }) => {
     const command = new GetQueueUrlCommand({ QueueName });
     await sqsClient.send(command);
   } catch(error) {
-    console.log('Error in SQS connect test', err);
-    throw error;
+    throw new Error(error);
   }
 };
 

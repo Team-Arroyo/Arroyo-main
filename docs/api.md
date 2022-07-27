@@ -27,14 +27,26 @@ need to provide a startDate and endDate query param. It is possible to recieve a
 ```
 
 ### 1.1.3 Server Error Responses
-During development the API will return status 500 errors and a JSON body when there are issues with AWS credeintials/requests.
+The API will return status 500 errors and a JSON body when there are issues with AWS credeintials/requests.
 
 ### 1.1.4 Example Server Error Response
 ```json
-{"message":"Fetching object from S3 failed, see error message for more details",
- "error":{
-  "name":"NoSuchBucket","$fault":"client","$metadata":{"httpStatusCode":404,"extendedRequestId":"yHFI2ocjskfT8gs7Vh8aUz1JcBf4Ju4Ugt+ya7VLEbPIwQK8B+LhB/Lsb9VvzBeo9kAaKCs8W+BqMTK6GBRfmA==","attempts":1,"totalRetryDelay":0},"Code":"NoSuchBucket","BucketName":"ls-capstone-deepstor","RequestId":"KDNA5DTMK5A4PJ01","HostId":"yHFI2ocjskfT8gs7Vh8aUz1JcBf4Ju4Ugt+ya7VLEbPIwQK8B+LhB/Lsb9VvzBeo9kAaKCs8W+BqMTK6GBRfmA==","message":"The specified bucket does not exist"
-  }
+{
+    "message": "Fetching object from S3 failed, see error message for more details",
+    "error": {
+        "name": "InvalidClientTokenId",
+        "$fault": "client",
+        "$metadata": {
+            "httpStatusCode": 403,
+            "requestId": "bf3249af-b430-59a4-9dd7-12f5aaf8edb3",
+            "attempts": 1,
+            "totalRetryDelay": 0
+        },
+        "Type": "Sender",
+        "Code": "InvalidClientTokenId",
+        "Detail": "",
+        "message": "The security token included in the request is invalid."
+    }
 }
 ```
 ### 1.1.5 User Errors
@@ -64,61 +76,24 @@ The API will return a 400 status code and a body describing the error.
 }
 ```
 
-## 1.2 POST /api/s3object/rehydrate -- DEPRECIATED
-See Heading 1.3 for the new API route. This section will be removed
-once confirmed that front end is using new API described in 1.3
 
-### 1.2.1 Expected Parameters -- DEPRECIATED
+## 1.2 POST /api/s3objects
+This the route is used to start the rehydrate process of a batch of AWS S3 objects. Sends a 202 response upon being accepted with JSON message.
+
 ```json
 {
-  "objectKey": "log1.txt"
+    "message": "Rehydrating task in progress..."
 }
 ```
 
-### 1.2.2 Example Response -- DEPRECIATED
-```json
-{
-  "message": "Rehydrate on logs1.txt in progress",
-}
-```
-
-### 1.2.3 Error Response -- DEPRECIATED
-If the objectKey is not found within the AWS S3 bucket, the backend
-will format and forward an error message in the body with status 500
-
-### 1.2.4 Example Error Response -- DEPRECIATED
-```json
-{
-    "message": "Log rehydration failed, see error message for more details",
-    "error": {
-        "name": "NoSuchKey",
-        "$fault": "client",
-        "$metadata": {
-            "httpStatusCode": 404,
-            "extendedRequestId": "ZK1vBmD3JFSkgXASC8fwh7w6NnpbaqREdQF9d4NMOb5DKLTVbaFBRKNHc94ta0N6I18/bRji8tM=",
-            "attempts": 1,
-            "totalRetryDelay": 0
-        },
-        "Code": "NoSuchKey",
-        "Key": "log.txt",
-        "RequestId": "5FTSW3DZF2W8HPMW",
-        "HostId": "ZK1vBmD3JFSkgXASC8fwh7w6NnpbaqREdQF9d4NMOb5DKLTVbaFBRKNHc94ta0N6I18/bRji8tM=",
-        "message": "The specified key does not exist."
-    }
-}
-```
-
-## 1.3 POST /api/s3objects
-This the NEW route is used to start the rehydrate process of a batch of AWS S3 objects. Sends a 202 resposne upon being accepted.
-
-### 1.3.1 Expected Parameters
+### 1.2.1 Expected Parameters
 ```json
 {
   "objectKeys": ["kibana-access.log", "nginx-access.log"]
 }
 ```
 
-### 1.3.2 Example Response
+### 1.2.2 Example Response
 ```json
 {
     "batchStatus": [
@@ -134,22 +109,34 @@ This the NEW route is used to start the rehydrate process of a batch of AWS S3 o
 }
 ```
 
-### 1.3.3 Server Error Responses
-During development the API will return status 500 errors and a JSON body when there are issues with AWS credeintials/requests.
+### 1.2.3 Server Error Responses
+The API will return status 500 errors and a JSON body when there are issues with AWS credeintials/requests.
 
-### 1.3.4 Example Server Error Response
+### 1.2.4 Example Server Error Response
 ```json
-{"message":"Fetching object from S3 failed, see error message for more details",
- "error":{
-  "name":"NoSuchBucket","$fault":"client","$metadata":{"httpStatusCode":404,"extendedRequestId":"yHFI2ocjskfT8gs7Vh8aUz1JcBf4Ju4Ugt+ya7VLEbPIwQK8B+LhB/Lsb9VvzBeo9kAaKCs8W+BqMTK6GBRfmA==","attempts":1,"totalRetryDelay":0},"Code":"NoSuchBucket","BucketName":"ls-capstone-deepstor","RequestId":"KDNA5DTMK5A4PJ01","HostId":"yHFI2ocjskfT8gs7Vh8aUz1JcBf4Ju4Ugt+ya7VLEbPIwQK8B+LhB/Lsb9VvzBeo9kAaKCs8W+BqMTK6GBRfmA==","message":"The specified bucket does not exist"
-  }
+{
+    "message": "Failed to connect to rehydrate queue",
+    "error": {
+        "name": "InvalidClientTokenId",
+        "$fault": "client",
+        "$metadata": {
+            "httpStatusCode": 403,
+            "requestId": "bf3249af-b430-59a4-9dd7-12f5aaf8edb3",
+            "attempts": 1,
+            "totalRetryDelay": 0
+        },
+        "Type": "Sender",
+        "Code": "InvalidClientTokenId",
+        "Detail": "",
+        "message": "The security token included in the request is invalid."
+    }
 }
 ```
 
-### 1.3.5 User Errors.
+### 1.2.5 User Errors.
 The API will return status 400 with a JSON object describing the error.
 
-### 1.3.6 Example Error -- Missing objectKeys.
+### 1.2.6 Example Error -- Missing objectKeys.
 ```json
 {
     "status": 400,
@@ -159,7 +146,7 @@ The API will return status 400 with a JSON object describing the error.
 }
 ```
 
-### 1.3.7 Example Error -- Empty objectKeys
+### 1.2.7 Example Error -- Empty objectKeys
 ```json
 {
     "status": 400,
@@ -169,11 +156,17 @@ The API will return status 400 with a JSON object describing the error.
 }
 ```
 
-## 1.4 POST /api/query-ingest
+## 1.3 POST /api/query-ingest
 This route is used to search for logs within a specified date range and selectivly pull
-only the log lines that match ```key/value``` pairs that are provided. Response returns a 202 to signify the query is in progress.
+only the log lines that match ```key/value``` pairs that are provided. Response returns a 202 with JSON message to signify the query is in progress.
 
-### 1.4.1 Expected Payload
+```json
+{
+    "message": "Rehydrating task in progress..."
+}
+```
+
+### 1.3.1 Expected Payload
 ```json
 {
     "startDate": "07-07-2022",
@@ -185,22 +178,34 @@ only the log lines that match ```key/value``` pairs that are provided. Response 
 }
 ```
 
-### 1.4.3 Server Error Responses
-During development the API will return status 500 errors and a JSON body when there are issues with AWS credeintials/requests.
+### 1.3.3 Server Error Responses
+The API will return status 500 errors and a JSON body when there are issues with AWS credeintials/requests.
 
-### 1.4.4 Example Server Error Response
+### 1.3.4 Example Server Error Response
 ```json
-{"message":"Fetching object from S3 failed, see error message for more details",
- "error":{
-  "name":"NoSuchBucket","$fault":"client","$metadata":{"httpStatusCode":404,"extendedRequestId":"yHFI2ocjskfT8gs7Vh8aUz1JcBf4Ju4Ugt+ya7VLEbPIwQK8B+LhB/Lsb9VvzBeo9kAaKCs8W+BqMTK6GBRfmA==","attempts":1,"totalRetryDelay":0},"Code":"NoSuchBucket","BucketName":"ls-capstone-deepstor","RequestId":"KDNA5DTMK5A4PJ01","HostId":"yHFI2ocjskfT8gs7Vh8aUz1JcBf4Ju4Ugt+ya7VLEbPIwQK8B+LhB/Lsb9VvzBeo9kAaKCs8W+BqMTK6GBRfmA==","message":"The specified bucket does not exist"
-  }
+{
+    "message": "Failed to connect to rehydrate queue",
+    "error": {
+        "name": "InvalidClientTokenId",
+        "$fault": "client",
+        "$metadata": {
+            "httpStatusCode": 403,
+            "requestId": "cc4225fe-d89a-5f04-92c1-7ea4c608b811",
+            "attempts": 1,
+            "totalRetryDelay": 0
+        },
+        "Type": "Sender",
+        "Code": "InvalidClientTokenId",
+        "Detail": "",
+        "message": "The security token included in the request is invalid."
+    }
 }
 ```
 
-### 1.4.5 User Errors.
+### 1.3.5 User Errors.
 The API will return status 400 with a JSON object describing the error.
 
-### 1.4.6 Example Error -- Too many key/value pairs in queries.
+### 1.3.6 Example Error -- Too many key/value pairs in queries.
 ```json
 {
     "status": 400,
@@ -210,7 +215,7 @@ The API will return status 400 with a JSON object describing the error.
 }
 ```
 
-### 1.4.7 Example Error -- Queries array supplied, but empty.
+### 1.3.7 Example Error -- Queries array supplied, but empty.
 ```json
 {
     "status": 400,
@@ -219,7 +224,7 @@ The API will return status 400 with a JSON object describing the error.
 }
 ```
 
-### 1.4.8 Example Error -- Imporper key/value object structure.
+### 1.3.8 Example Error -- Imporper key/value object structure.
 ```json
 {
     "status": 400,
@@ -231,7 +236,7 @@ The API will return status 400 with a JSON object describing the error.
 }
 ```
 
-### 1.4.9 Example Error -- No files within date range
+### 1.3.9 Example Error -- No files within date range
 ```json
 {
     "message": "No files found to ingest within date range"

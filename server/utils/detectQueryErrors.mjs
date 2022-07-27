@@ -1,7 +1,7 @@
 const SUPPORTED_QUERY_NUM = 2;
 import ERROR_HANDLING from "../aws/constants/errorHandling.mjs";
 
-const isQueryInvalidFormat = (queryObj) => {
+export const isQueryInvalidFormat = (queryObj) => {
   const [key, value] = Object.entries(queryObj).pop();
   return (key === '' || typeof key !== 'string') || (value == '' || typeof value !== 'string');
 };

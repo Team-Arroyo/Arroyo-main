@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import router from './routes/api.mjs';
@@ -19,6 +20,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use('/api', router);
 

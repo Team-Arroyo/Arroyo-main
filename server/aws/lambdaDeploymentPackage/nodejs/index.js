@@ -1,13 +1,17 @@
 const { getAllLogs, queryForLogs } = require("./services/logFetchService");
 const { postToLogstash } = require("./services/logstashService");
+const sendMessageToQueue = require("./lib/sqsClient");
 
 exports.handler = async (event) => {
-    console.log("Records", event.Records);
     const { messageId, body } = event.Records[0];
-    console.log("body", typeof body);
     const { Bucket, Key, logstashEndpoint, Expression } = JSON.parse(body);
     
-    let response = {};
+    const response = {
+        statusCode: 200,
+        body: JSON.stringify('Hello from Lambda!')
+    };
+    
+    
     console.log("Bucket", Bucket);
     console.log("Key", Key);
     console.log("logstashHost", logstashEndpoint);
@@ -24,19 +28,27 @@ exports.handler = async (event) => {
         
         await postToLogstash(logstashEndpoint, logsJson)
         
-        response = {
-            statusCode: 200,
-            body: JSON.stringify('Hello from Lambda!'),
-        };
+        await sendMessageToQueue({
+            objectKey: Key,
+            status: 'complete'
+        });
         
-    } catch(error) {
-        console.log("Failed rehydrate job", error);
+    } catch(err) {
+        console.log("Failed rehydrate job", err);
         console.log("Reporting back to SQS\n");
-        response = {
-            statusCode: 400,
-            body: JSON.stringify({error})
-        }
+        
+        let { message, name } = err;
+        
+        message = message.includes('timeout') ? 'Logstash unreachable' : message;
+        
+        await sendMessageToQueue({
+           objectKey: Key,
+           status: 'fail',
+           name,
+           message
+        });
     }
+    
     
     return response;
 };
