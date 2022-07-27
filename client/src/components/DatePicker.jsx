@@ -8,7 +8,7 @@ import { setStartDate, setEndDate } from '../features/dateRangeSlice.js';
 
 function DatePicker({ dateType }) {
   const dispatch = useDispatch();
-  const toggleDateType = dateType === 'start date' ? 'start' : 'end';
+  const toggleDateType = dateType === 'Start Date' ? 'start' : 'end';
   const action = toggleDateType === 'start' ? setStartDate : setEndDate;
   const [selectedDate, setSelectedDate] = useState(moment());
 
