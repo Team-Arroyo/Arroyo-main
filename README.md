@@ -29,3 +29,32 @@ Below is a picture of the project's user interface:
 2. **Select**: Select one, many, or all logs in the list. Once you have made your selections, click the 'Ingest Logs' button.
 
 3. **Ingest Logs** Clicking the 'Ingest Logs' button will trigger the reingestion of the selected logs from S3 back into Elasticsearch.
+
+### List of permissions user must have
+```
+"iam:PassRole",
+"iam:DetachRolePolicy",
+"iam:CreatePolicy",
+"iam:CreateRole",
+"iam:AttachRolePolicy",
+"iam:DeletePolicy",
+"iam:DeleteRole",
+"kms:Decrypt",
+"kms:CreateGrant",
+"kms:RetireGrant",
+"kms:Encrypt",
+"lambda:CreateEventSourceMapping",
+"lambda:CreateFunction",
+"lambda:DeleteEventSourceMapping",
+"lambda:DeleteFunction",
+"s3:DeleteObject",
+"s3:DeleteBucket",
+"s3:CreateBucket",
+"s3:ListBucket",
+"s3:PutObject",
+"s3:GetObject",
+"sqs:SendMessage",
+"sqs:GetQueueAttributes",
+"sqs:DeleteQueue",
+"sqs:CreateQueue"
+```
