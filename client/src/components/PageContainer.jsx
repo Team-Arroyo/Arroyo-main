@@ -11,7 +11,6 @@ import {
 } from '@elastic/eui';
 import { icon as questionLogo } from '@elastic/eui/es/components/icon/assets/question_in_circle.js';
 import { icon as kibanaLogo } from '@elastic/eui/es/components/icon/assets/logo_kibana.js';
-import { icon as logstashLogo } from '@elastic/eui/es/components/icon/assets/logo_logstash.js';
 import PropTypes from 'prop-types';
 import { removeToast } from '../features/toastSlice.js';
 import arroyoLogo from './logos/arroyographic_color.svg';
@@ -28,9 +27,8 @@ function PageContainer({ content }) {
           iconType={arroyoLogo}
           pageTitle="Arroyo"
           rightSideItems={[
-            <EuiButtonIcon iconSize="l" iconType={questionLogo} />,
+            <EuiButtonIcon iconSize="xl" iconType={questionLogo} />,
             <EuiButtonIcon iconSize="l" iconType={kibanaLogo} />,
-            <EuiButtonIcon iconSize="l" iconType={logstashLogo} />,
           ]}
         />
 
