@@ -7,7 +7,10 @@ import {
   EuiPageHeader,
   EuiPageBody,
   EuiGlobalToastList,
+  EuiButtonIcon,
 } from '@elastic/eui';
+import { icon as questionLogo } from '@elastic/eui/es/components/icon/assets/question_in_circle.js';
+import { icon as kibanaLogo } from '@elastic/eui/es/components/icon/assets/logo_kibana.js';
 import PropTypes from 'prop-types';
 import { removeToast } from '../features/toastSlice.js';
 import arroyoLogo from './logos/arroyographic_color.svg';
@@ -22,8 +25,13 @@ function PageContainer({ content }) {
         <EuiPageHeader
           restrictWidth
           iconType={arroyoLogo}
-          pageTitle="Rehydrate Logs"
+          pageTitle="Arroyo"
+          rightSideItems={[
+            <EuiButtonIcon iconSize="xl" iconType={questionLogo} />,
+            <EuiButtonIcon iconSize="l" iconType={kibanaLogo} />,
+          ]}
         />
+
         <EuiPageContent
           hasBorder={false}
           hasShadow={false}

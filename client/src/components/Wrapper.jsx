@@ -1,5 +1,5 @@
 import React from 'react';
-import { EuiTabbedContent } from '@elastic/eui';
+import { EuiTabbedContent, EuiText, EuiSpacer } from '@elastic/eui';
 import ByDateTab from './ByDateTab';
 import ByQueryTab from './ByQueryTab';
 
@@ -18,11 +18,16 @@ function Wrapper() {
   ];
 
   return (
-    <EuiTabbedContent
-      tabs={tabs}
-      initialSelectedTab={tabs[0]}
-      autoFocus="selected"
-    />
+    <>
+      <EuiText size="s"><h2>Rehydrate Logs</h2></EuiText>
+      <EuiSpacer size="xs" />
+      <EuiTabbedContent
+        tabs={tabs}
+        initialSelectedTab={tabs[0]}
+        autoFocus="selected"
+      />
+    </>
+
   );
 }
 

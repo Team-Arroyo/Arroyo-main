@@ -15,12 +15,12 @@ function DateRange() {
       <EuiFlexGroup>
         <EuiFlexItem>
           <DatePicker
-            dateType="start date"
+            dateType="Start Date"
           />
         </EuiFlexItem>
         <EuiFlexItem>
           <DatePicker
-            dateType="end date"
+            dateType="End Date"
           />
         </EuiFlexItem>
       </EuiFlexGroup>

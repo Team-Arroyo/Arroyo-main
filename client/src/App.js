@@ -2,9 +2,10 @@
 /* eslint-disable import/extensions */
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
-import createCache from '@emotion/cache';
-import '@elastic/eui/dist/eui_theme_light.css';
 import { EuiProvider } from '@elastic/eui';
+import createCache from '@emotion/cache';
+import ArroyoTheme from './resources/arroyoTheme.js';
+import '@elastic/eui/dist/eui_theme_light.css';
 import PageContainer from './components/PageContainer.jsx';
 import Wrapper from './components/Wrapper.jsx';
 
@@ -16,7 +17,7 @@ function App() {
   cache.compat = true;
 
   return (
-    <EuiProvider cache={cache} colorMode="light">
+    <EuiProvider cache={cache} theme={ArroyoTheme} colorMode="light">
       <PageContainer content={Wrapper()} />
     </EuiProvider>
   );
