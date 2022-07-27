@@ -10,6 +10,7 @@ import deleteAllObjectsS3Bucket from '../../s3/deleteAllObjectsInS3Bucket.mjs';
 import deleteS3Bucket from '../../s3/deleteS3Bucket.mjs';
 import detachMultipleRolePolicies from '../../iam/detachMultipleRolePolicies.mjs';
 import deleteRole from '../../iam/deleteRole.mjs';
+import deletePolicy from '../../iam/deletePolicy.mjs';
 import deleteLambda from '../../lambda/deleteLambda.mjs';
 import deleteQueue from '../../sqs/deleteQueue.mjs';
 import deleteEventSourceMapping from '../../lambda/deleteEventSourceMapping.mjs';
@@ -40,7 +41,6 @@ const destroyResources = async () => {
     try {
     await pause(2000);
     await deleteAllObjectsS3Bucket({Bucket: lambdaS3BucketName});
-    spinner.succeed('Deployment package for Lambda Function has been removed');
   } catch (error) {
     spinner.fail('There was an error when removing deployment package for Lambda Function. Error: ', error);
     log(errorMessage(error));
@@ -75,7 +75,15 @@ const destroyResources = async () => {
     spinner.fail('There was an error when removing IAM Lambda role');
     log(errorMessage(error));
   }
-  
+
+  try {
+    await pause(2000);
+    await deletePolicy({ policyArn: SQSSendMessagePolicy });
+    await pause(2000);
+  } catch (error) {    
+    log(errorMessage(error));
+  }
+   
   try {
     await deleteRole({ roleName: lambdaRoleName });
     await pause(3000);
