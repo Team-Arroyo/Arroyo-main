@@ -20,7 +20,21 @@ export const toastSlice = createSlice({
   name: 'toasts',
   initialState: [],
   reducers: {
-    addToast: (state, action) => state.push({ ...action.payload, id: htmlIdGenerator()() }),
+    addToast: (state, action) => {
+      // eslint-disable-next-line prefer-const
+      let { eventType, failedFiles } = action.payload;
+      if (!failedFiles.length) {
+        return [...state, { id: htmlIdGenerator()(), title: `${eventType} search complete`, color: 'success' }];
+      }
+      failedFiles = failedFiles.map((f) => f.objectKey);
+      return [...state, {
+        id: htmlIdGenerator()(),
+        title: `${eventType} search failed`,
+        color: 'danger',
+        text: failedFiles.join(),
+      }];
+    },
+    addDateToast: (state, action) => [...state, { ...action.payload, id: htmlIdGenerator()() }],
     removeToast: (state, action) => state.filter((t) => t.id !== action.payload),
   },
   extraReducers: (builder) => {
@@ -57,6 +71,6 @@ export const toastSlice = createSlice({
   },
 });
 
-export const { addToast, removeToast } = toastSlice.actions;
+export const { addToast, removeToast, addDateToast } = toastSlice.actions;
 
 export default toastSlice.reducer;
