@@ -10,7 +10,7 @@ import {
 } from '@elastic/eui';
 import apiClient from '../libs/apiclient.js';
 import convert from '../libs/utils.js';
-import { addToast } from '../features/toastSlice.js';
+import { addDateToast } from '../features/toastSlice.js';
 
 function PickFiles() {
   const choices = useSelector((state) => state.choices);
@@ -20,9 +20,9 @@ function PickFiles() {
 
   const handleIngest = () => {
     const selectedKeys = convert.toKeys(options);
+    dispatch(addDateToast({ title: 'Starting Ingest by Date', color: 'success' }));
     apiClient
-      .getObjects(selectedKeys)
-      .then(() => dispatch(addToast({ title: 'Files Ingested', text: 'Check Kibana', color: 'success' })));
+      .getObjects(selectedKeys);
   };
   const handleSelectAll = () => {
     const allSelected = options.map((o) => ({ ...o, checked: 'on' }));
