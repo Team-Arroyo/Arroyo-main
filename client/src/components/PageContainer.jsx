@@ -29,7 +29,7 @@ function PageContainer({ content }) {
           pageTitle="Arroyo"
           rightSideItems={[
             <EuiToolTip content="Visit Help Docs">
-              <EuiButtonIcon iconSize="xl" iconType={questionLogo} aria-label="Visit Help Docs" href={DOCS_URL} />
+              <EuiButtonIcon iconSize="xl" iconType={questionLogo} aria-label="Visit Help Docs" href={DOCS_URL} target="_blank" rel="noopener noreferrer" />
             </EuiToolTip>,
           ]}
         />
