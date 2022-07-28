@@ -8,6 +8,7 @@ import {
   EuiPageBody,
   EuiGlobalToastList,
   EuiButtonIcon,
+  EuiToolTip,
 } from '@elastic/eui';
 import { icon as questionLogo } from '@elastic/eui/es/components/icon/assets/question_in_circle.js';
 import { icon as kibanaLogo } from '@elastic/eui/es/components/icon/assets/logo_kibana.js';
@@ -27,8 +28,12 @@ function PageContainer({ content }) {
           iconType={arroyoLogo}
           pageTitle="Arroyo"
           rightSideItems={[
-            <EuiButtonIcon iconSize="xl" iconType={questionLogo} />,
-            <EuiButtonIcon iconSize="l" iconType={kibanaLogo} />,
+            <EuiToolTip content="Visit Kibana">
+              <EuiButtonIcon iconSize="l" iconType={kibanaLogo} aria-label="Visit Kibana" href={KIBANA_URL} />
+            </EuiToolTip>,
+            <EuiToolTip content="Visit Help Docs">
+              <EuiButtonIcon iconSize="xl" iconType={questionLogo} aria-label="Visit Help Docs" href={DOCS_URL} />
+            </EuiToolTip>,
           ]}
         />
 
