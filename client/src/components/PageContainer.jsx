@@ -11,10 +11,10 @@ import {
   EuiToolTip,
 } from '@elastic/eui';
 import { icon as questionLogo } from '@elastic/eui/es/components/icon/assets/question_in_circle.js';
-import { icon as kibanaLogo } from '@elastic/eui/es/components/icon/assets/logo_kibana.js';
 import PropTypes from 'prop-types';
 import { removeToast } from '../features/toastSlice.js';
 import arroyoLogo from './logos/arroyographic_color.svg';
+import DOCS_URL from '../constants/Url.js';
 
 function PageContainer({ content }) {
   const toasts = useSelector((state) => state.toasts);
@@ -28,15 +28,11 @@ function PageContainer({ content }) {
           iconType={arroyoLogo}
           pageTitle="Arroyo"
           rightSideItems={[
-            <EuiToolTip content="Visit Kibana">
-              <EuiButtonIcon iconSize="l" iconType={kibanaLogo} aria-label="Visit Kibana" href={KIBANA_URL} />
-            </EuiToolTip>,
             <EuiToolTip content="Visit Help Docs">
               <EuiButtonIcon iconSize="xl" iconType={questionLogo} aria-label="Visit Help Docs" href={DOCS_URL} />
             </EuiToolTip>,
           ]}
         />
-
         <EuiPageContent
           hasBorder={false}
           hasShadow={false}
