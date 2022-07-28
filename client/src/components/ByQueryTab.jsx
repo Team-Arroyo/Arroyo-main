@@ -10,8 +10,10 @@ import DateRange from './DateRange';
 import IngestByQueryButton from './IngestByQueryButton';
 import QueryBadges from './QueryBadges';
 import QueryTerms from './QueryTerms';
+import { hasQueryTerms } from '../libs/utils.js';
 
 function ByQueryTab() {
+  const hasQT = hasQueryTerms() ? <QueryBadges /> : null;
   return (
     <div>
       <EuiPanel paddingSize="m">
@@ -24,7 +26,7 @@ function ByQueryTab() {
         <EuiSpacer size="m" />
         <QueryTerms />
         <EuiSpacer size="m" />
-        <QueryBadges />
+        {hasQT}
         <EuiSpacer size="xl" />
         <IngestByQueryButton />
       </EuiPanel>
