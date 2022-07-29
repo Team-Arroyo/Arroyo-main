@@ -22,10 +22,10 @@ function Wrapper() {
   ];
 
   useEffect(() => {
+    // eslint-disable-next-line no-undef
     const source = new EventSource(STATUS_URL);
     source.onmessage = (e) => {
       const event = JSON.parse(e.data);
-      console.log('the event', event);
       dispatch(addToast(event));
     };
   }, []);
