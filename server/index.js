@@ -21,6 +21,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors());
+app.options('*', cors());
 app.use(bodyParser.json());
 app.use('/api', router);
 
