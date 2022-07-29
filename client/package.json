@@ -60,6 +60,8 @@
     "react-test-renderer": "^18.2.0"
   },
   "jest": {
-    "transformIgnorePatterns": ["/node_modules/(?!@elastic)"]
+    "transformIgnorePatterns": [
+      "/node_modules/(?!@elastic)"
+    ]
   }
 }
