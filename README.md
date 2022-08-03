@@ -58,3 +58,5 @@ Below is a picture of the project's user interface:
 "sqs:DeleteQueue",
 "sqs:CreateQueue"
 ```
+
+### Add a note stating that user has to have an Http input plugin configured (logstash)
