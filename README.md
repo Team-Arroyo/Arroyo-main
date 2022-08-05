@@ -3,12 +3,12 @@ See [here](https://github.com/Team-Arroyo/arroyo-deployment) for first time setu
 
 ### To Start Arroyo
 
-#### First Time Start
+#### Start with new Docker Container
 ```markdown
 docker compose-up
 ```
 
-#### Restart from Existing Container
+#### Restart from Existing Docker Container
 ```markdown
 docker compose start
 ```
