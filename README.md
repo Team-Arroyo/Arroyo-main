@@ -1,62 +1,29 @@
-# team_4_capstone
+# Arroyo
 
 ## Preparation
-
-### Installing Project Dependencies
-
-| Project Component | Terminal Command | Directory|
-|-----------|------------------|----------|
-| Front end | `yarn install` | `root/client` |
-| Back end | `npm install` | `root/server` |
-
-### Starting up the Project
-
-| Project Component | Terminal Command | Directory|
-|-----------|------------------|----------|
-| Front & back end | `npm run dev` | `root/server` |
-| Front end only | `yarn start` | `root/client` |
-| Back end only | `npm start` | `root/server` |
+See [here]() for first time setup
 
 ---
 
 ## Usage
 
-Below is a picture of the project's user interface:
-![User Interface](https://user-images.githubusercontent.com/46408257/179650486-5b81d7e5-0f8c-483c-a1cb-73970a269532.png)
+### To Start
 
-1. **Filter**: Select a date range using the start and end date calendar drop-down menus. <br>Clicking the'Search S3' button will trigger the filtering of the log files within the connected AWS S3 bucket. The 'Select' menu will be populated with the names of the files meeting the search criteria.
-
-2. **Select**: Select one, many, or all logs in the list. Once you have made your selections, click the 'Ingest Logs' button.
-
-3. **Ingest Logs** Clicking the 'Ingest Logs' button will trigger the reingestion of the selected logs from S3 back into Elasticsearch.
-
-### List of permissions user must have
+### Open the Browser Based User Interface
+Navigate to 
+```markdown
+ http://localhost:3000
 ```
-"iam:PassRole",
-"iam:DetachRolePolicy",
-"iam:CreatePolicy",
-"iam:CreateRole",
-"iam:AttachRolePolicy",
-"iam:DeletePolicy",
-"iam:DeleteRole",
-"kms:Decrypt",
-"kms:CreateGrant",
-"kms:RetireGrant",
-"kms:Encrypt",
-"lambda:CreateEventSourceMapping",
-"lambda:CreateFunction",
-"lambda:DeleteEventSourceMapping",
-"lambda:DeleteFunction",
-"s3:DeleteObject",
-"s3:DeleteBucket",
-"s3:CreateBucket",
-"s3:ListBucket",
-"s3:PutObject",
-"s3:GetObject",
-"sqs:SendMessage",
-"sqs:GetQueueAttributes",
-"sqs:DeleteQueue",
-"sqs:CreateQueue"
-```
+in your browser.
 
-### Add a note stating that user has to have an Http input plugin configured (logstash)
+### Bulk Re-ingest
+![ByDate Tab]()
+Enter a start date and an end date. The start date must be equal to or before the end date.
+Click on `Select Log Files`.
+If no files were found in the selected date range, you will be prompted to widen your search.
+Otherwise, 
+
+### Query Re-ingest
+
+### To Stop
+
