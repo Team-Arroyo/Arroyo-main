@@ -1,27 +1,22 @@
-# Arroyo
+### Preparation
+See [here](https://github.com/Team-Arroyo/arroyo-deployment) for first time setup.
 
-## Preparation
-See [here](https://github.com/Team-Arroyo/arroyo-deployment) for first time setup
+### To Start Arroyo
 
-## Usage
-
-### To Start
-
-#### To start Arroyo for the first time
+#### First Time Start
 ```markdown
 docker compose-up
 ```
 
-#### To restart Arroyo
+#### Restart from Existing Container
 ```markdown
 docker compose start
 ```
-### To Open the Browser Based User Interface
-Navigate to 
+### Open the Browser Based User Interface
 ```markdown
  http://localhost:3000
 ```
-in your browser.
+Enter the above URL in your browser.
 
 ### Bulk Re-ingest
 ---
@@ -32,8 +27,8 @@ in your browser.
 
 ![ByDate Select](https://github.com/Team-Arroyo/Internal_Documentation/blob/main/byDateSelect.jpg)
 
-3. Select the files you want to re-ingest. To select all files for re-ingestion, click `Select All Log Files`. To clear all selected files, click `Clear All Selected Files`
-4. Click `Ingest Selected Files`. You will recieve a prompt when the request for re-ingestion is recieved. 
+3. Select the files you want to re-ingest. You can click `Select All Log Files` to select all files for re-ingestion. Also, you can click `Clear All Selected Files` to reset your file selections. 
+4. Click `Ingest Selected Files` to submit the re-ingestion request. You will recieve a prompt when the request for re-ingestion is recieved. 
 
 ### Query Re-ingest
 ---
@@ -43,7 +38,10 @@ in your browser.
 
 ![BySearch with Terms](https://github.com/Team-Arroyo/Internal_Documentation/blob/main/bySearchWithPill.jpg)
 
-To remove an attribute: value pair, click `x` on the pill. To update an attribute: value pair, type the log attribute in with the updated value at click the `+` button. You will see the attribute: value pair update. You can only have two attribute: value pairs.
+Click `x` on the pill to remove an log attribute: log attribute value pair.
+If you wish to update an existing log attribute: log attrubute value pair, enter the log attribute and the updated value log attribute value, then click the `+` button. 
+
+You can one or two log attribute: log attribute value pairs. If you do not have any log attributes you want to search, use bulk re-ingest instead.
 
 3. Click `Ingest Matching Log Enteries`. You will recieve a prompt when the request for re-ingestion is recieved.
 ### To Stop
