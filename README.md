@@ -1,7 +1,7 @@
 # Arroyo
 
 ## Preparation
-See [here]() for first time setup
+See [here](https://github.com/Team-Arroyo/arroyo-deployment) for first time setup
 
 ---
 
@@ -9,7 +9,16 @@ See [here]() for first time setup
 
 ### To Start
 
-### Open the Browser Based User Interface
+#### To start Arroyo for the first time
+```markdown
+docker compose-up
+```
+
+#### To restart Arroyo
+```markdown
+docker compose start
+```
+### To Open the Browser Based User Interface
 Navigate to 
 ```markdown
  http://localhost:3000
@@ -17,13 +26,15 @@ Navigate to
 in your browser.
 
 ### Bulk Re-ingest
-![ByDate Tab]()
-Enter a start date and an end date. The start date must be equal to or before the end date.
-Click on `Select Log Files`.
-If no files were found in the selected date range, you will be prompted to widen your search.
-Otherwise, 
+![ByDate Tab](https://github.com/Team-Arroyo/Internal_Documentation/blob/main/byDatebyDate.jpg)
+1. Enter a start date and an end date. The start date must be equal to or before the end date.
+2. Click on `Select Log Files`. If no files were found in the selected date range, you will be prompted to widen your search.
+
+![ByDate Select](https://github.com/Team-Arroyo/Internal_Documentation/blob/main/byDateSelect.jpg)
 
 ### Query Re-ingest
 
 ### To Stop
-
+```markdown
+docker compose stop
+```
