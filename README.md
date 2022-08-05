@@ -33,7 +33,7 @@ Enter the above URL in your browser.
 ### Query Re-ingest
 ---
 ![BySearch Overview](https://github.com/Team-Arroyo/Internal_Documentation/blob/main/bySearchOverview.jpg)
-1. Enter a start date and an end date. The start be before or the same as the end date.
+1. Enter a start date and an end date. The start date must be before or the same as the end date.
 2. Enter a log attribute (for example, request_method) and the log attribute value (for example, GET) and click the `+` button. You will see your entry appear.
 
 ![BySearch with Terms](https://github.com/Team-Arroyo/Internal_Documentation/blob/main/bySearchWithPill.jpg)
