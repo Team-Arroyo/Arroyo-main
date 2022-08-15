@@ -5,7 +5,7 @@ See [here](https://github.com/Team-Arroyo/arroyo-deployment) for first time setu
 
 #### Start with new Docker Container
 ```markdown
-docker compose-up
+docker compose up
 ```
 
 #### Restart from Existing Docker Container
